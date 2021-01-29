@@ -1,0 +1,5 @@
+package com.mw.member.controller;
+
+public class MemberRegController {
+
+}

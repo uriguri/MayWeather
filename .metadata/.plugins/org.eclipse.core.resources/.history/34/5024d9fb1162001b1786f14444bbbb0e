@@ -1,0 +1,14 @@
+package com.mw.member.mapper;
+
+import java.util.List;
+
+import com.mw.member.domain.Member;
+
+public interface Mapper {
+
+	// @Select("SELECT * FROM mem")
+	public List<Member> selectMemberList();
+	
+	public void insertMember();
+	
+}
