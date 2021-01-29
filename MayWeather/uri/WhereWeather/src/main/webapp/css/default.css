@@ -38,7 +38,7 @@ body {
 
 header {
     background-color: #64c2eb;
-    height: 75px;
+    height: 90px;
     float: left;
     width: 100%;
 
@@ -68,13 +68,13 @@ footer {
 
 .footer_menu_table{
     text-align: center;    
-    margin: 10px auto;
+    margin: 5px auto;
     background-color: #ffffff;
     font-weight: bold;
     
 }
 .footer_menu_table tr td{
-    width: 60px;
+    width: 70px;
     padding : 0 10px ;
     background-color: #ffffff;font-size : 10px;
 }
