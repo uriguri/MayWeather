@@ -20,14 +20,13 @@ public class Member {
 	private String memLike;
 	private String memBookmark;
 	private String memGender;
-	
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private Timestamp memRegdate;
-	
 	private String memEmailcode;
 	private int memEmailchk;
 	private int memSocial;
 	private int memState;
+	
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	private Timestamp memRegdate;
 	
 	public Member() {
 		getRandomString();

@@ -25,24 +25,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 </head>
-
+<%@ include file="/WEB-INF/views/include/header.jsp"%>
 <body bgcolor="#f5f5f5">
 
-	<%@ include file="/WEB-INF/views/include/header.jsp"%>
+	
 
 <!-- REGISTRATION FORM -->
-<div class="text-center" style="padding:50px 0">
-	<div class="logo">회원가입</div>
+<div class="text-center">
+	<div class="logos">회원가입</div>
+	
 	<!-- Main Form -->
 	<div class="login-form-1">
+	
 		<form id="register-form" class="text-left">
 			<div class="login-form-main-message"></div>
 			<div class="main-login-form">
+			
 				<div class="login-group">
+				
 					<div class="form-group">
 						<label for="reg_username" class="sr-only">Email address</label>
 						<input type="email" class="form-control" id="reg_username" name="reg_username" placeholder="Email주소">
 					</div>
+					
 					<div class="form-group">
 						<label for="reg_password" class="sr-only">Password</label>
 						<input type="password" class="form-control" id="reg_password" name="reg_password" placeholder="비밀번호">
@@ -81,6 +86,9 @@
 </div>
 
 
+<script type="text/javascript" src="<c:url value="/js/memreglogin.js"/>"> 
+	
+</script>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
