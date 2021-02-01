@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\H\Documents\GitHub\MayWeather"/>
 			<item value="C:\Users\bit\Documents\GitHub\GithubClone\MayWeather"/>
 		</list>
 		<list key="projectNameTemplate">

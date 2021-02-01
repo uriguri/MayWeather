@@ -20,8 +20,12 @@
 
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-	   <div class="content" id="content" name="content">
+	<div>
        여기는 콘텐츠 영역입니다 각 페이지 별로 자유롭게 사용하세요~! 
+       <div>
+       	<a href="<c:url value="/member/reg"/>">이거눌러봥</a>
+       </div>
+       
 	</div>
 	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
