@@ -44,21 +44,21 @@
 	// Validation
   $("#register-form").validate({
   	rules: {
-      reg_username: "required",
-  	  reg_password: {
+      memname: "required",
+  	  mempw: {
   			required: true,
   			minlength: 5
   		},
-   		reg_password_confirm: {
+   		mempwchk: {
   			required: true,
   			minlength: 5,
-  			equalTo: "#register-form [name=reg_password]"
+  			equalTo: "#register-form [name=mempw]"
   		},
-  		reg_email: {
+  		memid: {
   	    required: true,
   			email: true
   		},
-  		reg_agree: "required",
+  		memAgree: "required",
     },
 	  errorClass: "form-invalid",
 	  errorPlacement: function( label, element ) {

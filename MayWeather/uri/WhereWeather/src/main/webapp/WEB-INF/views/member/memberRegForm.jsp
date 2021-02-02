@@ -10,87 +10,88 @@
 
 <title>+WEATHER WEAR+</title>
 
+<!-- 홈페이지 전체 CSS -->
 <link rel="styleSheet" href="<c:url value="/css/default.css"/>">
-<link rel="styleSheet" href="<c:url value="/css/memreglogin.css"/>">
 
+<!-- 회원가입&로그인 용 CSS -->
+<link rel="styleSheet" href="<c:url value="/css/uri/memreglogin.css"/>">
+
+<!-- 제이쿼리 ver.1.12.4 / 부트스트랩 css, js, theme ver.3.3.2   -->
 <%@ include file="/WEB-INF/views/include/basicset.jsp"%>
 
-<!-- 회원가입용 부트스트랩 -->
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+<!-- 회원가입유효성검사용 jquery-validate -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
+
 </head>
+
+<!-- 로고 & header 하늘색 영역 -->
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 <body bgcolor="#f5f5f5">
 
 	
-
 <!-- REGISTRATION FORM -->
-<div class="text-center">
-	<div class="logos">회원가입</div>
-	
+<div class="text-center" style="padding:50px 0">
+	<div class="logo">회원가입</div>
 	<!-- Main Form -->
 	<div class="login-form-1">
-	
 		<form id="register-form" class="text-left">
 			<div class="login-form-main-message"></div>
 			<div class="main-login-form">
-			
 				<div class="login-group">
-				
 					<div class="form-group">
 						<label for="reg_username" class="sr-only">Email address</label>
-						<input type="email" class="form-control" id="reg_username" name="reg_username" placeholder="Email주소">
+						<input type="text" class="form-control" id="reg_username" name="reg_username" placeholder="username">
 					</div>
-					
 					<div class="form-group">
 						<label for="reg_password" class="sr-only">Password</label>
-						<input type="password" class="form-control" id="reg_password" name="reg_password" placeholder="비밀번호">
+						<input type="password" class="form-control" id="reg_password" name="reg_password" placeholder="password">
 					</div>
 					<div class="form-group">
 						<label for="reg_password_confirm" class="sr-only">Password Confirm</label>
-						<input type="password" class="form-control" id="reg_password_confirm" name="reg_password_confirm" placeholder="비밀번호 확인">
+						<input type="password" class="form-control" id="reg_password_confirm" name="reg_password_confirm" placeholder="confirm password">
 					</div>
 					
 					<div class="form-group">
-						<label for="reg_nickname" class="sr-only">Nickname</label>
-						<input type="text" class="form-control" id="reg_nickname" name="reg_nickname" placeholder="닉네임">
+						<label for="reg_email" class="sr-only">Email</label>
+						<input type="text" class="form-control" id="reg_email" name="reg_email" placeholder="email">
 					</div>
-					
+				
 					<div class="form-group login-group-checkbox">
 						<input type="radio" class="" name="reg_gender" id="male" placeholder="username">
-						<label for="male">남성</label>
+						<label for="male">male</label>
 						
 						<input type="radio" class="" name="reg_gender" id="female" placeholder="username">
-						<label for="female">여성</label>
+						<label for="female">female</label>
 					</div>
 					
 					<div class="form-group login-group-checkbox">
 						<input type="checkbox" class="" id="reg_agree" name="reg_agree">
-						<label for="reg_agree">회원가입 <a href="#">약관</a>에 동의합니다.</label>
+						<label for="reg_agree">i agree with <a href="#">terms</a></label>
 					</div>
 				</div>
 				<button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
 			</div>
 			<div class="etc-login-form">
-				<p>이미 계정이 있으신가요? <a href="#">로그인 하러가기</a></p>
+				<p>already have an account? <a href="#">login here</a></p>
 			</div>
 		</form>
 	</div>
 	<!-- end:Main Form -->
 </div>
 
+	
 
-<script type="text/javascript" src="<c:url value="/js/memreglogin.js"/>"> 
-	
-</script>
-	
+	<!-- 메뉴영역 푸터 -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 </body>
+
+<!-- 회원 가입용 js -->
+
+<script type="text/javascript" src="<c:url value="/js/uri/memreglogin.js"/>"> </script>
+<script type="text/javascript" src="<c:url value="/js/uri/messages_ko.js"/>"> </script>
+
 </html>

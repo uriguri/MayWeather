@@ -5,7 +5,66 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2021-02-01T11:00:00Z</updated>
+  <updated>2021-02-01T16:05:00Z</updated>
+  <entry>
+    <title>Spring Integration AWS 2.3.5.RELEASE &amp; 2.4.0,  and Spring Cloud Stream Kinesis Binder 2.0.4.RELEASE &amp; 2.1.0 Available</title>
+    <link rel="alternate" href="https://spring.io/blog/2021/02/01/spring-integration-aws-2-3-5-release-2-4-0-and-spring-cloud-stream-kinesis-binder-2-0-4-release-2-1-0-available" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Artem Bilan</name>
+    </author>
+    <id>tag:spring.io,2021-02-01:4350</id>
+    <updated>2021-02-01T16:05:00Z</updated>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;Dear Spring Community,&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Today it&amp;#8217;s my pleasure to announce releases of Spring Integration for Amazon Web Services extension versions &lt;code&gt;2.3.5.RELEASE&lt;/code&gt; &amp;amp; &lt;code&gt;2.4.0&lt;/code&gt;, and Spring Cloud Stream Binder for AWS Kinesis versions &lt;code&gt;2.0.4.RELEASE&lt;/code&gt; &amp;amp; &lt;code&gt;2.1.0&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;These releases can be downloaded from Maven Central, JCenter:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="groovy"&gt;compile "org.springframework.integration:spring-integration-aws:2.3.5.RELEASE"&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;If you don&amp;#8217;t use Kinesis Binder.
+Or via Binder dependency:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="prettyprint highlight"&gt;&lt;code data-lang="groovy"&gt;compile "org.springframework.cloud:spring-cloud-stream-binder-kinesis:2.0.4.RELEASE"&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Mostly these versions have bug fixes and some community feedback refinements.
+So, it is highly recommended to bump your projects to this latest versions.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;The new minor versions (&lt;code&gt;spring-integration-aws:2.4.0&lt;/code&gt; &amp;amp; &lt;code&gt;spring-cloud-stream-binder-kinesis:2.1.0&lt;/code&gt;) have the same fixes content, but with an upgrade to the latest Spring Integration and Spring Cloud Stream versions for compatibility with the latest Spring Boot and Spring Cloud, respectively.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Many thanks to everyone from the Community for all the feedback and contribution to these projects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Any feedback is welcome via all the available communication channels!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Spring Integration for AWS resources:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://github.com/spring-projects/spring-integration-aws"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-integration/blob/master/CONTRIBUTING.adoc"&gt;Contributing&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-integration"&gt;Help&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-integration"&gt;Chat&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Spring Cloud Stream Binder for AWS Kinesis resources:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;&lt;a href="https://github.com/spring-cloud/spring-cloud-stream-binder-aws-kinesis"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-cloud/spring-cloud-stream-binder-aws-kinesis/blob/master/spring-cloud-stream-binder-kinesis-docs/src/main/asciidoc/contributing.adoc"&gt;Contributing&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-cloud-stream"&gt;Help&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-cloud-stream"&gt;Chat&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>YMNNALFT: A lightweight SQL data mapper with the JdbcTemplate</title>
     <link rel="alternate" href="https://spring.io/blog/2021/02/01/ymnnalft-a-lightweight-sql-data-mapper-with-the-jdbctemplate" />
@@ -93,16 +152,16 @@ public class BootifulApplication {&#xD;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
   <entry>
-    <title>A Bootiful Podcast: AppDynamics' Pavol Loffay</title>
-    <link rel="alternate" href="https://spring.io/blog/2021/01/28/a-bootiful-podcast-appdynamics-pavol-loffay" />
+    <title>A Bootiful Podcast: Hypertrace Java Agent creator Pavol Loffay</title>
+    <link rel="alternate" href="https://spring.io/blog/2021/01/28/a-bootiful-podcast-hypertrace-java-agent-creator-pavol-loffay" />
     <category term="engineering" label="Engineering" />
     <author>
       <name>Josh Long</name>
     </author>
     <id>tag:spring.io,2021-01-29:4349</id>
     <updated>2021-01-29T01:13:00Z</updated>
-    <content type="html">&lt;p&gt;Hi, Spring fans! In this episode &lt;a href="http://twitter.com/starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to AppDynamics&amp;rsquo; &lt;a href="http://twitter.com/ploffay"&gt;Pavol Loffay (@ploffay)&lt;/a&gt; about telemetry, observability, and more. &lt;/p&gt;
-&lt;iframe title="AppDynamics' Pavol Loffay" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/vm8cv-f8f4ea?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;
+    <content type="html">&lt;p&gt;Hi, Spring fans! In this episode &lt;a href="http://twitter.com/starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to Hypertrace Java Agent creator &lt;a href="http://twitter.com/ploffay"&gt;Pavol Loffay (@ploffay)&lt;/a&gt; about telemetry, observability, and more. &lt;/p&gt;
+&lt;iframe title="Hypertrace Java Agent creator Pavol Loffay" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/vm8cv-f8f4ea?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
   <entry>
@@ -1650,21 +1709,6 @@ public class BootifulApplication {&#xD;
     <updated>2021-01-15T01:58:00Z</updated>
     <content type="html">&lt;p&gt;Hi, Spring fans! Welcome to another installment of &lt;em&gt;A Bootiful Podcast&lt;/em&gt;. This week, &lt;a href="http://twitter.com/starbuxman"&gt;Josh Long (@starbuxman)&lt;/a&gt; talks to Spring Cloud Stream &lt;a href="https://twitter.com/z_oleg"&gt;lead Oleg Zhurakousky (@z_oleg)&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;iframe title="Spring Cloud Stream lead Oleg Zhurakousky" height="122" width="100%" style="border: none;" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/media/player/gagc3-f79a60?from=pb6admin&amp;download=1&amp;version=1&amp;auto=0&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Helvetica&amp;skin=1&amp;pfauth=&amp;btn-skin=107"&gt;&lt;/iframe&gt;&lt;/p&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Boot 2.3.8 available now</title>
-    <link rel="alternate" href="https://spring.io/blog/2021/01/14/spring-boot-2-3-8-available-now" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Scott Frederick</name>
-    </author>
-    <id>tag:spring.io,2021-01-14:4336</id>
-    <updated>2021-01-14T19:52:00Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the team and everyone who has contributed, I&amp;rsquo;m happy to announce that Spring Boot 2.3.8 has been released and is now available from Maven Central.&lt;/p&gt;
-&lt;p&gt;This release includes &lt;a href="https://github.com/spring-projects/spring-boot/releases/tag/v2.3.8.RELEASE"&gt;35 bug fixes and dependency upgrades&lt;/a&gt;. Thanks to all those who have contributed with issue reports and pull requests.&lt;/p&gt;&lt;h3&gt;&lt;a href="#how-can-you-help" class="anchor" name="how-can-you-help"&gt;&lt;/a&gt;How can you help?&lt;/h3&gt;
-&lt;p&gt;If you&amp;rsquo;re interested in helping out, check out the &lt;a href="https://github.com/spring-projects/spring-boot/labels/status%3A%20ideal-for-contribution"&gt;&amp;ldquo;ideal for contribution&amp;rdquo; tag&lt;/a&gt; in the issue repository. If you have general questions, please ask on &lt;a href="http://stackoverflow.com"&gt;stackoverflow.com&lt;/a&gt; using the &lt;a href="http://stackoverflow.com/tags/spring-boot"&gt;&lt;code&gt;spring-boot&lt;/code&gt; tag&lt;/a&gt; or chat with the community on &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://spring.io/projects/spring-boot/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-boot/issues"&gt;Issues&lt;/a&gt; | &lt;a href="http://docs.spring.io/spring-boot/docs/2.3.8.RELEASE/reference/html"&gt;Documentation&lt;/a&gt; | &lt;a href="http://stackoverflow.com/questions/tagged/spring-boot"&gt;Stack Overflow&lt;/a&gt; | &lt;a href="https://gitter.im/spring-projects/spring-boot"&gt;Gitter&lt;/a&gt;&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>
