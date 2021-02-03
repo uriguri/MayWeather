@@ -5,17 +5,17 @@ import lombok.Data;
 @Data
 public class MemberRegRequest {
 
-	private String memId;
-	private String memPw;
-	private String memName;
-	private String memGender;
+	private String memberId;
+	private String memberPw;
+	private String memberName;
+	private String memberGender;
 	
 	public Member toMember() {
 		Member member = new Member();
-		member.setMemberId(memId);
-		member.setMemberPw(memPw);
-		member.setMemberName(memName);
-		member.setMemberGender(memGender);
+		member.setMemId(memberId);
+		member.setMemPw(memberPw);
+		member.setMemName(memberName);
+		member.setMemGender(memberGender);
 		
 		return member;
 	}

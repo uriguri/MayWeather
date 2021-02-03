@@ -21,50 +21,39 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
 	<div class="memContents">
-		<h2 class="memTitle">회원가입</h2>
-		<hr>
-		<div class="memContent">
-			<form id="regForm" method="post">
+		<h2 class="memTitle">메일인증</h2>
+			<hr>
+			<div class="memContent">
+			<form id="loginForm" method="post">
+			
 				<table>
 					<tr>
 						<th><label for="memberId">아이디(Email)</label></th>
 						<td><input type="email" id="memberId" name="memberId"> 
 						</td>
 					</tr>
+					
 					<tr>
 						<th><label for="memberPw">비밀번호</label></th>
 						<td><input type="password" id="memberPw" name="memberPw"></td>
 					</tr>
+					
 					<tr>
-						<th><label for="memberPwChk">비밀번호 확인</label></th>
-						<td><input type="password" id="memberPwChk" name="memberPwChk"></td>
+						<th><label for="memberChk">내 아이디 저장</label></th>
+						<td><input type="checkbox" id="memberChk" name="memberChk" value="on" ${cookie.mid ne null ? 'checked' : ''}></td>
 					</tr>
-					<tr>
-						<th><label for="memberName">닉네임</label></th>
-						<td><input type="text" id="memberName" name="memberName">
-						</td>
-					</tr>
-					<tr>
-						<th><label for="memberGender">성별</label></th>
-						<td><select name="memberGender">
-							<option value="">성별</option>
-							<option value="M">남성</option>
-							<option value="F">여성</option>
-							<option value="N">선택하지 않음</option>
-							</select>
-						</td>
-					</tr>
+					
 					<tr>
 						<th></th>
-						<td><input type="submit" value="회원가입"></td>
+						<td><input type="submit" value="로그인"></td>
 					</tr>
 				</table>
 
 			</form>
-		</div>
+	    	
+			</div>
 	</div>
-
-	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 </body>
 </html>

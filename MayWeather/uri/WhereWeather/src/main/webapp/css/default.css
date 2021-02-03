@@ -1,5 +1,4 @@
 /*
-
 기본 파란색 : #64c2eb
 진한 파란색 : #30b0e7
 기본 회색 : #757575
@@ -7,7 +6,6 @@
 바탕 아주 옅은 회색 : #f5f5f5
 강조 컬러 빨강 : #ee7f7b
 강조 컬러 노랑 : #ffd74e
-
 */
 
 /*한글*/
@@ -31,6 +29,12 @@
     font-family: 'Nanum Gothic', sans-serif;
 }
 
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
 body {
     padding: 0;
     margin: 0;
@@ -41,15 +45,21 @@ header {
     height: 90px;
     float: left;
     width: 100%;
+    position: absolute;
+    top : 0px;
 
 }
 
 footer {
     background-color: #ffffff;
     height: 60px;
-    position: absolute;
-    bottom: 0px;
+    clear:both;
     width: 100%;
+     position: fixed;
+
+ bottom: 0;
+
+ left: 0;
     
 }
 
@@ -61,9 +71,9 @@ footer {
     background-color: #64c2eb;
 }
 
-.contents{
-    width: 100%;
-    height: 50%;    
+.content{
+    margin-top: 100px;
+    height: max;
 }
 
 .footer_menu_table{
@@ -81,4 +91,87 @@ footer {
 
 .menuicons{
     background-color: #ffffff;
+}
+
+
+
+.ootd_hashtag{
+    width: 33%;
+    overflow: hidden;
+    color : #ffffff;
+    float: left;
+    background-color: #64c2eb;
+    border: 2px solid #ffffff;
+    padding : 10px 10px;
+    text-align: center;
+}
+
+.ootd_hs{
+    padding-left: 5px;
+    overflow: hidden;
+}
+
+#ootdtext{
+    border: 1px solid #757575;
+    width: 100%;
+    height: 100px;
+}
+
+.ootd_hasktag_true{
+    background-color : #30b0e7;
+}
+
+.ootd_hashtag_false{    
+    background-color: #64c2eb;
+}
+
+
+/*ootd리스트 출력 CSS*/
+
+.ootdlistarea{
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+
+.ootdposttable {
+    margin-top: 20px;
+    width: 30%;
+    float: left;
+    margin-left: 2.5%;
+    border-spacing: -3px;
+    line-height: 14px;
+    
+}
+
+
+.postthumnail {
+    width: 100%;
+    height: width;
+    border-radius: 3px;
+    margin-bottom: 6px;
+}
+
+.ootdwriter {
+    color: #424242;
+    font-weight: bold;
+    font-size: 12px;
+    
+}
+
+.ootdlocation {
+    color: #757575;
+    font-size: 12px;
+}
+
+.ootdlistlike {
+    color: #ee7f7b;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+a1 {
+    letter-spacing: -1px;
+
 }

@@ -20,19 +20,23 @@
 
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-	<div>
-       여기는 콘텐츠 영역입니다 각 페이지 별로 자유롭게 사용하세요~! 
-       
-       <div>
-       	<a href="<c:url value="/member/reg"/>">회원가입</a>
-       </div>
-       
-       <div>
-       	<a href="<c:url value="/member/login"/>">로그인</a>
-       </div>
-       
+	<div class="memContents">
+		<h2 class="memTitle">로그인</h2>
+			<hr>
+			<div class="memContent">
+			
+	    	<c:if test="${msg ne null}">
+	    	${msg}
+	    	</c:if>
+	    	
+	    	<c:if test="${msg eq null}">
+	    	로그인 되었습니다. <br>
+	    	${loginInfo} <br>
+	    	<img alt="회원사진" src="<c:url value="/fileupload/member/${loginInfo.memPhoto}"/>">
+	    	</c:if>
+	    	
+			</div>
 	</div>
-	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 </body>

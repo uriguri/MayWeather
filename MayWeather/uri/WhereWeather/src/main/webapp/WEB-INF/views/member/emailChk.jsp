@@ -20,19 +20,23 @@
 
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-	<div>
-       여기는 콘텐츠 영역입니다 각 페이지 별로 자유롭게 사용하세요~! 
-       
-       <div>
-       	<a href="<c:url value="/member/reg"/>">회원가입</a>
-       </div>
-       
-       <div>
-       	<a href="<c:url value="/member/login"/>">로그인</a>
-       </div>
-       
+	<div class="memContents">
+		<h2 class="memTitle">메일인증</h2>
+			<hr>
+			<div class="memContent">
+	     <c:if test="${result == 0}">
+			<h1>잘못된 인증 요청입니다. 다시 시도해주세요.</h1>
+			</c:if>
+				
+			<c:if test="${result == 1}">
+			<h1>인증되었습니다.</h1>
+			</c:if>
+				
+			<c:if test="${result == 2}">
+			<h1>이미 인증된 이메일 입니다.</h1>
+			</c:if>
+		</div>
 	</div>
-	
 	<%@ include file="/WEB-INF/views/include/footer.jsp" %>
 
 </body>

@@ -18,16 +18,23 @@ public class MemberRegService {
 	@Autowired
 	private SqlSessionTemplate template;
 	
+	@Autowired
+	private MailSenderService mailSenderService;
+	
 	public int memberReg(MemberRegRequest regRequest, 
 						 HttpServletRequest request) {
 		
 		int result = 0;
+		
 		Member member = regRequest.toMember();
 		
 		dao = template.getMapper(MemberDao.class);
 		
 		result = dao.insertMember(member);
 		
+		//메일발송
+		int mailsendCnt = mailSenderService.send(member);
+		System.out.println("메일 발송 횟수 : " + mailsendCnt);
 		
 		return result;
 	}
