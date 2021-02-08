@@ -21,7 +21,7 @@
 	<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
 	<div class="memContents">
-		<h2 class="memTitle">메일인증</h2>
+		<h2 class="memTitle">로그인</h2>
 			<hr>
 			<div class="memContent">
 			<form id="loginForm" method="post">
@@ -47,9 +47,12 @@
 						<th></th>
 						<td><input type="submit" value="로그인"></td>
 					</tr>
+			
 				</table>
+				
 
 			</form>
+	    	
 	    	
 			</div>
 	</div>

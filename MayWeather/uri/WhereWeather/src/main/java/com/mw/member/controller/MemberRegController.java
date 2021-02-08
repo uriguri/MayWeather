@@ -38,6 +38,7 @@ public class MemberRegController {
 		
 		model.addAttribute("result", result);
 		
+		
 		return "/member/memberRegView";
 	}
 

@@ -59,6 +59,17 @@
 		transaction-manager="transactionManager" />
 	
 	
+	<!-- 인터셉터 로그인체크 -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/member/mypage/**"/>
+			<mapping path="/member/list/**"/>
+			<mapping path="/member/edit/**"/>
+			<mapping path="/member/delete/**"/>
+			<beans:bean class="com.mw.member.intercepter.AuthCheckIntercepter"/>
+		</interceptor>
+	</interceptors>
+	
 	<context:component-scan base-package="com.mw" />
 	
 	

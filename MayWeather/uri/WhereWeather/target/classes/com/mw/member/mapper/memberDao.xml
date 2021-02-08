@@ -46,6 +46,105 @@ SELECT * FROM mem WHERE memId=#{param1} and memPw=#{param2}
 	<result column="memName" property="memName"/>
 	<result column="memGender" property="memGender"/>
 	<result column="memPhoto" property="memPhoto"/>
+</resultMap> 
+
+
+<!-- Member List -->
+<resultMap id="memberListResult" type="com.mw.member.domain.Member">
+	<id column="memIdx" property="memIdx"/>
+	<result column="memId" property="memId"/>
+	<result column="memName" property="memName"/>
+	<result column="memPhoto" property="memPhoto"/>
+	<result column="memRegdate" property="memRegdate"/>
 </resultMap>
+
+<!-- 회원 정보 검색 -->
+<select id="selectMemberList" parameterType="map" resultMap="memberListResult">
+	SELECT * FROM mem
+	
+	<!-- 검색조건 추가 -->
+	<where>
+		<if test="searchParam != null">
+		
+			<if test="searchParam.searchType == 'id'">
+				<include refid="searchId"/>		
+			</if>
+			
+			<if test="searchParam.searchType == 'name'">
+				<include refid="searchName"/>
+			</if>
+			
+			<if test="searchParam.searchType == 'both'">
+				<include refid="searchId"/>
+				<include refid="searchName"/>
+			</if>
+		
+		</if>
+		
+	</where>
+		
+	limit #{index}, #{count}
+		
+</select>
+
+<select id="selectSearchMemberCount" parameterType="com.mw.member.domain.SearchParam" resultType="int">
+
+	SELECT COUNT(*) FROM mem
+	
+	<!-- 검색조건 추가 -->
+	<where>
+		<if test="searchParam != null">
+		
+			<if test="searchParam.searchType == 'id'">
+				<include refid="searchId"/>		
+			</if>
+			
+			<if test="searchParam.searchType == 'name'">
+				<include refid="searchName"/>
+			</if>
+			
+			<if test="searchParam.searchType == 'both'">
+				<include refid="searchId"/>
+				<include refid="searchName"/>
+			</if>
+		
+		</if>
+		
+	</where>
+	
+</select>
+
+<sql id="searchId">
+	or memId like concat('%', #{searchParam.keyword}, '%')
+</sql>
+
+<sql id="searchName">
+	or memName like concat('%', #{searchParam.keyword}, '%')
+</sql>
+
+
+<!-- REST GET -->
+<select id="selectAllMemberList" resultMap="memberListResult">
+	SELECT * FROM mem
+</select>
+
+<!-- 회원 탈퇴 DELETE -->
+
+<delete id="deleteMemberByIdx">
+	DELETE FROM mem where memIdx=#{no}
+</delete>
+
+<!-- 회원 정보 수정 -->
+
+<update id="updateMember" parameterType="com.mw.member.domain.Member">
+	UPDATE mem SET memPw=#{memPw}, memName=#{memName}, memGender=#{memGender} WHERE memIdx=#{memIdx}
+</update>
+
+<!-- 회원 정보 확인 : memIdx -->
+
+<select id="selectMemberByIdx" resultMap="memberListResult">
+	SELECT * FROM mem WHERE memIdx=#{memIdx}
+</select>
+
 
 </mapper>

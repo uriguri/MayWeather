@@ -30,10 +30,12 @@
 		
 		<c:if test="${result > 0 }">
 		정상적으로 가입되었습니다.
+		<a href="<c:url value="/"/>">메인으로 돌아가기</a>
 		</c:if>
 		
 		<c:if test="${result eq 0 }">
 		가입이 정상 처리되지 않았습니다. 다시 시도해주세요.
+		<a href="<c:url value="/"/>">메인으로 돌아가기</a>
 		</c:if>
 			
 		</div>

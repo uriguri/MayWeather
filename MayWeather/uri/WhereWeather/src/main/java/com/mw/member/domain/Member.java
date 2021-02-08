@@ -25,8 +25,6 @@ public class Member {
 	private char memEmailchk;
 	private int memSocial;
 	private int memState;
-	
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Timestamp memRegdate;
 	
 	public Member() {
@@ -50,6 +48,6 @@ public class Member {
 	
 	// 로그인용
 	public LoginInfo toLoginInfo() {
-		return new LoginInfo(memId, memName, memGender, memPhoto);
+		return new LoginInfo(memIdx, memId, memName, memGender, memPhoto);
 	}
 }
