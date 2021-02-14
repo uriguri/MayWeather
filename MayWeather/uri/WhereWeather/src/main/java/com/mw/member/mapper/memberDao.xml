@@ -12,9 +12,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 >
 
 INSERT INTO mem
-(memId, memPw, memName, memGender, memEmailCode)
+(memId, memPw, memName, memGender)
 VALUES
-(#{memId},#{memPw},#{memName},#{memGender},#{memEmailCode})
+(#{memId},#{memPw},#{memName},#{memGender})
 
 </insert>
 

@@ -16,7 +16,7 @@ public class MemberListController {
 	@Autowired
 	private MemberListService listService;
 	
-	@RequestMapping("/member/list")
+	@RequestMapping("/members")
 	public String memberList(
 			SearchParam param,
 			Model model

@@ -1,45 +1,39 @@
 package com.mw.member.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mw.member.domain.MemberRegRequest;
 import com.mw.member.service.MemberRegService;
 
-@Controller
-@RequestMapping("/member/reg")
+@RestController
+@RequestMapping("/member")
 public class MemberRegController {
 	
 	@Autowired
 	private MemberRegService regService;
 	
 	@GetMapping
-	public String getRegForm() {
-		return "/member/memberRegForm";
+	public ModelAndView getRegForm(ModelAndView mv) {
+		mv.setViewName("/member/memberRegForm");
+		return mv;
 	}
 	
-	
+	@CrossOrigin
 	@PostMapping
-	public String memberReg(
-			@ModelAttribute("regData") MemberRegRequest regRequest,
-			HttpServletRequest request,
-			Model model
-			) {
+	public String insertMember(@RequestBody MemberRegRequest regRequest) {
 		
 		System.out.println(regRequest);
-		int result = regService.memberReg(regRequest, request);
-		
-		model.addAttribute("result", result);
+		System.out.println(regRequest.toMember());
 		
 		
-		return "/member/memberRegView";
+		return regService.memberReg(regRequest.toMember())>0 ? "Y" : "N";
 	}
 
 }
