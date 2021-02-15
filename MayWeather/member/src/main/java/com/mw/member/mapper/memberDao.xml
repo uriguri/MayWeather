@@ -5,29 +5,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.mw.member.dao.MemberDao">
 
-<!-- Member 타입의 resultMap -->
-<resultMap id="memberResult" type="com.mw.member.domain.Member">
-	<id column="memIdx" property="memIdx"/>
-	<result column="memId" property="memId"/>
-	<result column="memPw" property="memPw"/>
-	<result column="memName" property="memName"/>
-	<result column="memGender" property="memGender"/>
-	<result column="memPhoto" property="memPhoto"/>
-</resultMap> 
+	<!-- Member 타입의 resultMap -->
+	<resultMap id="memberResult"
+		type="com.mw.member.domain.Member">
+		<id column="memIdx" property="memIdx" />
+		<result column="memId" property="memId" />
+		<result column="memPw" property="memPw" />
+		<result column="memName" property="memName" />
+		<result column="memGender" property="memGender" />
+		<result column="memPhoto" property="memPhoto" />
+	</resultMap>
 
-<!-- 회원가입 -->
-<insert id="insertMem"
-		parameterType="com.mw.member.domain.Member"
-		useGeneratedKeys="true"
-		keyProperty="memIdx"
-		>
-INSERT INTO mem (memId, memPw, memName, memGender) VALUES (#{memId},#{memPw},#{memName},#{memGender})
-</insert>
+	<!-- 회원가입 -->
+	<insert id="insertMem"
+		parameterType="com.mw.member.domain.Member" useGeneratedKeys="true"
+		keyProperty="memIdx">
+		INSERT INTO mem (memId, memPw, memName, memGender, memEmailCode) VALUES
+		(#{memId},#{memPw},#{memName},#{memGender},#{memEmailCode})
+	</insert>
 
-<!-- 로그인 -->
-<select id="selectLogin"  resultMap="memberResult">
-SELECT * FROM mem WHERE memId=#{param1} and memPw=#{param2}
-</select>
+	<!-- 회원 이메일 인증상태 memIdx로 조회 -->
+	<select id="selectMemberByIdxEmailchk" resultType="int">
+		SELECT COUNT(*) FROM mem WHERE memIdx=#{memIdx} and memEmailchk='Y'
+	</select>
+
+	<!-- 회원 이메일 인증 -->
+	<update id="updateMemberEmailchk">
+		UPDATE mem SET memEmailchk='Y' WHERE memIdx=#{param1} and
+		memEmailCode=#{param2}
+	</update>
+
+
+
+	<!-- 로그인 -->
+	<select id="selectLogin" resultMap="memberResult">
+		SELECT * FROM mem WHERE memId=#{param1} and memPw=#{param2}
+	</select>
+
 
 
 

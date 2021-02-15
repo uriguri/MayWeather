@@ -25,7 +25,6 @@ public class MemberRestController {
 	@Autowired
 	private MemberLoginService loginService;
 	
-	
 	@PostMapping // 회원가입 
 	public String memberReg(@RequestBody MemberRegRequest regRequest) {
 		
@@ -36,8 +35,8 @@ public class MemberRestController {
 	@PostMapping("/login") // 로그인
 	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, 
 						HttpServletRequest request) {
-		
-		return loginService.login(loginRequest, request);
+	
+		return loginService.login(loginRequest, request); 
 	}
 	
 

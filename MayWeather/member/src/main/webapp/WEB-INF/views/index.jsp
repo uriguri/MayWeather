@@ -221,6 +221,7 @@
 	 		
 	 		 <div class="mypage-menu">
            
+           
             <div class="mypage-header">
 	 		
 				<div class="mem-info" id="mem-info">
@@ -291,6 +292,7 @@
 		
 	</div>
 
+<!-- 마이페이지 접속시 로그인창 팝업 -->
 <script type="text/javascript">
     $(document).ready(function(){
         openLoginModal();
@@ -314,8 +316,6 @@
     		};
     		
     	
-			
-    		
     		$.ajax({
     			type: 'POST',
     			url: '/members',
@@ -345,6 +345,17 @@
  </script>
   
  <script>
+ function closeLoginModal(){
+	 
+		/* $('#loginModal').fadeOut('fast',function(){
+			$('.modal-backdrop').fadeOut('fast');
+		}); */
+		
+		$('#loginModal').modal("hide");
+			
+ }
+ 
+ 
     	$('#loginButton').click(function(e){
 				
     	   	e.preventDefault();
@@ -359,34 +370,38 @@
     		   };
     		   
     			
-    		   
     		 $.ajax({
     		   	type: 'POST',
     		   	url: '/members/login',
     		   	contentType: 'application/json; charset=utf-8',
     		   	dataType: 'json',
     		   	data: JSON.stringify(member),
-    		   	async : false,
     		   	success: function(loginDone){
-    		   	 console.log(loginDone);
-    		   		 if(loginDone =! null){
-    		   			alert("로그인성공") 
+    		   		
+    		   	 	console.log(loginDone);
+    		   	 	
+    		 	var memPhoto = loginDone.memPhoto;
+	   			var memName = loginDone.memName;
+	   			var memIdx = loginDone.memIdx;
+	   			
+    		   		 if(memName == 'admin'){
+    		   			shakeModal();
     		   			
-    		   		var loginHtml = "";
-    		   			$(loginDone).each(function(){
-    		   				loginHtml += '<div class="mem-info">';
-    		   				loginHtml += '<img class="mem-info-photo" src="<c:url value="/fileupload/member/' + loginDone.memPhoto + '"/>">';
-    		   				loginHtml += '<div class="mem-info-name">'+ loginDone.memName +'</div>';
-    		   				loginHtml += '<div class="mem-info-loc">'+ loginDone.memIdx +' 종로구</div>';
-    		   				loginHtml += '</div>';
-    		   			});
-    		   					
-    		   			
-    		   			$('#mem-info').html(loginHtml);
-    		   			
-    		
     		   	 	} else {
-    		   	 		shakeModal();
+    		   	 	console.log(memPhoto);
+		   			console.log(memName);
+		   			console.log(memIdx);
+		   			
+		   				var loginHtml = "";
+		   				loginHtml += '<div class="mem-info">';
+		   				loginHtml += '<img class="mem-info-photo" src="<c:url value="/fileupload/member/'+memPhoto+'"/>">';
+		   				loginHtml += '<div class="mem-info-name">'+memName+'</div>';
+		   				loginHtml += '<div class="mem-info-loc">'+memIdx+' 종로구</div>';
+		   				loginHtml += '</div>';
+		   					
+		   			// 마이페이지 상단 사진, 아이디, 지역 
+		   			$('#mem-info').html(loginHtml);
+		   			closeLoginModal();
     		   	    }
     		   	},
     		   	error:function(request,status,error){
@@ -403,6 +418,10 @@
     		
     		
   	
+</script>
+
+<script>
+
 </script>
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>

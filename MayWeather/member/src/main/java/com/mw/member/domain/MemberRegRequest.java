@@ -1,5 +1,7 @@
 package com.mw.member.domain;
 
+import com.sun.istack.internal.NotNull;
+
 import lombok.Data;
 
 @Data
