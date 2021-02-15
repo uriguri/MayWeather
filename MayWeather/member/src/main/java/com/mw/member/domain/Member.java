@@ -44,6 +44,10 @@ public class Member {
 	}
 	
 	public LoginInfo toLoginInfo() {
-		return new LoginInfo(memIdx, memId, memName, memGender, memPhoto);
+		return new LoginInfo(memIdx, memId, memName, memGender, memPhoto, memLoc, "N");
 	}
+	
+
+		
+	
 }

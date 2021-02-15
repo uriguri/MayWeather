@@ -91,6 +91,8 @@
     }
     
     .mem-info-photo{
+    	width: 50px;
+    	height: 50px;
         float: left;
     }
     
@@ -181,8 +183,8 @@
 	                            <div class="registerBox" style="display:none;">
 	                             <div class="form">
 	                                <form method="post" html="{:multipart=>true}" data-remote="true" action="" accept-charset="UTF-8">
-	                                <input id="memId" class="form-control" type="text" placeholder="Email" name="memId">
-	                                <input id="memPw" class="form-control" type="password" placeholder="비밀번호(4자 이상 12자 이하)" name="memPw">
+	                                <input id="memIdReg" class="form-control" type="text" placeholder="Email" name="memIdReg">
+	                                <input id="memPwReg" class="form-control" type="password" placeholder="비밀번호(4자 이상 12자 이하)" name="memPwReg">
 	                                <input id="password_confirmation" class="form-control" type="password" placeholder="비밀번호 확인" name="password_confirmation">
 	                                <input id="nickName" class="form-control" type="text" placeholder="이름(닉네임)" name="nickName">
 	                                <select id="genderSelect" class="form-control-select" name="memGender">
@@ -221,12 +223,12 @@
            
             <div class="mypage-header">
 	 		
-				<div class="mem-info">
-				    <img class="mem-info-photo" width="50px" height="50px" src="default.png">
-				    <div class="mem-info-name">메이웨더</div>
-				    <div class="mem-info-loc">서울 종로구</div>
+				<div class="mem-info" id="mem-info">
+				    <div class="mem-info-name">마이페이지</div>
+				    <div class="mem-info-loc">마이페이지 기능을 이용하시려면 먼저 로그인 해주세요.</div>
 				</div>
-				
+			
+			   
 				<div class="mypage-title">
 				내가 쓴글
 				</div>
@@ -244,6 +246,7 @@
 				
 				<div class="mem-locchange">
 				내 위치 변경
+				${msg}
 				</div>
 				
 				<hr class="mypage-hr">
@@ -288,18 +291,18 @@
 		
 	</div>
 
-
 <script type="text/javascript">
     $(document).ready(function(){
         openLoginModal();
     });
+</script>
+
+<script>
  
     	$('#commit').click(function(e){
     		
-    		e.preventDefault();
-    		
-    		var memId = $('#memId').val();
-    		var memPw = $('#memPw').val();
+    		var memId = $('#memIdReg').val();
+    		var memPw = $('#memPwReg').val();
     		var memName = $('#nickName').val();
     		var memGender = $('#genderSelect option:selected').val();
     		
@@ -310,29 +313,38 @@
     				memGender: memGender
     		};
     		
+    	
+			
+    		
     		$.ajax({
     			type: 'POST',
     			url: '/members',
     			contentType: 'application/json',
-    			dataType: 'json',
+    			/* dataType: 'json', */
     			data: JSON.stringify(member),
-    			success: function(result) {
-    				console.log('result:' + result);
-    				if(result === 'regSUCCESS'){
+    			async : false,
+    			success: function(regDone) {
+    				console.log(regDone);
+    				if(regDone == 'Y') {
     					alert('회원가입 성공');
-    					self.location = '/';
+    					
+    				} else {
+    					alert('오류가 발생했습니다 다시 시도하세요.');
     				}
     			},
-    			error: function(request,status,error){
-    	             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-    	          }
-    			
-    	        });
+    			error:function(request,status,error){
+    		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+    		       }
 
+    		
     			
+    	    });
+
+    			return false;
     		});
-    	
-    	
+ </script>
+  
+ <script>
     	$('#loginButton').click(function(e){
 				
     	   	e.preventDefault();
@@ -340,35 +352,57 @@
     		   var memId = $('#memId').val();
     		   var memPw = $('#memPw').val();
     		   
+    
     		   var member = {
     		   		memId: memId,
     		   		memPw: memPw
     		   };
     		   
+    			
+    		   
     		 $.ajax({
     		   	type: 'POST',
     		   	url: '/members/login',
-    		   	contentType: 'application/json',
+    		   	contentType: 'application/json; charset=utf-8',
     		   	dataType: 'json',
     		   	data: JSON.stringify(member),
-    		   	success: function(result) {
-    		   	 console.log('result' + result);
-    		   		 if(result === 'loginSUCCESS'){
-    		   	 		alert('로그인 성공');
-    		   	 		self.location = '/';
+    		   	async : false,
+    		   	success: function(loginDone){
+    		   	 console.log(loginDone);
+    		   		 if(loginDone =! null){
+    		   			alert("로그인성공") 
+    		   			
+    		   		var loginHtml = "";
+    		   			$(loginDone).each(function(){
+    		   				loginHtml += '<div class="mem-info">';
+    		   				loginHtml += '<img class="mem-info-photo" src="<c:url value="/fileupload/member/' + loginDone.memPhoto + '"/>">';
+    		   				loginHtml += '<div class="mem-info-name">'+ loginDone.memName +'</div>';
+    		   				loginHtml += '<div class="mem-info-loc">'+ loginDone.memIdx +' 종로구</div>';
+    		   				loginHtml += '</div>';
+    		   			});
+    		   					
+    		   			
+    		   			$('#mem-info').html(loginHtml);
+    		   			
+    		
     		   	 	} else {
     		   	 		shakeModal();
     		   	    }
     		   	},
-    		   	error: function(request,status,error){
-   	             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-   	         	 }
+    		   	error:function(request,status,error){
+    		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+    		       }
+
+    
   
     		 });
     		   
     		 
     		})
     		
+    		
+    		
+  	
 </script>
 
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>

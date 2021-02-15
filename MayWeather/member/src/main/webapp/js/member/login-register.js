@@ -38,11 +38,12 @@ function openRegisterModal(){
 }
 function shakeModal(){
     $('#loginModal .modal-dialog').addClass('shake');
-             $('.error').addClass('alert alert-danger').html("이메일과 비밀번호는 필수입력 항목입니다.");
+             $('.error').addClass('alert alert-danger').html("아이디와 비밀번호를 다시 확인해주세요.");
              $('input[type="password"]').val('');
              setTimeout( function(){ 
                 $('#loginModal .modal-dialog').removeClass('shake'); 
     }, 1000 ); 
 }
+
 
    
