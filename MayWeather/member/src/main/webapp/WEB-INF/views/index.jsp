@@ -41,7 +41,6 @@ body {
 }
 
 .mem-mail-state {
-	display: none;
 	margin: 20px;
 }
 
@@ -87,11 +86,19 @@ body {
 	margin-bottom: 10px;
 }
 
-.mem-info {
+.mem-info-nologin {
 	margin: 15px;
 }
 
-.mem-info>div {
+.mem-info-nologin>div {
+	background-color: white;
+}
+
+.mem-info-login {
+	margin: 15px;
+}
+
+.mem-info-login>div {
 	background-color: white;
 }
 
@@ -100,6 +107,8 @@ body {
 	height: 50px;
 	float: left;
 }
+
+
 </style>
 
 
@@ -256,14 +265,21 @@ body {
 
 				<!-- 마이페이지 메뉴 목록 -->
 				<div class="mypage-header">
-					<div class="mem-info" id="mem-info">
+				
+					<div style="display:block" class="mem-info-nologin" id="memInfoNologin">
 						<div class="mem-info-name">마이페이지</div>
 						<div class="mem-info-loc">마이페이지 기능을 이용하시려면 먼저 로그인 해주세요.</div>
 					</div>
-
+					
+					<div style="display:none" class="mem-info-login" id="memInfologin">
+					<img class="mem-info-photo" src="<c:url value="/fileupload/member/${loginInfo.memPhoto}"/>">
+						<div class="mem-info-name">${loginInfo.memName}</div>
+						<div class="mem-info-loc">${loginInfo.memLoc}</div>
+					</div>
+	
 					<!-- 회원 메일 인증 여부 확인 메세지  평소 display:none 로그인시 display:block -->
-					<div class="mem-mail-state" id="memMailState">${msg}</div>
-
+					<div style="display:none" class="mem-mail-state" id="memMailState">${msg}</div>
+					
 					<div class="mypage-title">마이 페이지</div>
 
 				</div>
@@ -491,23 +507,27 @@ body {
 		memberPhotoHtml += '<div class="basic-photo" id="basicPhoto">';
 		memberPhotoHtml += '<table border="1px">';
 		memberPhotoHtml += '<tr>';
-		memberPhotoHtml += '<th><img src="<c:url value="/fileupload/member/1.png"/>"></th>';
-		memberPhotoHtml += '<td><input type="radio" name="defaultPhoto" value="1.png"></td>';
-		memberPhotoHtml += '<th><img src="<c:url value="/fileupload/member/2.png"/>"></th>';
-		memberPhotoHtml += '<td><input type="radio" name="defaultPhoto" value="2.png"></td>';
-		memberPhotoHtml += '<th><img src="<c:url value="/fileupload/member/3.png"/>"></th>';
-		memberPhotoHtml += '<td><input type="radio" name="defaultPhoto" value="3.png"></td>';
-		memberPhotoHtml += '<th><img src="<c:url value="/fileupload/member/4.png"/>"></th>';
-		memberPhotoHtml += '<td><input type="radio" name="defaultPhoto" value="4.png"></td>';
+		memberPhotoHtml += '<th><img width="120" height="120" src="<c:url value="/fileupload/member/1.png"/>"></th>';
+		memberPhotoHtml += '<th><img width="120" height="120" src="<c:url value="/fileupload/member/2.png"/>"></th>';
+		memberPhotoHtml += '<th><img width="120" height="120" src="<c:url value="/fileupload/member/3.png"/>"></th>';
+		memberPhotoHtml += '<th><img width="120" height="120" src="<c:url value="/fileupload/member/4.png"/>"></th>';
 		memberPhotoHtml += '</tr>';
 		memberPhotoHtml += '<tr>';
-		memberPhotoHtml += '<th><img src="<c:url value="/fileupload/member/5.png"/>"></th>';
+		memberPhotoHtml += '<th><input type="radio" name="defaultPhoto" value="1.png"></th>';
+		memberPhotoHtml += '<th><input type="radio" name="defaultPhoto" value="2.png"></th>';
+		memberPhotoHtml += '<th><input type="radio" name="defaultPhoto" value="3.png"></th>';
+		memberPhotoHtml += '<th><input type="radio" name="defaultPhoto" value="4.png"></th>';
+		memberPhotoHtml += '</tr>';
+		memberPhotoHtml += '<tr>';
+		memberPhotoHtml += '<th><img width="120" height="120" src="<c:url value="/fileupload/member/5.png"/>"></th>';
+		memberPhotoHtml += '<th><img width="120" height="120" src="<c:url value="/fileupload/member/6.png"/>"></th>';
+		memberPhotoHtml += '<th><img width="120" height="120" src="<c:url value="/fileupload/member/7.png"/>"></th>';
+		memberPhotoHtml += '<th><img width="120" height="120" src="<c:url value="/fileupload/member/8.png"/>"></th>';
+		memberPhotoHtml += '</tr>';
+		memberPhotoHtml += '<tr>';
 		memberPhotoHtml += '<td><input type="radio" name="defaultPhoto" value="5.png"></td>';
-		memberPhotoHtml += '<th><img src="<c:url value="/fileupload/member/6.png"/>"></th>';
 		memberPhotoHtml += '<td><input type="radio" name="defaultPhoto" value="6.png"></td>';
-		memberPhotoHtml += '<th><img src="<c:url value="/fileupload/member/7.png"/>"></th>';
 		memberPhotoHtml += '<td><input type="radio" name="defaultPhoto" value="7.png"></td>';
-		memberPhotoHtml += '<th><img src="<c:url value="/fileupload/member/8.png"/>"></th>';
 		memberPhotoHtml += '<td><input type="radio" name="defaultPhoto" value="8.png"></td>';
 		memberPhotoHtml += '</tr>';
 		memberPhotoHtml += '</table>';
@@ -601,15 +621,11 @@ body {
 					shakeModal();
 				// 로그인 성공
 				} else {
-					var loginHtml = "";
-						loginHtml += '<div class="mem-info">';
-						loginHtml += '<img class="mem-info-photo" src="<c:url value="/fileupload/member/'+memPhoto+'"/>">';
-						loginHtml += '<div class="mem-info-name">'+ memName + '</div>';
-						loginHtml += '<div class="mem-info-loc">'+ memIdx + '종로구</div>';
-						loginHtml += '</div>';
-	
-					// 마이페이지 회원 메뉴 상단 고정 
-					$('#mem-info').html(loginHtml);
+					
+					// 로그인 성공하면 기본 상단 화면 display block -> none
+					// 로그인 정보 화면 display none -> block
+					$('.mem-info-nologin').css('display','none');
+					$('.mem-info-login').css('display','block');
 					
 					// 메일 인증여부 출력(미 인증시)
 					$('.mem-mail-state').css('display', 'block');

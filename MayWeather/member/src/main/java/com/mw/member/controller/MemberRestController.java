@@ -46,9 +46,9 @@ public class MemberRestController {
 	
 	@PostMapping("/login") // 로그인
 	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, 
-						HttpServletRequest request, HttpSession session) {
+						HttpServletRequest request) {
 	
-		return loginService.login(loginRequest, request, session); 
+		return loginService.login(loginRequest, request); 
 	}
 	
 	@PutMapping("/edit/{memIdx}")

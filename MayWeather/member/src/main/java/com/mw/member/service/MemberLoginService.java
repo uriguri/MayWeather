@@ -22,7 +22,7 @@ public class MemberLoginService {
 	@Autowired
 	private SqlSessionTemplate template;
 	
-	public LoginInfo login(MemberLoginRequest loginRequest, HttpServletRequest request, HttpSession session) {
+	public LoginInfo login(MemberLoginRequest loginRequest, HttpServletRequest request) {
 		
 		dao = template.getMapper(MemberDao.class);
 		
@@ -42,8 +42,6 @@ public class MemberLoginService {
 			if(member.getMemEmailchk() == 'Y') {
 				request.getSession().setAttribute("loginInfo", member.toLoginInfo());
 				loginCheck = true;
-				session.setAttribute("loginInfo", member.toLoginInfo());
-				session.setMaxInactiveInterval(60*60);
 				
 			} else {
 				loginCheck = true;
