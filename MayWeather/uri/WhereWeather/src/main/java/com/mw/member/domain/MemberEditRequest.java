@@ -9,7 +9,7 @@ public class MemberEditRequest {
 	private String memId;
 	private String memPw;
 	private String memName;
-	private String memGender;
+
 	
 	
 	
@@ -18,7 +18,6 @@ public class MemberEditRequest {
 		member.setMemIdx(memIdx);
 		member.setMemPw(memPw);
 		member.setMemName(memName);
-		member.setMemGender(memGender);
 		
 		return member;
 	}

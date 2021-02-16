@@ -3,20 +3,20 @@ package com.mw.member.domain;
 import lombok.Data;
 
 @Data
-public class MemberRegRequest {
+public class MemberEditRequest {
 
-	private String memId;
+	private int memIdx;
 	private String memPw;
 	private String memName;
-	private String memGender;
+
 	
-	public Member memberRegRequest() {
+	
+	
+	public Member getToMember() {
 		Member member = new Member();
-		member.setMemId(memId);
+		member.setMemIdx(memIdx);
 		member.setMemPw(memPw);
 		member.setMemName(memName);
-		member.setMemGender(memGender);
-		member.setMemPhoto("default.png");
 		
 		return member;
 	}

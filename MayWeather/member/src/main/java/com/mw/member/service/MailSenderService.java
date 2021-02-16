@@ -33,7 +33,7 @@ public class MailSenderService {
 			// 메일 내용 컨텐츠 html
 			String html = "<h1>회원가입을 축하합니다.</h1>";
 			html += "<h3>인증을 위해 아래 링크를 클릭해주세요</h3>";
-			html += "<a href=\"http://localhost:8080/members/verify?memIdx="+member.getMemIdx()+"&memEmailCode="+member.getMemEmailCode()+"\">인증하기</a>";
+			html += "<a href=\"http://localhost:8080/members/emailChk?memIdx="+member.getMemIdx()+"&memEmailCode="+member.getMemEmailCode()+"\">인증하기</a>";
 			
 			// message에 내용 적용
 			message.setText(html, "utf-8", "html");

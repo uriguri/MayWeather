@@ -1,6 +1,7 @@
 package com.mw.member.dao;
 
-import com.mw.member.domain.LoginInfo;
+import java.util.Map;
+
 import com.mw.member.domain.Member;
 
 public interface MemberDao {
@@ -16,5 +17,14 @@ public interface MemberDao {
 
 	//멤버 메일 인증 후 인증상태 변경
 	int updateMemberEmailchk(int memIdx, String memEmailCode);
+	
+	//멤버 탈퇴
+	int deleteMemberByIdx(int memIdx);
+
+	//멤버 정보 업데이트
+	//int updateMember(Member member, int memIdx);
+	
+	//멤버 정보 업데이트
+	int updateMember(Map<String, Object> editMap);
 	
 }
