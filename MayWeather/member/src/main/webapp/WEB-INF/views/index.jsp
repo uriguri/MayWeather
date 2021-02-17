@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
+
 <!DOCTYPE html>
 <html>
 
@@ -87,28 +89,6 @@ body {
 	margin-top: 20px;
 }
 
-.mem-info-nologin {
-	margin: 15px;
-}
-
-.mem-info-nologin>div {
-	background-color: white;
-}
-
-.mem-info-login {
-	margin: 15px;
-}
-
-.mem-info-login>span {
-	background-color: white;
-	font-size: 20px;
-}
-
-.mem-info-photo {
-	width: 50px;
-	height: 50px;
-}
-
 .modal-dialog {
 	width: 350px;
 }
@@ -133,17 +113,50 @@ input[type="radio"]{
 	text-align: center;
 	margin-top: 10px;
 	background-color: white;
+	display: block;
 }
 
-.mem-info-photo{
+.mem-info-photo {
+	width: 60px;
+	height: 60px;
 	border-radius: 30px;
-
+	margin: 10px 0px 0px 10px;
 }
 
+.mem-info-name{
+	margin: 10px 0px 10px 5px;
+	background-color: white;
+}
 .mem-info-loc{
-	margin-left: 50px;
+	margin: 5px 0px 5px 75px;
+	background-color: white;
 }
 
+#login-href{
+	color: #30b0e7;
+}
+
+.mem-now-photo{
+	display: block;
+	margin: 0px auto;
+	background-color: white;
+}
+
+td.photo-td {
+   background-color: white;
+}
+
+th.photo-th {
+	background-color: white;
+}
+
+.default-change-photo {
+	background-color: white;
+}
+
+.btn{
+	padding: 3px 8px;
+}
 
 </style>
 
@@ -243,7 +256,7 @@ input[type="radio"]{
 								</div>
 
 								<div class="forgot register-footer" style="display: none">
-									<span>이미 계정을 가지고 계신가요?</span> <a href="javascript: showLoginForm();">로그인 하러가기</a>
+									<span>이미 계정을 가지고 계신가요?</span> <a id="login-href" href="javascript: showLoginForm();">로그인 하러가기</a>
 								</div>
 
 							</div>
@@ -272,8 +285,10 @@ input[type="radio"]{
 
 						<!-- 모달 바디 -->
 						<div class="modal-body-mypage"></div>
-						<div class="nologin-msg">로그인이 필요한 화면입니다. </div>
-
+						
+						<div class="nologin-msg"><a id="login-href" href="javascript: hreflogin();">로그인</a>이 필요한 화면입니다. </div>
+						
+							
 						<!-- 모달 하단 -->
 						<div class="modal-footer">
 
@@ -293,25 +308,23 @@ input[type="radio"]{
 				<!-- 마이페이지 메뉴 목록 -->
 				<div class="mypage-header">
 				
-					<div style="display:block" class="mem-info-nologin" id="memInfoNologin">
-						<div class="mem-info-name">마이페이지</div>
-						<div class="mem-info-loc">마이페이지 기능을 이용하시려면 먼저 로그인 해주세요.</div>
-						
-						<!-- 로그인버튼 -->
-						<a style="float: right" class="btn big-login" data-toggle="modal" href="javascript:void(0)"
+					<span class="mem-reglogin-btn" id="memRegloginBtn">
+					<!-- 로그인버튼 -->
+						<a style="float: right; margin: 5px 5px 0px 0px;"  class="btn big-login" data-toggle="modal" href="javascript:void(0)"
 							onclick="openLoginModal();">로그인</a>
 
 						<!-- 회원 가입버튼 -->
-						<a style="float: right" class="btn big-register" data-toggle="modal" href="javascript:void(0)"
+						<a style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" data-toggle="modal" href="javascript:void(0)"
 							onclick="openRegisterModal();">회원 가입</a>
+					</span>	
+									
+					<div class="mem-info" id="memInfo">
+						<div class="mem-info-name" id="memInfoName">마이페이지</div>
+						<span class="mem-info-loc" id="memInfoLoc">먼저 로그인 해주세요.</span>
+						
+						
 					</div>
 					
-					<div style="display:none" class="mem-info-login" id="memInfologin">
-					<img class="mem-info-photo" src="<c:url value="/fileupload/member/${loginInfo.memPhoto}"/>">
-						<span class="mem-info-name">${loginInfo.memName} 님 환영합니다!</span><br>
-						<span class="mem-info-loc">${loginInfo.memLoc}종로구</span>
-					</div>
-	
 					<!-- 회원 메일 인증 여부 확인 메세지  평소 display:none 로그인시 display:block -->
 					<div style="display:none" class="mem-mail-state" id="memMailState">${msg}</div>
 					
@@ -365,12 +378,18 @@ input[type="radio"]{
 		</div>
 	</div>
 
-	<!-- 마이페이지 접속시 로그인창 팝업 -->
-	<!-- 	<script type="text/javascript">
-		$(document).ready(function() {
-			openLoginModal();
-		});
-	</script> -->
+	<!-- 로그인 체크가 없을경우 로그인 모달 팝업 -->
+
+	<c:if test="${not loginCheck}">
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		openLoginModal();
+	});
+	</script>
+	
+	</c:if>
+
 	
 	<!-- 회원가입 -->
 	<script>
@@ -452,8 +471,10 @@ input[type="radio"]{
 	    memberUpdateHtml += '</div>'
 	    
 	    $('.modal-body-mypage').html(memberUpdateHtml);
+	    $('.nologin-msg').css('display', 'none');
 	    
 	    $('#modalDoneBtn').click(function() {
+	    	
 	        var updateMember = {
 	            memIdx: memIdx,
 	            memName: $('#memNewName').val(),
@@ -505,6 +526,7 @@ input[type="radio"]{
 	memberDeleteHtml += '</div>';
 
 	$('.modal-body-mypage').html(memberDeleteHtml);
+	$('.nologin-msg').css('display', 'none');
 
 	$('#modalDoneBtn').click(function() {
 
@@ -539,15 +561,14 @@ input[type="radio"]{
 		
 		var memberPhotoHtml = "";
 		memberPhotoHtml += '<div class="mem-photo-upload-div" id="memPhotoUploadDiv">';
-		memberPhotoHtml += '<h3>프로필 사진 등록 & 변경 </h3>';
+		memberPhotoHtml += '<h3 style="background-color: white; margin: 10px;">프로필 사진 등록 & 변경 </h3>';
 		memberPhotoHtml += '<div class="basic-photo" id="basicPhoto">';
 		memberPhotoHtml += '<table class="basic-photo-table" id="basicPhotoTable">';
-		memberPhotoHtml += '<tbody class="photo-tbody">';
 		memberPhotoHtml += '<tr class="photo-tr">';
-		memberPhotoHtml += '<th class="photo-th"><img width="81" height="90" src="<c:url value="/fileupload/member/1.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img width="81" height="90" src="<c:url value="/fileupload/member/2.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img width="81" height="90" src="<c:url value="/fileupload/member/3.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img width="81" height="90" src="<c:url value="/fileupload/member/4.png"/>"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/1.png"/>"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/2.png"/>"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/3.png"/>"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/4.png"/>"></th>';
 		memberPhotoHtml += '</tr>';
 		memberPhotoHtml += '<tr class="photo-tr">';
 		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="1.png"></th>';
@@ -556,10 +577,10 @@ input[type="radio"]{
 		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="4.png"></th>';
 		memberPhotoHtml += '</tr>';
 		memberPhotoHtml += '<tr class="photo-tr">';
-		memberPhotoHtml += '<th class="photo-th"><img width="81" height="90" src="<c:url value="/fileupload/member/5.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img width="81" height="90" src="<c:url value="/fileupload/member/6.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img width="81" height="90" src="<c:url value="/fileupload/member/7.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img width="81" height="90" src="<c:url value="/fileupload/member/8.png"/>"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/5.png"/>"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/6.png"/>"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/7.png"/>"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/8.png"/>"></th>';
 		memberPhotoHtml += '</tr>';
 		memberPhotoHtml += '<tr class="photo-tr">';
 		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="5.png"></td>';
@@ -567,19 +588,20 @@ input[type="radio"]{
 		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="7.png"></td>';
 		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="8.png"></td>';
 		memberPhotoHtml += '</tr>';
-		memberPhotoHtml += '</tbody>';
 		memberPhotoHtml += '</table>';
 		memberPhotoHtml += '</div>';
 		memberPhotoHtml += '<hr class="mypage-hr">';
-		memberPhotoHtml += '<img width="50" height="50" src="<c:url value="/fileupload/member/'+memPhoto+'"/>">';
-		memberPhotoHtml += '<form id="uploadForm" method="post" enctype="multipart/form-data">';
-		memberPhotoHtml += '<input type="file" id="uploadPhoto" name="uploadPhoto" class="mem-upload-photo" value="사진 업로드">';
+		memberPhotoHtml += '<img class="mem-now-photo" width="50" height="50" src="<c:url value="/fileupload/member/'+memPhoto+'"/>">';
+		memberPhotoHtml += '<div style="margin: 3px 0px 3px 115px; background-color: white;">현재 프로필 사진</div>'
+		memberPhotoHtml += '<form style="background-color: white;" id="uploadForm" method="post" enctype="multipart/form-data">';
+		memberPhotoHtml += '<input style="background-color: white; margin: 10px 0px 5px 25px;" type="file" id="uploadPhoto" name="uploadPhoto" class="mem-upload-photo" value="사진 업로드">';
 		memberPhotoHtml += '</form>';
-		memberPhotoHtml += '<input id=uploadBtn type="button" value="업로드하기">'; 
-		memberPhotoHtml += '파일 이름은 영문 또는 숫자로 입력해주세요.<br>용량은 *2MB까지 업로드가 가능합니다.';
+		memberPhotoHtml += '<input style="margin: 5px 0px 5px 120px;" id=uploadBtn type="button" value="업로드하기"><br>'; 
+		memberPhotoHtml += '        파일 이름은 영문 또는 숫자로 입력해주세요.<br>        용량은 *2MB까지 업로드가 가능합니다.';
 		memberPhotoHtml += '</div>';
 
 		$('.modal-body-mypage').html(memberPhotoHtml);
+		$('.nologin-msg').css('display', 'none');
 
 		/* $('#uploadBtn').click(function(){
 			
@@ -667,12 +689,21 @@ input[type="radio"]{
 
 	<!-- 로그인 & 로그인모달 -->
 	<script>
+	
 	function closeLoginModal() {
 	/* $('#loginModal').fadeOut('fast',function(){
 		$('.modal-backdrop').fadeOut('fast');
 	}); */
 	$('#loginModal').modal("hide");
 	}
+	
+	// 비회원 로그인시 기본값 a href 이벤트 설정
+	function hreflogin() {
+		$('#mypageModal').modal("hide");
+		$('#loginModal').modal("show");
+	}
+	
+	
 
 	$('#loginButton').click(function(e) {
 
@@ -700,17 +731,19 @@ input[type="radio"]{
 				memName = loginDone.memName;
 				memIdx = loginDone.memIdx;
 				memEmailId = loginDone.memId;
+				memLoc = loginDone.memLoc;
 	
 				// 로그인 실패
 				if (memName == 'admin') {
 					shakeModal();
 				// 로그인 성공
 				} else {
-					
-					// 로그인 성공하면 기본 상단 화면 display block -> none
-					// 로그인 정보 화면 display none -> block
-					$('.mem-info-nologin').css('display','none');
-					$('.mem-info-login').css('display','block');
+					var memInfoLogin = '<img class="mem-info-photo" id="memInfoPhoto" src="<c:url value="/fileupload/member/'+memPhoto+'"/>">';
+						memInfoLogin += '<span class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</span>';
+						memInfoLogin += '<span class="mem-info-loc" id="memInfoLoc">내위치 : '+memLoc+'</span>';	
+						
+					$("#memInfo").html(memInfoLogin);
+				
 					
 					// 메일 인증여부 출력(미 인증시)
 					$('.mem-mail-state').css('display', 'block');

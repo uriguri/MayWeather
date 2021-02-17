@@ -3,7 +3,9 @@ package com.mw.member.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.MemberEditRequest;
+import com.mw.member.domain.MemberLikeRequest;
 import com.mw.member.domain.MemberLoginRequest;
 import com.mw.member.domain.MemberPhotoEditRequest;
 import com.mw.member.domain.MemberRegRequest;
@@ -41,6 +44,8 @@ public class MemberRestController {
 	@Autowired
 	private MemberPhotoEditService photoEditService;
 	
+	
+	
 	@PostMapping // 회원가입 
 	public String memberReg(@RequestBody MemberRegRequest regRequest) {
 		
@@ -49,8 +54,8 @@ public class MemberRestController {
 	
 	@PostMapping("/login") // 로그인
 	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, 
-						HttpServletRequest request) {
-	
+						HttpServletRequest request, Model model) {
+		model.addAttribute("loginCheck", loginService.login(loginRequest, request));
 		return loginService.login(loginRequest, request); 
 	}
 	
@@ -78,4 +83,12 @@ public class MemberRestController {
 	}
 	
 	
+	@GetMapping("/like/{memIdx}") //좋아요 누른 게시물
+	public String memLikeBoard(@RequestBody MemberLikeRequest likeRequest, @PathVariable("memIdx")int memIdx) {
+		
+		return null;
+	}
+	
+		
+	}
 }
