@@ -26,5 +26,8 @@ public interface MemberDao {
 	
 	//멤버 정보 업데이트
 	int updateMember(Map<String, Object> editMap);
+
+	//멤버 사진 업로드
+	int updatePhoto(Member member);
 	
 }

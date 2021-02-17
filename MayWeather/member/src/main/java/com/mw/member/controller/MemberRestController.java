@@ -1,8 +1,6 @@
 package com.mw.member.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,10 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.MemberEditRequest;
 import com.mw.member.domain.MemberLoginRequest;
+import com.mw.member.domain.MemberPhotoEditRequest;
 import com.mw.member.domain.MemberRegRequest;
 import com.mw.member.service.MemberDeleteService;
 import com.mw.member.service.MemberEditService;
 import com.mw.member.service.MemberLoginService;
+import com.mw.member.service.MemberPhotoEditService;
 import com.mw.member.service.MemberRegService;
 
 @RestController
@@ -38,6 +38,9 @@ public class MemberRestController {
 	@Autowired
 	private MemberEditService editService;
 	
+	@Autowired
+	private MemberPhotoEditService photoEditService;
+	
 	@PostMapping // 회원가입 
 	public String memberReg(@RequestBody MemberRegRequest regRequest) {
 		
@@ -51,7 +54,7 @@ public class MemberRestController {
 		return loginService.login(loginRequest, request); 
 	}
 	
-	@PutMapping("/edit/{memIdx}")
+	@PutMapping("/edit/{memIdx}")// 정보수정
 	public int editMem(@RequestBody MemberEditRequest editRequest, @PathVariable("memIdx") int memIdx) {
 		
 		System.out.println("=======PUT=======");
@@ -62,11 +65,17 @@ public class MemberRestController {
 		return editService.editMember(editRequest, memIdx);
 	}
 	
-	@DeleteMapping("/delete/{memIdx}")
+	@DeleteMapping("/delete/{memIdx}")// 회원탈퇴
 	public int deleteMem(@PathVariable("memIdx") int memIdx ) {
 		
 		return deleteService.deleteMem(memIdx);
 	}
 	
-
+	@PutMapping("/edit/photo") //사진 수정
+	public int photoUpload(@RequestBody MemberPhotoEditRequest photoEditRequest) {
+		
+		return photoEditService.editPhotoMember(photoEditRequest);
+	}
+	
+	
 }

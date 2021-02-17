@@ -56,6 +56,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE mem SET memPw=#{memPw}, memName=#{memName}
 		WHERE memIdx=#{memIdx}
 	</update>
+	
+	<!-- 사진업로드 -->
+	<update id="updatePhoto" parameterType="com.mw.member.domain.Member"> 
+		UPDATE mem SET memPhoto=#{memPhoto} WHERE memIdx=#{memIdx}
+	</update>
 
 
 </mapper>
