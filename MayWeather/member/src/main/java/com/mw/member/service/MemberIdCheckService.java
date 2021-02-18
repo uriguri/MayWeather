@@ -18,6 +18,7 @@ public class MemberIdCheckService {
 
 		dao = template.getMapper(MemberDao.class);
 		
+		// 중복이 아니면 값이 0으로 리턴
 		return dao.selectMemberByIdCount(memId)>0 ? "N" : "Y" ;
 		
 	}

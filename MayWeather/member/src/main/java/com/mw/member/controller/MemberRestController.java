@@ -54,13 +54,12 @@ public class MemberRestController {
 	
 	@PostMapping // 회원가입 
 	public String memberReg(@RequestBody MemberRegRequest regRequest) {
-		
 		return regService.memberReg(regRequest)>0 ? "Y" : "N" ;
 	}
 	
-	@GetMapping("/idcheck")
+	
+	@GetMapping("/idcheck")	// 중복 아이디 체크
 	public String idCheck(@RequestParam("memId") String memId) {
-		
 		return idCheckService.chekId(memId);
 	}
 	
