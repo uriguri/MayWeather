@@ -61,6 +61,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updatePhoto" parameterType="com.mw.member.domain.Member"> 
 		UPDATE mem SET memPhoto=#{memPhoto} WHERE memIdx=#{memIdx}
 	</update>
+	
+	<!-- 아이디 존재유무 체크 -->
+	<select id="selectMemberByIdCount" resultType="int">
+	select count(*) from mem where memId=#{memId}
+	</select>
 
 
 </mapper>

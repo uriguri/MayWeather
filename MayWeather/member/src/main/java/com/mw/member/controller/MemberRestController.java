@@ -1,6 +1,7 @@
 package com.mw.member.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -11,16 +12,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.MemberEditRequest;
-import com.mw.member.domain.MemberLikeRequest;
 import com.mw.member.domain.MemberLoginRequest;
 import com.mw.member.domain.MemberPhotoEditRequest;
 import com.mw.member.domain.MemberRegRequest;
 import com.mw.member.service.MemberDeleteService;
 import com.mw.member.service.MemberEditService;
+import com.mw.member.service.MemberIdCheckService;
 import com.mw.member.service.MemberLoginService;
 import com.mw.member.service.MemberPhotoEditService;
 import com.mw.member.service.MemberRegService;
@@ -44,6 +47,9 @@ public class MemberRestController {
 	@Autowired
 	private MemberPhotoEditService photoEditService;
 	
+	@Autowired
+	private MemberIdCheckService idCheckService;
+	
 	
 	
 	@PostMapping // 회원가입 
@@ -52,11 +58,32 @@ public class MemberRestController {
 		return regService.memberReg(regRequest)>0 ? "Y" : "N" ;
 	}
 	
+	@GetMapping("/idcheck")
+	public String idCheck(@RequestParam("memId") String memId) {
+		
+		return idCheckService.chekId(memId);
+	}
+	
 	@PostMapping("/login") // 로그인
 	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, 
 						HttpServletRequest request, Model model) {
+		
 		model.addAttribute("loginCheck", loginService.login(loginRequest, request));
+		
 		return loginService.login(loginRequest, request); 
+	}
+	
+	@GetMapping("/logout") // 로그아웃
+	public String logout(HttpSession session, RedirectAttributes rda) {
+		
+		session.invalidate();
+		
+		System.out.println("로그아웃!!!");
+		
+		rda.addAttribute("type", "delete");
+		rda.addAttribute("result", "ok");
+		
+		return "logoutSUCESS";
 	}
 	
 	@PutMapping("/edit/{memIdx}")// 정보수정
@@ -70,12 +97,6 @@ public class MemberRestController {
 		return editService.editMember(editRequest, memIdx);
 	}
 	
-	@DeleteMapping("/delete/{memIdx}")// 회원탈퇴
-	public int deleteMem(@PathVariable("memIdx") int memIdx ) {
-		
-		return deleteService.deleteMem(memIdx);
-	}
-	
 	@PutMapping("/edit/photo") //사진 수정
 	public int photoUpload(@RequestBody MemberPhotoEditRequest photoEditRequest) {
 		
@@ -83,12 +104,17 @@ public class MemberRestController {
 	}
 	
 	
-	@GetMapping("/like/{memIdx}") //좋아요 누른 게시물
-	public String memLikeBoard(@RequestBody MemberLikeRequest likeRequest, @PathVariable("memIdx")int memIdx) {
+	
+	@DeleteMapping("/delete/{memIdx}")// 회원탈퇴
+	public int deleteMem(@PathVariable("memIdx") int memIdx ) {
 		
-		return null;
+		return deleteService.deleteMem(memIdx);
 	}
 	
+	
+	
+	
+	
 		
-	}
+	
 }

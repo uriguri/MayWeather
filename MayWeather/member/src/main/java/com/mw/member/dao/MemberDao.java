@@ -30,4 +30,7 @@ public interface MemberDao {
 	//멤버 사진 업로드
 	int updatePhoto(Member member);
 	
+	//아이디 존재 유무확인(유효성검사)
+	int selectMemberByIdCount(String memId);
+	
 }

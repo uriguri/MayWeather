@@ -5,9 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mw</groupId>
 	<artifactId>member</artifactId>
-	<name>WhereWeather</name>
+	<name>member</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
+
 
 	<properties>
 		<java-version>1.8</java-version>
@@ -101,6 +102,7 @@
 		<!-- Servlet -->
 		<!-- <dependency> <groupId>javax.servlet</groupId> <artifactId>servlet-api</artifactId> 
 			<version>2.5</version> <scope>provided</scope> </dependency> -->
+
 		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -139,7 +141,7 @@
 
 
 
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<!-- lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -147,7 +149,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4 -->
+		<!-- log4jdbc-log4j2-jdbc4 -->
 		<dependency>
 			<groupId>org.bgee.log4jdbc-log4j2</groupId>
 			<artifactId>log4jdbc-log4j2-jdbc4</artifactId>
@@ -175,6 +177,18 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.8</version>
+		</dependency>
+
+
+
+
+
+
 
 
 		<dependency>
@@ -204,7 +218,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>4.3.18.RELEASE</version>
+			<version>${org.springframework-version}</version>
 		</dependency>
 
 		<!-- HikariCP -->
@@ -220,6 +234,14 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.12.0</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.6</version>
+		</dependency>
+
 
 		<!-- javax.mail/mail -->
 		<dependency>
@@ -265,11 +287,7 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>net.coobird</groupId>
-			<artifactId>thumbnailator</artifactId>
-			<version>0.4.8</version>
-		</dependency>
+
 
 
 	</dependencies>

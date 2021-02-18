@@ -34,6 +34,20 @@
     display: none;
 }
 
+a{
+    text-decoration: none;
+    color: #757575;
+}
+
+a:link, a:visited, a:active, a:hover{
+    text-decoration: none;
+    color: #757575;
+}
+
+button:link, button:visited, button:active, button:hover, button:focus{
+    border: none;
+    outline:none;     
+}
 
 body {
     padding: 0;
@@ -55,12 +69,11 @@ footer {
     height: 60px;
     clear:both;
     width: 100%;
-     position: fixed;
+   position: fixed;
 
- bottom: 0;
-
- left: 0;
-    
+   bottom: 0;
+   left: 0;
+   z-index : 1000;    
 }
 
 
