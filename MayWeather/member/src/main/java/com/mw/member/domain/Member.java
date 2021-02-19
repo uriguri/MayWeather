@@ -47,7 +47,14 @@ public class Member {
 		return new LoginInfo(memIdx, memId, memName, memGender, memPhoto, memLoc);
 	}
 	
-
+	
+	public Member idxGetToMember(int memIdx, String memPhoto) {
+		Member member = new Member();
+		member.setMemIdx(memIdx);
+		member.setMemPhoto(memPhoto);
+		
+		return member;
+	}
 		
 	
 }

@@ -13,7 +13,7 @@
 			memName : memName,
 			memGender : memGender
 		};
-			
+
 		// REST POST
 		$.ajax({
 			type : 'POST',
@@ -239,123 +239,7 @@
 	    });
 	});
 	
-	// 프로필 사진 변경 업로드
-	$('.mem-photochange').click(function() {
-		
-		var memberPhotoHtml = "";
-		memberPhotoHtml += '<div class="mem-photo-upload-div" id="memPhotoUploadDiv">';
-		memberPhotoHtml += '<h3 style="background-color: white; margin: 10px;">프로필 사진 등록 & 변경 </h3>';
-		memberPhotoHtml += '<div class="basic-photo" id="basicPhoto">';
-		memberPhotoHtml += '<table class="basic-photo-table" id="basicPhotoTable">';
-		memberPhotoHtml += '<tr class="photo-tr">';
-		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/1.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/2.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/3.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/4.png"/>"></th>';
-		memberPhotoHtml += '</tr>';
-		memberPhotoHtml += '<tr class="photo-tr">';
-		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="1.png"></th>';
-		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="2.png"></th>';
-		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="3.png"></th>';
-		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="4.png"></th>';
-		memberPhotoHtml += '</tr>';
-		memberPhotoHtml += '<tr class="photo-tr">';
-		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/5.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/6.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/7.png"/>"></th>';
-		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="<c:url value="/fileupload/member/8.png"/>"></th>';
-		memberPhotoHtml += '</tr>';
-		memberPhotoHtml += '<tr class="photo-tr">';
-		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="5.png"></td>';
-		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="6.png"></td>';
-		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="7.png"></td>';
-		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="8.png"></td>';
-		memberPhotoHtml += '</tr>';
-		memberPhotoHtml += '</table>';
-		memberPhotoHtml += '</div>';
-		memberPhotoHtml += '<hr class="mypage-hr">';
-		memberPhotoHtml += '<img class="mem-now-photo" width="50" height="50" src="<c:url value="/fileupload/member/'+memPhoto+'"/>">';
-		memberPhotoHtml += '<div style="margin: 3px 0px 3px 115px; background-color: white;">현재 프로필 사진</div>'
-		memberPhotoHtml += '<form style="background-color: white;" id="uploadForm" method="post" enctype="multipart/form-data">';
-		memberPhotoHtml += '<input style="background-color: white; margin: 10px 0px 5px 25px;" type="file" id="uploadPhoto" name="uploadPhoto" class="mem-upload-photo" value="사진 업로드">';
-		memberPhotoHtml += '</form>';
-		memberPhotoHtml += '<input style="margin: 5px 0px 5px 120px;" id=uploadBtn type="button" value="업로드하기"><br>'; 
-		memberPhotoHtml += '        파일 이름은 영문 또는 숫자로 입력해주세요.<br>        용량은 *2MB까지 업로드가 가능합니다.';
-		memberPhotoHtml += '</div>';
 
-		$('.modal-body-mypage').html(memberPhotoHtml);
-		$('.nologin-msg').css('display', 'none');
-
-		/* $('#uploadBtn').click(function(){
-			
-			var uploadFormData = new FormData($('#uploadForm')[0]);
-			
-	        $.ajax({
-	        	
-               url: '/members/photoupload',
-               processData: false,
-               contentType: false,
-               data: uploadFormData,
-               type: 'POST',
-               success: function(result){
-                   alert("업로드 성공!!");
-               }
-	       });
-	        
-		});
-	 */
-           
-		$('#modalDoneBtn').click(function() {
-		
-			var radioCheck = $('input:radio[name=defaultPhoto]').is(':checked');
-			var radioVal = $('input:radio[name=defaultPhoto]:checked').val();
-			var uploadPhoto = '';
-			
-			/* if(radioCheck == true){
-				uploadPhoto = radioVal;
-			} else {
-				uploadPhoto = $('#uploadPhoto').val();
-			} */
-			
-			uploadPhoto = radioVal;
-			
-			console.log(radioCheck);
-			console.log(radioVal);
-			console.log(uploadPhoto);
-			console.log(memIdx);
-			console.log(memPhoto);
-			
-			 var uploadMember = {
-	            memIdx: memIdx,
-	            memPhoto: uploadPhoto
-	        };
-			
-			$.ajax({
-				type: 'PUT',
-				url: '/members/edit/photo',
-				contentType: 'application/json',
-	            dataType: 'json',
-	            data: JSON.stringify(uploadMember),
-				success : function(photoDone) {
-					
-					console.log(photoDone);
-					
-					if (photoDone == 1) {
-						alert('사진 변경 성공!!!');
-
-					} else {
-						alert('변경 실패 다시시도해주세요.');
-					}
-				},
-				error: function(request,status,error) {
-	                alert("code:"+request.status +"\n" +
-	                	  "message:"+request.responseText +"\n" +
-	                      "error:" +error);
-	            }
-
-			});
-		});
-	});
 	
 	// 모달 닫기
 	function closeLoginModal() {
@@ -403,7 +287,7 @@
 					shakeModal();
 				// 로그인 성공
 				} else {
-					var memInfoLogin = '<img class="mem-info-photo" id="memInfoPhoto" src="/fileupload/member/'+memPhoto+'">';
+					var memInfoLogin = '<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
 						memInfoLogin += '<span class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</span>';
 						memInfoLogin += '<span class="mem-info-loc" id="memInfoLoc">내위치 : '+memLoc+'</span>';
 						
@@ -523,7 +407,7 @@
 	memberDeleteHtml += '<div class="delete-id" id="deleteId">';
 	memberDeleteHtml += '<h1>회원 탈퇴</h1>';
 	memberDeleteHtml += '<div style="background-color: white;" class="delete-info" id="deleteInfo">';
-	memberDeleteHtml += '<img style="margin: 10px 0px 10px 140px; border-radius: 40px;" width="50" height="50" src="/fileupload/member/'+memPhoto+'">';
+	memberDeleteHtml += '<img style="margin: 10px 0px 10px 140px; border-radius: 40px;" width="50" height="50" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
 	memberDeleteHtml += '<h2 style="text-align: center; background-color: white;">'+memName+'님</h2>';
 	memberDeleteHtml += '정말로 탈퇴하시겠어요?<br>탈퇴 후 동일한 아이디로 1개월간 재가입이 제한됩니다.';
 	memberDeleteHtml += '</div>';

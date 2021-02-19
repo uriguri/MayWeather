@@ -16,4 +16,6 @@ public class MemberPhotoEditRequest {
 		
 		return member;
 	}
+	
+	
 }

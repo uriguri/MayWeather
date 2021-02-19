@@ -14,18 +14,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.mw.member.domain.KakaoLoginInfo;
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.MemberEditRequest;
+import com.mw.member.domain.MemberKakaoRequest;
 import com.mw.member.domain.MemberLoginRequest;
 import com.mw.member.domain.MemberPhotoEditRequest;
 import com.mw.member.domain.MemberRegRequest;
+import com.mw.member.service.KakaoRegService;
 import com.mw.member.service.MemberDeleteService;
 import com.mw.member.service.MemberEditService;
 import com.mw.member.service.MemberIdCheckService;
+import com.mw.member.service.MemberKakaoLoginService;
 import com.mw.member.service.MemberLoginService;
 import com.mw.member.service.MemberPhotoEditService;
+import com.mw.member.service.MemberPhotoSaveService;
+import com.mw.member.service.MemberPhotoUploadService;
 import com.mw.member.service.MemberRegService;
 
 @RestController
@@ -34,6 +41,9 @@ public class MemberRestController {
 	
 	@Autowired
 	private MemberRegService regService;
+	
+	@Autowired
+	private KakaoRegService kakaoRegService;
 	
 	@Autowired
 	private MemberLoginService loginService;
@@ -50,6 +60,14 @@ public class MemberRestController {
 	@Autowired
 	private MemberIdCheckService idCheckService;
 	
+	@Autowired
+	private MemberPhotoUploadService photoUploadService;
+	
+	@Autowired
+	private MemberPhotoSaveService photoSaveService;
+	
+	@Autowired
+	private MemberKakaoLoginService kakaoLoginService;
 	
 	
 	@PostMapping // 회원가입 
@@ -57,6 +75,10 @@ public class MemberRestController {
 		return regService.memberReg(regRequest)>0 ? "Y" : "N" ;
 	}
 	
+	@PostMapping // 카카오 회원가입 
+	public String kakaoMemberReg(@RequestBody MemberKakaoRequest kakaoRequest) {
+		return kakaoRegService.kakaoMemberReg(kakaoRequest)>0 ? "Y" : "N" ;
+	}
 	
 	@GetMapping("/idcheck")	// 중복 아이디 체크
 	public String idCheck(@RequestParam("memId") String memId) {
@@ -71,6 +93,20 @@ public class MemberRestController {
 		
 		return loginService.login(loginRequest, request); 
 	}
+	
+
+	 @PostMapping("/kakaologin")// 카카오로그인 public
+	 public KakaoLoginInfo kakaoLogin(@RequestBody MemberKakaoRequest kakaoRequest, 
+			 				  HttpServletRequest request, 
+			 				  Model model
+			 				  ) {
+		 
+		 model.addAttribute("loginCheck", kakaoLoginService.login(kakaoRequest, request));
+		 
+		 
+		return kakaoLoginService.login(kakaoRequest, request); 
+	 }
+
 	
 	@GetMapping("/logout") // 로그아웃
 	public String logout(HttpSession session, RedirectAttributes rda) {
@@ -96,12 +132,26 @@ public class MemberRestController {
 		return editService.editMember(editRequest, memIdx);
 	}
 	
-	@PutMapping("/edit/photo") //사진 수정
+	@PutMapping("/edit/photo") //default 사진으로 수정
 	public int photoUpload(@RequestBody MemberPhotoEditRequest photoEditRequest) {
 		
 		return photoEditService.editPhotoMember(photoEditRequest);
 	}
 	
+	@PostMapping("/upload/photo/{memIdx}") // 사진 파일 업로드 & 유저 정보변경
+	public String uploadFile(
+			@PathVariable("memIdx") int memIdx,
+			@RequestParam("uploadPhotoName") String memPhoto,
+			@RequestParam("uploadPhoto") MultipartFile uploadPhoto,
+			HttpServletRequest request
+			) {
+		
+		photoSaveService.photoSave(uploadPhoto, memIdx, request);
+		
+		photoUploadService.uploadPhotoMember(memIdx, memPhoto);
+		 
+		return "SUCESS";
+	}
 	
 	
 	@DeleteMapping("/delete/{memIdx}")// 회원탈퇴

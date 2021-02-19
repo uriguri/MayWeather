@@ -23,7 +23,11 @@
 <!-- 회원가입, 로그인, 모달, 마이페이지 JS -->
 <script src="<c:url value="/js/member/login-register.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/js/member/bootstrap.js"/>" type="text/javascript"></script>
+
+<!-- 카카오로그인  -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 </head>
+
 
 
 <body bgcolor="#f5f5f5">
@@ -59,9 +63,7 @@
 
                                         <!-- 소셜로그인 선택 -->
                                         <div class="social">
-                                            <a class="circle github" href="#"> <i class="fa fa-github fa-fw"></i></a> 
-                                            <a id="google_login" class="circle google" href="#"> <i class="fa fa-google-plus fa-fw"></i></a> 
-                                            <a id="facebook_login" class="circle facebook" href="#"> <i class="fa fa-facebook fa-fw"></i></a>
+                                        <a id="custom-login-btn" href="javascript:kakaoLogin()"> <img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="200"/></a>
                                         </div>
 
                                         <!-- 소셜, 일반로그인 경계선 -->
@@ -213,7 +215,7 @@
                 <div class="mypage-body-1">
 
                     <div class="mem-change" data-toggle="modal" data-target="#mypageModal" data-whatever="내 정보 변경">내 정보 변경</div>
-
+				
                     <hr class="mypage-hr">
 
                     <div class="mem-locchange" data-toggle="modal" data-target="#mypageModal" data-whatever="내 위치 변경">내 위치 변경</div>
@@ -228,7 +230,7 @@
                 <div class="mypage-body-2">
 
                     <div class="mem-like" data-toggle="modal" data-target="#mypageModal" data-whatever="좋아요 한 게시물">좋아요 한 게시물</div>
-
+					
                     <hr class="mypage-hr">
 
                     <div class="mem-bookmark" data-toggle="modal" data-target="#mypageModal" data-whatever="북마크 한 게시물">북마크 한 게시물</div>
@@ -265,6 +267,294 @@
 
 	<!-- 마이페이지 스크립트 -->
 	<script src="<c:url value="/js/member/mypage.js"/>" type="text/javascript"></script>
+	
+	
+	
+	
+	
+	<!-- 카카오로그인 -->
+	<script>
+	
+	// SDK 초기화 ' 키값  '
+	Kakao.init('4d5c5170c5e04e72b1bbee5949951a83');
+	// SDK 초기화 상태 확인
+	console.log(Kakao.isInitialized());
+	
+	function kakaoLogin(){
+		
+		Kakao.Auth.login({
+			scope:'profile, account_email, gender',
+			
+			success: function(authObj) {
+				
+				console.log(authObj);
+				
+				Kakao.API.request({
+					url: '/v2/user/me',
+					success: function(userKakao) {
+						
+						var kakaoInfo = userKakao.kakao_account;
+						var kakaoNamePhoto = userKakao.kakao_account.profile;
+
+						var kMemId = kakaoInfo.email;
+						var kMemName = kakaoNamePhoto.nickname;
+						var kMemGender ='' 
+							
+						if(kakaoInfo.gender == 'male'){
+							kMemGender = 'M';
+						} else {
+							kMemGender = 'F';
+						}
+						
+						var kMember = {
+							memId: kMemId,
+							memName: kMemName,
+							memGender: kMemGender
+						};
+						
+						$.ajax({
+							type:'POST',
+							url : '/members/kakao',
+							contentType : 'application/json',
+							data : JSON.stringify(kMember),
+							success : function(kRegDone) {
+								
+								console.log(regDone);
+								
+								if (regDone == 'Y') {
+									("카카오 가입 완료됨")
+									
+								} else {
+									alert('오류가 발생했습니다 다시 시도하세요.');
+								}
+							},
+							error : function(request, status, error) {
+								alert("code:" + request.status + "\n" + "message:"
+										+ request.responseText + "\n" + "error:"
+										+ error);
+							}
+							
+						});
+						
+						$.ajax({
+							type:'POST',
+							url:'/members/kakaologin',
+							contentType:'application/json; charset=utf-8',
+							dataType:'json',
+							data:JSON.stringify(kMember),
+							success: function(kLoginDone){
+								
+								console.log(kLoginDone);
+								
+								memName = kLoginDone.memName;
+								memIdx = kLoginDone.memIdx;
+								memEmailId = kLoginDone.memId;
+								memPhoto = kLoginDone.memPhoto;
+								
+								
+								var memInfoLogin = '<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
+								memInfoLogin += '<span class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</span>';
+								memInfoLogin += '<span class="mem-info-loc" id="memInfoLoc">카카오 로그인 중입니다.</span>';
+								
+								//상단 Info html변경
+								$('#memInfo').html(memInfoLogin);	
+								
+								//로그인 완료후 모달 닫기
+								closeLoginModal();
+							},
+							 error: function(request,status,error) {
+					                alert("code:"+request.status +"\n" +
+					                	  "message:"+request.responseText +"\n" +
+					                      "error:" +error);
+					         }
+							
+						});
+						
+						
+						
+						
+						
+					}
+					
+				});
+			}
+		});
+	}
+	
+	</script>
+
+
+
+
+	<script>
+	
+	
+	
+	// 프로필 사진 변경 업로드
+	$('.mem-photochange').click(function() {
+		
+		var memberPhotoHtml = "";
+		memberPhotoHtml += '<div class="mem-photo-upload-div" id="memPhotoUploadDiv">';
+		memberPhotoHtml += '<h3 style="background-color: white; margin: 10px;">프로필 사진 등록 & 변경 </h3>';
+		memberPhotoHtml += '<div class="basic-photo" id="basicPhoto">';
+		memberPhotoHtml += '<table class="basic-photo-table" id="basicPhotoTable">';
+		memberPhotoHtml += '<tr class="photo-tr">';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://localhost:8080/fileupload/member/1.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://localhost:8080/fileupload/member/2.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://localhost:8080/fileupload/member/3.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://localhost:8080/fileupload/member/4.png"></th>';
+		memberPhotoHtml += '</tr>';
+		memberPhotoHtml += '<tr class="photo-tr">';
+		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="1.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="2.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="3.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="4.png"></th>';
+		memberPhotoHtml += '</tr>';
+		memberPhotoHtml += '<tr class="photo-tr">';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://localhost:8080/fileupload/member/5.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://localhost:8080/fileupload/member/6.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://localhost:8080/fileupload/member/7.png"></th>';
+		memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://localhost:8080/fileupload/member/8.png"></th>';
+		memberPhotoHtml += '</tr>';
+		memberPhotoHtml += '<tr class="photo-tr">';
+		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="5.png"></td>';
+		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="6.png"></td>';
+		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="7.png"></td>';
+		memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="8.png"></td>';
+		memberPhotoHtml += '</tr>';
+		memberPhotoHtml += '</table>';
+		memberPhotoHtml += '</div>';
+		memberPhotoHtml += '<input style="margin: 10px 0px 0px 90px;" id=uploadBtnBasic class="btn btn-info" type="button" value="선택하여 내사진 변경!"><br>';
+		memberPhotoHtml += '<hr class="mypage-hr">';
+		memberPhotoHtml += '<img class="mem-now-photo" width="50" height="50" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
+		memberPhotoHtml += '<div style="margin: 3px 0px 3px 115px; background-color: white;">현재 프로필 사진</div>'
+		
+		//(사진)업로드 폼
+		memberPhotoHtml += '<form style="background-color: white;" id="uploadForm" method="post" enctype="multipart/form-data">';
+		memberPhotoHtml += '<input style="background-color: white; margin: 10px 0px 5px 25px;" type="hidden" id="uploadPhotoName" name="uploadPhotoName" value="'+memIdx+'.png">';
+		memberPhotoHtml += '<input style="background-color: white; margin: 10px 0px 10px 80px; width: 240px;" type="file" id="uploadPhoto" name="uploadPhoto" class="mem-upload-photo" value="사진 업로드">';
+		memberPhotoHtml += '</form>';
+		memberPhotoHtml += '<input style="margin-left: 100px;" id=uploadBtn class="btn btn-info" type="button" value="업로드 파일로 변경!"><br>'; 
+		memberPhotoHtml += '        파일 이름은 영문 또는 숫자로 입력해주세요.<br>        용량은 *2MB까지 업로드가 가능합니다.';
+		memberPhotoHtml += '</div>';
+
+		$('.modal-body-mypage').html(memberPhotoHtml);
+		$('.nologin-msg').css('display', 'none');
+
+		// 업로드 버튼 누르면
+		$(document).on('click', '#uploadBtn', function(e){
+			e.preventDefault();
+			
+			var uploadPhotoName = $("#uploadPhotoName").val();
+			
+			file_ajax_submit(uploadPhotoName);
+			
+			successChange();
+		});
+		
+		// 업로드시 실행될 function
+		function file_ajax_submit(uploadPhotoName){
+			
+			var form = $('#uploadForm')[0];
+			
+			var data = new FormData(form);
+			
+			
+			$('#uploadBtn').prop('disabled', true);
+			
+			$.ajax({
+				type: 'POST',
+				url: '/members/upload/photo/'+memIdx,
+				enctype: 'multipart/form-data',
+				data: data,
+				async: false,
+				processData: false,
+				contentType: false,
+				cache: false,
+				success: function(data) {
+					console.log("success:", data);	
+					$('#uploadBtn').prop('disabled', false);
+					
+					setTimeout(function(){
+						successChange();
+					}, 2000);
+				},
+				error: function(e) {
+					console.log("error:", e);
+					$('#uploadBtn').prop('disabled', false);
+				}
+				
+			});
+		}
+	 
+           
+		$('#uploadBtnBasic').click(function() {
+		
+			var radioCheck = $('input:radio[name=defaultPhoto]').is(':checked');
+			var radioVal = $('input:radio[name=defaultPhoto]:checked').val();
+			var uploadPhoto = '';
+			
+			uploadPhoto = radioVal;
+			
+			console.log(radioCheck);
+			console.log(radioVal);
+			console.log(uploadPhoto);
+			console.log(memIdx);
+			console.log(memPhoto);
+			
+			 var uploadMember = {
+	            memIdx: memIdx,
+	            memPhoto: uploadPhoto
+	        };
+			
+			$.ajax({
+				type: 'PUT',
+				url: '/members/edit/photo',
+				contentType: 'application/json',
+	            dataType: 'json',
+	            data: JSON.stringify(uploadMember),
+				success : function(photoDone) {
+					
+					console.log(photoDone);
+					
+					if (photoDone == 1) {
+						alert('사진 변경 성공!!!');
+						
+
+					} else {
+						alert('변경 실패 다시시도해주세요.');
+					}
+				},
+				error: function(request,status,error) {
+	                alert("code:"+request.status +"\n" +
+	                	  "message:"+request.responseText +"\n" +
+	                      "error:" +error);
+	            }
+
+			});
+		});
+		
+	});
+	
+
+	</script>
+
+	<script>
+	
+	// 작업 성공시 myinfo 영역을 갱신해줄 코드
+	
+	function successChange(){
+		
+		var memInfoLogin = '<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
+		memInfoLogin += '<span class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</span>';
+		memInfoLogin += '<span class="mem-info-loc" id="memInfoLoc">카카오 로그인 중입니다.</span>';
+		
+		$('#memInfo').html(memInfoLogin);	
+	}
+	
+	
+	</script>
+
 	
 	<!-- 푸터 -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>

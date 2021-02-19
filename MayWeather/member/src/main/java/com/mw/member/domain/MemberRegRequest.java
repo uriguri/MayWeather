@@ -9,6 +9,7 @@ public class MemberRegRequest {
 	private String memPw;
 	private String memName;
 	private String memGender;
+	private String memPhoto;
 	
 	public Member memberRegRequest() {
 		Member member = new Member();
