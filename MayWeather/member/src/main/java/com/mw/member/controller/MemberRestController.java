@@ -75,15 +75,26 @@ public class MemberRestController {
 		return regService.memberReg(regRequest)>0 ? "Y" : "N" ;
 	}
 	
-	@PostMapping // 카카오 회원가입 
-	public String kakaoMemberReg(@RequestBody MemberKakaoRequest kakaoRequest) {
-		return kakaoRegService.kakaoMemberReg(kakaoRequest)>0 ? "Y" : "N" ;
-	}
-	
 	@GetMapping("/idcheck")	// 중복 아이디 체크
 	public String idCheck(@RequestParam("memId") String memId) {
 		return idCheckService.chekId(memId);
 	}
+	
+	@PostMapping("/kakao") // 카카오 로그인시 기본정보로 회원가입 
+	public String kakaoMemberReg(@RequestBody MemberKakaoRequest kakaoRequest) {
+		return kakaoRegService.kakaoMemberReg(kakaoRequest)>0 ? "Y" : "N" ;
+	}
+	
+	@PostMapping("/kakaologin")// 카카오로그인 public
+	 public KakaoLoginInfo kakaoLogin(@RequestBody MemberKakaoRequest kakaoRequest, 
+			 				  HttpServletRequest request, 
+			 				  Model model
+			 				  ) {
+		 
+		 model.addAttribute("loginCheck", kakaoLoginService.login(kakaoRequest, request));
+		 
+		return kakaoLoginService.login(kakaoRequest, request); 
+	 }
 	
 	@PostMapping("/login") // 로그인
 	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, 
@@ -94,19 +105,6 @@ public class MemberRestController {
 		return loginService.login(loginRequest, request); 
 	}
 	
-
-	 @PostMapping("/kakaologin")// 카카오로그인 public
-	 public KakaoLoginInfo kakaoLogin(@RequestBody MemberKakaoRequest kakaoRequest, 
-			 				  HttpServletRequest request, 
-			 				  Model model
-			 				  ) {
-		 
-		 model.addAttribute("loginCheck", kakaoLoginService.login(kakaoRequest, request));
-		 
-		 
-		return kakaoLoginService.login(kakaoRequest, request); 
-	 }
-
 	
 	@GetMapping("/logout") // 로그아웃
 	public String logout(HttpSession session, RedirectAttributes rda) {
@@ -123,12 +121,7 @@ public class MemberRestController {
 	
 	@PutMapping("/edit/{memIdx}")// 정보수정
 	public int editMem(@RequestBody MemberEditRequest editRequest, @PathVariable("memIdx") int memIdx) {
-		
-		System.out.println("=======PUT=======");
-		System.out.println(editRequest);
-		System.out.println(memIdx);
-		System.out.println("=======PUT=======");
-		
+	
 		return editService.editMember(editRequest, memIdx);
 	}
 	

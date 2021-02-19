@@ -1,7 +1,0 @@
-INDEX VERSION 1.4+C:\Users\H\Documents\GitHub\MayWeather\uri\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-2683593569.index
-3143696463.index
-2302435354.index
-358936685.index
-757696138.index
-1361163202.index
