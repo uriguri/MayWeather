@@ -47,6 +47,9 @@ public class Member {
 		return new LoginInfo(memIdx, memId, memName, memGender, memPhoto, memLoc);
 	}
 	
+	public KakaoLoginInfo toKakaoLoginInfo() {
+		return new KakaoLoginInfo(memIdx, memId, memName, memGender, memPhoto, memSocial);
+	}
 	
 	public Member idxGetToMember(int memIdx, String memPhoto) {
 		Member member = new Member();

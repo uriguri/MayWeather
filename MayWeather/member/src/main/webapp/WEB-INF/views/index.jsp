@@ -26,7 +26,36 @@
 
 <!-- 카카오로그인  -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
+<!-- alert 창 변경 sweetalert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
 </head>
+
+<style>
+.swal2-header, .swal2-header>div, .swal2-header>span, .swal2-header>h2{
+	background-color: white;
+}
+
+.swal2-header>div>span{
+	background-color: white;
+}
+
+
+.swal2-content, .swal2-content>div{
+	background-color: white;
+}
+
+.swal2-actions, .swal2-actions>div{
+	background-color: white;
+}
+
+.swal2-icon, .swal2-success, .swal2-icon-show{
+	background-color: white;
+}
+
+</style>
 
 <body bgcolor="#f5f5f5">
 
@@ -189,27 +218,68 @@
 
                 <!-- 마이페이지 메뉴 목록 -->
                 <div class="mypage-header">
-
-                    <span class="mem-reglogin-btn" id="memRegloginBtn">
+                
+                	 <span class="mem-reglogin-btn" id="memRegloginBtn">	 
                         <!-- 로그인버튼 -->
                         <a style="float: right; margin: 5px 5px 0px 0px;" class="btn big-login" data-toggle="modal" href="javascript:void(0)" onclick="openLoginModal();">로그인</a>
 
                         <!-- 회원 가입버튼 -->
                         <a style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" data-toggle="modal" href="javascript:void(0)" onclick="openRegisterModal();">회원 가입</a>
                     </span>
+                
+					<div class="mypage-header-content">
+                                       
+                    <hr class="mypage-hr">
 
                     <div class="mem-info" id="memInfo">
-                        <div style="margin-left: 30px;" class="mem-info-name" id="memInfoName">마이페이지 입니다.</div>
-                        <span class="mem-info-loc" id="memInfoLoc">먼저 로그인 해주세요.</span>
+                    	<div class="mem-info-photo-div" style="background-color: white; float: left;">
+							<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/nologin.png">
+						</div>
+						<div class="mem-info-name" id="memInfoName">마이페이지 입니다. </div>
+						<div class="mem-info-loc" id="memInfoLoc">먼저 로그인 해주세요.</div>	                       
                     </div>
+                    
+
 
                     <!-- 회원 메일 인증 여부 확인 메세지  미 인증시에 출력 함-->
                     <div style="display:none" class="mem-mail-state" id="memMailState">${msg}</div>
 
-                    <div class="mypage-title">마이 페이지</div>
+					</div>
+					
+					<div class="mypage-title-div" style="background-color: white;">
+						<div class="mypage-title">마이 페이지</div>
+					</div>
 
-                </div>
-
+				
+			<div id="mypageMarket" class="mypage-market">
+					 <div class="mypage-market-div">
+					 	<div class="mypage-market-icon-div">
+					 		<img class="mypage-market-icon" src="http://localhost:8080/fileupload/member/saleicon.png">
+					 	</div>
+					 	<div class="mypage-market-icon-div">
+							 <img class="mypage-market-icon" src="http://localhost:8080/fileupload/member/buyicon.png">
+					 	</div>
+					 	<div class="mypage-market-icon-div">
+							 <img class="mypage-market-icon" src="http://localhost:8080/fileupload/member/hearticon.png">
+					 	</div>
+					 </div>
+					 
+					 <div class="mypage-market-div2">
+					 	<div class="mypage-market-text-div">
+					 		<div class="mypage-market-text">판매내역</div>
+						</div>					 		
+					 	<div class="mypage-market-text-div">
+					 		<div class="mypage-market-text">구매내역</div>
+						</div>				
+						<div class="mypage-market-text-div">
+					 		<div class="mypage-market-text">관심목록</div>
+						</div>	
+					 </div>
+				</div>	 
+				
+            </div>
+                
+			<div class="mypage-body-div">
                 <div class="mypage-body-1">
 
                     <div class="mem-change" data-toggle="modal" data-target="#mypageModal" data-whatever="내 정보 변경">내 정보 변경</div>
@@ -220,7 +290,7 @@
 
                     <hr class="mypage-hr">
 
-                    <div class="mem-photochange" data-toggle="modal" data-target="#mypageModal" data-whatever="프로필 사진 등록 변경">프로필 사진 등록 변경</div>
+                    <div class="mem-photochange" data-toggle="modal" data-target="#mypageModal" data-whatever="프로필 사진 변경">프로필 사진 변경</div>
 
 
                 </div>
@@ -231,19 +301,16 @@
 					
                     <hr class="mypage-hr">
 
-                    <div class="mem-bookmark" data-toggle="modal" data-target="#mypageModal" data-whatever="북마크 한 게시물">북마크 한 게시물</div>
+					 <div class="mem-notice">내 방명록(정은님꺼 연결)</div>
 
                 </div>
 
                 <div class="mypage-body-3">
 
-                    <div class="mem-notice">내 방명록(정은님꺼 연결)</div>
-
-                    <hr class="mypage-hr">
-
                     <div class="mem-delete" data-toggle="modal" data-target="#mypageModal" data-whatever="회원 탈퇴">회원 탈퇴</div>
 
                 </div>
+               </div>
             </div>
 
 
@@ -320,7 +387,7 @@
 						
 						console.log(kIdChk);
 						
-						// 아이디체크 Y == 가입이 가능한 아이디(중복없음)
+						// 아이디체크 Y == 가입이 가능한 아이디(중복없음)(가입시킴)
 						if(kIdChk == 'Y'){
 							
 							$.ajax({
@@ -331,13 +398,17 @@
 								async: false,
 								success : function(kRegDone) {
 									
+									
 									console.log(kRegDone);
 									
 									if (kRegDone == 'Y') {
-										("카카오 가입 완료됨")
+										new swal("사용승인 성공!", "카카오로 다시 로그인해주세요!", "success");
+										
+										closeLoginModal();
 										
 									} else {
-										alert('오류가 발생했습니다 다시 시도하세요.');
+										new swal("이런!","문제가 발생했나봐요 다시 시도해주세요.", "error");
+										closeLoginModal();
 									}
 								},
 								error : function(request, status, error) {
@@ -366,13 +437,20 @@
 									memEmailId = kLoginDone.memId;
 									memPhoto = kLoginDone.memPhoto;
 									
+									var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
+									memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
+									memInfoLogin +='</div>';	
+									memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
+									memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">카카오 로그인 사용 중 입니다!</div>';
 									
-									var memInfoLogin = '<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
-									memInfoLogin += '<span class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</span>';
-									memInfoLogin += '<span class="mem-info-loc" id="memInfoLoc">카카오 로그인 중입니다.</span>';
-									
+									var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="#">로그아웃</a>'
+										
 									//상단 Info html변경
-									$('#memInfo').html(memInfoLogin);	
+									$('#memInfo').html(memInfoLogin);
+									$('#mypageMarket').css('display','block');
+									
+									//로그아웃 버튼으로 체인지
+									$('#memRegloginBtn').html(logoutBtn);
 									
 									//로그인 완료후 모달 닫기
 									closeLoginModal();
@@ -382,18 +460,14 @@
 						                	  "message:"+request.responseText +"\n" +
 						                      "error:" +error);
 						         }
-							});
-							
-							
-						}
+								
+							}); //ajax end
+						} // else end
 						
-						
-						
-					}
-				});
-			}
-		});
-		
+		}
+	 });
+    }
+ });
 }
 	</script>
 
@@ -509,13 +583,7 @@
 			var uploadPhoto = '';
 			
 			uploadPhoto = radioVal;
-			
-			console.log(radioCheck);
-			console.log(radioVal);
-			console.log(uploadPhoto);
-			console.log(memIdx);
-			console.log(memPhoto);
-			
+	
 			 var uploadMember = {
 	            memIdx: memIdx,
 	            memPhoto: uploadPhoto
@@ -532,11 +600,12 @@
 					console.log(photoDone);
 					
 					if (photoDone == 1) {
-						alert('사진 변경 성공!!!');
-						
+						new swal("사진 변경 성공!", "안목이 뛰어나시네요!", "success");
+						closeMypageModal();
 
 					} else {
-						alert('변경 실패 다시시도해주세요.');
+						new swal("오류 발생!", "다시 시도해주세요!", "error");
+						closeMypageModal();
 					}
 				},
 				error: function(request,status,error) {

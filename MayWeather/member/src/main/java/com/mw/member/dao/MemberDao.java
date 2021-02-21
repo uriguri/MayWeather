@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.mw.member.domain.Member;
 
+
 public interface MemberDao {
 
 	//멤버가입
@@ -12,6 +13,9 @@ public interface MemberDao {
 	//멤버 로그인
 	Member selectLogin(String memId, String memPw);
 
+	//카카오 멤버 로그인
+	Member selectKakaoLogin (String memId);
+	
 	//멤버 메일 인증
 	int selectMemberByIdxEmailchk(int memIdx);
 

@@ -15,14 +15,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="memGender" property="memGender" />
 		<result column="memPhoto" property="memPhoto" />
 	</resultMap>
-
+	
 	<!-- 회원가입 -->
 	<insert id="insertMem"
 		parameterType="com.mw.member.domain.Member" useGeneratedKeys="true"
 		keyProperty="memIdx">
 		INSERT INTO mem (memId, memPw, memName, memGender,
-		memEmailCode) VALUES
-		(#{memId},#{memPw},#{memName},#{memGender},#{memEmailCode})
+		memEmailCode, memPhoto, memSocial) VALUES
+		(#{memId},#{memPw},#{memName},#{memGender},#{memEmailCode},#{memPhoto},#{memSocial})
 	</insert>
 
 	<!-- 회원 이메일 인증상태 memIdx로 조회 -->
@@ -37,14 +37,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and
 		memEmailCode=#{param2}
 	</update>
-
-
+	
 	<!-- 로그인 -->
 	<select id="selectLogin" resultMap="memberResult">
 		SELECT * FROM mem WHERE
 		memId=#{param1} and memPw=#{param2}
 	</select>
 
+	<select id="selectKakaoLogin" resultMap="memberResult">
+		SELECT * FROM mem WHERE
+		memId=#{memId}
+	</select>
+	
 	<!-- 회원탈퇴 -->
 	<delete id="deleteMemberByIdx">
 		DELETE FROM mem WHERE memIdx=#{memIdx}

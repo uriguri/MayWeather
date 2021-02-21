@@ -8,6 +8,8 @@ public class MemberKakaoRequest {
 	private String memId;
 	private String memName;
 	private String memGender;
+	private String memPhoto;
+	private int memSocial;
 
 	public Member kakaoRegRequest() {
 		Member member = new Member();
@@ -23,8 +25,5 @@ public class MemberKakaoRequest {
 	}
 	
 	
-	
-	public KakaoLoginInfo toKaKaoLoginInfo() {
-		return new KakaoLoginInfo(99, memId, memName, memGender, "kakao.png", 1);
-	}
+
 }

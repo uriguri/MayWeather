@@ -27,11 +27,11 @@
 				console.log(regDone);
 				
 				if (regDone == 'Y') {
-					alert('회원가입 성공');
+					new swal("가입을 축하합니다!", "이제 로그인 할 수 있어요!", "success");
 					closeLoginModal();
 					
 				} else {
-					alert('오류가 발생했습니다 다시 시도하세요.');
+					new swal("오류 발생!", "다시 시도해주세요!", "error");
 				}
 			},
 			beforeSend:function(){
@@ -225,9 +225,11 @@
 	            success: function(updateDone) {
 	                console.log(updateDone);
 	                if (updateDone == 1) {
-	                    alert('정보 수정 성공!!!')
+	                    new swal("정보 수정 완료!", "멋진 닉네임이에요.", "success");
+	                    closeMypageModal();
 	                } else {
-	                    alert('정보 수정 실패 다시시도해주세요.')
+	                    new swal("오류 발생!", "다시 시도해주세요!", "error");
+	                    closeMypageModal();
 	                }
 	            },
 	            error: function(request,status,error) {
@@ -244,6 +246,10 @@
 	// 모달 닫기
 	function closeLoginModal() {
 	$('#loginModal').modal("hide");
+	}
+	
+	function closeMypageModal(){
+	$('#mypageModal').modal("hide");
 	}
 	
 	// 비회원 로그인시 기본값 a href 이벤트 설정
@@ -287,14 +293,20 @@
 					shakeModal();
 				// 로그인 성공
 				} else {
-					var memInfoLogin = '<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
-						memInfoLogin += '<span class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</span>';
-						memInfoLogin += '<span class="mem-info-loc" id="memInfoLoc">내위치 : '+memLoc+'</span>';
+
+					var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
+						memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
+						memInfoLogin +='</div>';	
+						memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
+						memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">내위치 : '+memLoc+'</div>';
 						
+
 					var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="#">로그아웃</a>' 
 					
 					$('#memInfo').html(memInfoLogin);
 					$('#memRegloginBtn').html(logoutBtn);
+					
+					$('#mypageMarket').css('display','block');
 					
 					// 메일 인증여부 출력(미 인증시에만 출력됨)
 					$('.mem-mail-state').css('display', 'block');
@@ -432,10 +444,10 @@
 				console.log(deleteDone);
 				
 				if (deleteDone == 1) {
-					alert('회원 탈퇴 성공!!!');
+					new swal("회원 탈퇴 완료", "다시 돌아오실꺼죠..?", "info");
 
 				} else {
-					alert('탈퇴 실패 다시시도해주세요.');
+					new swal("오류 발생!", "다시 시도해주세요!", "error");
 				}
 			},
 			error: function(request,status,error) {

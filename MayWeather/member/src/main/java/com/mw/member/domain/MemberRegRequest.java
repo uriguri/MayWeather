@@ -19,6 +19,7 @@ public class MemberRegRequest {
 		member.setMemName(memName);
 		member.setMemGender(memGender);
 		member.setMemPhoto("default.png");
+		
 		//소셜 0 = 일반가입자
 		member.setMemSocial(0);
 		

@@ -87,9 +87,7 @@ public class MemberRestController {
 	
 	@PostMapping("/kakaologin")// 카카오로그인 public
 	 public KakaoLoginInfo kakaoLogin(@RequestBody MemberKakaoRequest kakaoRequest, 
-			 				  HttpServletRequest request, 
-			 				  Model model
-			 				  ) {
+			 				  HttpServletRequest request, Model model) {
 		 
 		 model.addAttribute("loginCheck", kakaoLoginService.login(kakaoRequest, request));
 		 
