@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.mw.member.dao.MemberDao;
 import com.mw.member.domain.Member;
 import com.mw.member.domain.MemberRegRequest;
+import com.mw.member.util.Sha256;
 
 @Service
 public class MemberRegService {
@@ -18,6 +19,9 @@ public class MemberRegService {
 	
 	@Autowired
 	private MailSenderService mailSenderService;
+	
+	@Autowired
+	private Sha256 sha256;
 
 	public int memberReg(MemberRegRequest regRequest) {
 
@@ -26,7 +30,8 @@ public class MemberRegService {
 		dao = template.getMapper(MemberDao.class);
 
 		Member member = regRequest.memberRegRequest();
-
+		sha256.encrypt(member.getMemPw());
+		
 		result = dao.insertMem(member);
 
 		// 메일발송 : 인증 처리를 하는 페이지 /op/member/verify?id=40&code=난수

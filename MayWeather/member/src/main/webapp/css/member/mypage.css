@@ -6,7 +6,11 @@
 }
 
 #memberMain > div.mypage-menu {
-	margin-top: -30px;
+	margin-top: -10px;
+}
+
+.modal-header{
+	display: block;
 }
 
 .swal2-icon.swal2-success .swal2-success-ring{

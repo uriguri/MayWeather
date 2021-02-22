@@ -493,11 +493,13 @@ $(document).on("focusin","#memPw",function(){
 });
 
 
+
 //카카오 로그인
 
-// SDK 초기화 ' 키값  '
+//SDK 초기화
 Kakao.init('4d5c5170c5e04e72b1bbee5949951a83');
-// SDK 초기화 상태 확인
+
+//SDK 초기화 상태 확인
 console.log(Kakao.isInitialized());
 
 function kakaoLogin(){
@@ -617,10 +619,14 @@ function kakaoLogin(){
 					} // else end
 					
 					}
- 			});
+			});
 		}
 	});
 }
+
+
+
+
 
 //로그아웃 (동적생성 버튼 클릭 + Swal Button : True False)
 
@@ -960,6 +966,7 @@ function showRegisterForm(){
     $('.error').removeClass('alert alert-danger').html('');
        
 }
+
 function showLoginForm(){
     $('#loginModal .registerBox').fadeOut('fast',function(){
         $('.loginBox').fadeIn('fast');
@@ -979,6 +986,7 @@ function openLoginModal(){
     }, 230);
     
 }
+
 function openRegisterModal(){
     showRegisterForm();
     setTimeout(function(){
@@ -986,6 +994,7 @@ function openRegisterModal(){
     }, 230);
     
 }
+
 function shakeModal(){
     $('#loginModal .modal-dialog').addClass('shake');
              $('.error').addClass('alert alert-danger').html("아이디와 비밀번호를 다시 확인해주세요.");

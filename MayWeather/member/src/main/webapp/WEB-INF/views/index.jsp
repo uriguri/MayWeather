@@ -13,6 +13,11 @@
 <!-- 부트스트랩 & 제이쿼리 -->
 <%@ include file="/WEB-INF/views/include/basicset.jsp"%>
 
+<!-- 카카오로그인  -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<!-- 카카오맵 -->
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4d5c5170c5e04e72b1bbee5949951a83&libraries=services"></script>
+
 <!-- MARKET JS파일 -->
 <script type="text/javascript">
       var memIdx = '<%=(String)session.getAttribute("memidx")%>';
@@ -37,17 +42,9 @@
 <link rel="styleSheet" href="<c:url value="/css/member/mypage.css"/>"/>
 
 
-<!-- 마이페이지 JS -->
-<script src="<c:url value="/js/member/bootstrap.js"/>" type="text/javascript"></script>
-
-<!-- 카카오로그인  -->
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 <!-- alert 창 변경 sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-
-
 
 
 
@@ -331,7 +328,10 @@
 	</c:if>
 
 
-<script src="<c:url value="/js/member/mypage.js"/>" type="text/javascript"></script>
+<!-- 마이페이지 JS -->
+<script src="<c:url value="/js/member/mypage.js"/>"></script>
+<script src="<c:url value="/js/member/bootstrap.js"/>" type="text/javascript"></script>
+
 	
 	<!-- 푸터 -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
