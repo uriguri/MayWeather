@@ -30,6 +30,9 @@
 <!-- alert 창 변경 sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+<!-- OOTD JS파일 -->
+<script src="<c:url value="/js/ootd.js"/>"></script>
+<script src="<c:url value="/js/croppers.js"/>"></script>
 
 </head>
 
@@ -57,7 +60,7 @@
 
 </style>
 
-<body bgcolor="#f5f5f5">
+<body class="bg_color">
 
 <!-- 상단 고정바 -->
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
@@ -331,148 +334,6 @@
 
 	<!-- 마이페이지 스크립트 -->
 	<script src="<c:url value="/js/member/mypage.js"/>" type="text/javascript"></script>
-	
-	<!-- 카카오로그인 -->
-	<script>
-	
-	// SDK 초기화 ' 키값  '
-	Kakao.init('4d5c5170c5e04e72b1bbee5949951a83');
-	// SDK 초기화 상태 확인
-	console.log(Kakao.isInitialized());
-
-	function kakaoLogin(){
-		
-		
-		Kakao.Auth.login({
-			scope:'profile, account_email, gender',
-			success: function(authObj) {
-				Kakao.API.request({
-					url: '/v2/user/me',
-					success: function(userKakao) {
-						var kakaoInfo = userKakao.kakao_account;
-						var kakaoNamePhoto = userKakao.kakao_account.profile;
-
-						kMemId = kakaoInfo.email;
-						kMemName = kakaoNamePhoto.nickname;
-						kMemGender ='' 
-							
-						if(kakaoInfo.gender == 'male'){
-							kMemGender = 'M';
-						} else {
-							kMemGender = 'F';
-						}
-						
-						kMember = {
-							memId: kMemId,
-							memName: kMemName,
-							memGender: kMemGender
-						};
-						
-						$.ajax({
-							type: 'GET',
-							url: '/members/idcheck',
-							data: {memId:kMemId},
-							async: false,
-							success : function(idChk){
-								console.log(idChk);
-								kIdChk = idChk;
-							},
-							error : function(request, status, error) {
-								alert("code:" + request.status + "\n" + "message:"
-										+ request.responseText + "\n" + "error:"
-										+ error);
-							}
-						});
-						
-						
-						console.log(kIdChk);
-						
-						// 아이디체크 Y == 가입이 가능한 아이디(중복없음)(가입시킴)
-						if(kIdChk == 'Y'){
-							
-							$.ajax({
-								type:'POST',
-								url : '/members/kakao',
-								contentType : 'application/json',
-								data : JSON.stringify(kMember),
-								async: false,
-								success : function(kRegDone) {
-									
-									
-									console.log(kRegDone);
-									
-									if (kRegDone == 'Y') {
-										new swal("사용승인 성공!", "카카오로 다시 로그인해주세요!", "success");
-										
-										closeLoginModal();
-										
-									} else {
-										new swal("이런!","문제가 발생했나봐요 다시 시도해주세요.", "error");
-										closeLoginModal();
-									}
-								},
-								error : function(request, status, error) {
-									alert("code:" + request.status + "\n" + "message:"
-											+ request.responseText + "\n" + "error:"
-											+ error);
-								}
-								
-							});
-						// 아이디체크 != Y 가입이 불가능한 아이디(중복있음 - 로그인)	
-						} else {
-							
-							$.ajax({
-								type:'POST',
-								url:'/members/kakaologin',
-								contentType:'application/json; charset=utf-8',
-								dataType:'json',
-								data:JSON.stringify(kMember),
-								async: false,
-								success: function(kLoginDone){
-									
-									console.log(kLoginDone);
-									
-									memName = kLoginDone.memName;
-									memIdx = kLoginDone.memIdx;
-									memEmailId = kLoginDone.memId;
-									memPhoto = kLoginDone.memPhoto;
-									
-									var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-									memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
-									memInfoLogin +='</div>';	
-									memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-									memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">카카오 로그인 사용 중 입니다!</div>';
-									
-									var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="#">로그아웃</a>'
-										
-									//상단 Info html변경
-									$('#memInfo').html(memInfoLogin);
-									$('#mypageMarket').css('display','block');
-									
-									//로그아웃 버튼으로 체인지
-									$('#memRegloginBtn').html(logoutBtn);
-									
-									//로그인 완료후 모달 닫기
-									closeLoginModal();
-								},
-								 error: function(request,status,error) {
-						                alert("code:"+request.status +"\n" +
-						                	  "message:"+request.responseText +"\n" +
-						                      "error:" +error);
-						         }
-								
-							}); //ajax end
-						} // else end
-						
-		}
-	 });
-    }
- });
-}
-	</script>
-
-
-
 
 	<script>
 	
@@ -537,7 +398,6 @@
 			
 			file_ajax_submit(uploadPhotoName);
 			
-			successChange();
 		});
 		
 		// 업로드시 실행될 function
