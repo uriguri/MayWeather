@@ -36,7 +36,7 @@ public class MemberLoginService {
 		
 		if(member != null) {
 			
-			if(member.getMemEmailchk() == 'Y') {
+			if(member.getMemEmailchk() == "Y") {
 				request.getSession().setAttribute("loginInfo", member.toLoginInfo());
 				loginCheck = true;
 				

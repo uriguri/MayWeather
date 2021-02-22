@@ -19,7 +19,7 @@ public class Member {
 	private String memBookmark;
 	private String memGender;
 	private String memEmailCode;
-	private char memEmailchk;
+	private String memEmailchk;
 	private int memSocial;
 	private int memState;
 	private Timestamp memRegdate;
@@ -44,7 +44,7 @@ public class Member {
 	}
 	
 	public LoginInfo toLoginInfo() {
-		return new LoginInfo(memIdx, memId, memName, memGender, memPhoto, memLoc);
+		return new LoginInfo(memIdx, memId, memName, memGender, memPhoto, memLoc, memEmailchk);
 	}
 	
 	public KakaoLoginInfo toKakaoLoginInfo() {

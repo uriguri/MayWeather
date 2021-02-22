@@ -5,6 +5,10 @@
     font-family: 'Nanum Gothic', sans-serif;
 }
 
+#memberMain > div.mypage-menu {
+	margin-top: -30px;
+}
+
 .swal2-icon.swal2-success .swal2-success-ring{
 	position: absolute;
     z-index: 1 !important;
@@ -16,6 +20,27 @@
     border: .25em solid rgba(165,220,134,.3);
     border-radius: 50%;
     background-color: white;
+}
+
+.swal2-header, .swal2-header>div, .swal2-header>span, .swal2-header>h2{
+	background-color: white;
+}
+
+.swal2-header>div>span{
+	background-color: white;
+}
+
+
+.swal2-content, .swal2-content>div{
+	background-color: white;
+}
+
+.swal2-actions, .swal2-actions>div{
+	background-color: white;
+}
+
+.swal2-icon, .swal2-success, .swal2-icon-show{
+	background-color: white;
 }
 
 .swal2-x-mark {
