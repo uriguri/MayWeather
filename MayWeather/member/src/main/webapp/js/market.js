@@ -1,4 +1,6 @@
 		var page = 1;
+		var totalPage = 1;
+		
 		//var myHostUrl = 'http://localhost:8080/market';
 		var myHostUrl = 'http://ec2-3-35-27-93.ap-northeast-2.compute.amazonaws.com:8080/mwMarket';
 		
@@ -32,7 +34,7 @@
 				fnKakaoPayResult(paramDiv, kSaleNo);
 			}else {
 				// 판매 목록 호출 
-				fnSaleList(page);
+				//fnSaleList(page);
 			}
 		});
 		
@@ -62,7 +64,7 @@
 		//스크롤 바닥 감지
 		window.onscroll = function(e) {
 			// 목록인 경우에만
-			if (nowPageLoc == "salelist") {
+			if (nowPageLoc == "salelist" && page <= totalPage) {
 			    //window height + window scrollY 값이 document height보다 클 경우,
 			    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
 			    	//실행할 로직 (콘텐츠 추가)
@@ -163,7 +165,9 @@
 									
             if (pagenum == 1){
 				// 페이지 테그 삭제
-				$('#market *').remove();
+				
+				$('.content *').remove();
+				//$('#market *').remove();
             }
             
 			var data = {
@@ -180,13 +184,18 @@
 				//dataType : 'json',
 				async : false,				
 				success : function(data){
+					
+					totalPage = data.totalPageCount;
 
 					// 글쓰기
 					var html = '';
-
+					html = '<div id="market" name="market"></div>';
+					
+					$('.content').append(html);
+					
 					if (pagenum == 1){
-						
-						html += '<a href="javascript:fnSaleWriteForm()"><div id="write_btn"></div></a>';
+												
+						html = '<a href="javascript:fnSaleWriteForm()"><div id="write_btn"></div></a>';
 						
 						// 검색
 						html += '<div class="search_div">';
@@ -248,11 +257,14 @@
 
 						html += '</div>';
 				    	html += '</a>';
-						
+				    	
+						if(((i+1) == data.saleList.length) && (pagenum == totalPage)){
+							html += '<div class="bottomArea"></div>';
+						}	
+				    	
 				    	$('#market').append(html);
-					} 	
-
-					
+				    							
+					}
 				},
 				error : function(e){
 					console.log("에러발생 : " + e);
@@ -281,11 +293,12 @@
 					saleGoodCnt = data.saleMember.goodCnt;
 					
 					var html = '';
-					
+					html += '<div class="container border">';
+										
 					// 이미지 목록
 					if(data.imageList.length > 0){
-						html += '<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">';
-						html += '	<ol class="carousel-indicators">';
+						html += '	<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">';
+						html += '		<ol class="carousel-indicators">';
 				
 						for(var i = 0 ; i < data.imageList.length ; i++) {
 							addClass = '';
@@ -295,10 +308,10 @@
 							html += '		<li data-bs-target="#carouselExampleDark" data-bs-slide-to="' + i + '" class="' + addClass + '"></li>';
 						}
 						 
-						html += '	</ol>';
-						html += '	<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
+						html += '		</ol>';
+						html += '		<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
 						
-						html += '	<div class="carousel-inner">';
+						html += '		<div class="carousel-inner">';
 						
 
 						for(var i = 0 ; i < data.imageList.length; i++) {
@@ -308,35 +321,35 @@
 								addClass = 'active';								
 							}							
 							
-							html += '	<div class="carousel-item ' + addClass + '">';
-							html += '		<img src="' + data.imageList[i].fileNameAll +'" class="d-block image_list" alt="...">';
-							html += '      	<div class="carousel-caption d-none d-md-block">';
-							html += '        	<h5></h5>';
-							html += '        	<p></p>';
-							html += '      	</div>';
-							html += '   </div>';
+							html += '		<div class="carousel-item ' + addClass + '">';
+							html += '			<img src="' + data.imageList[i].fileNameAll +'" class="d-block image_list" alt="...">';
+							html += '      		<div class="carousel-caption d-none d-md-block">';
+							html += '        		<h5></h5>';
+							html += '        		<p></p>';
+							html += '     	 	</div>';
+							html += '   	</div>';
 						}
-						html += '  </div>';
+						html += '  		</div>';
 						
-					   	html += '  <a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">';
-						html += '    <span class="carousel-control-prev-icon" aria-hidden="true"></span>';
-						html += '    <span class="visually-hidden">Previous</span>';
-					  	html += '  </a>';
-						html += '  <a class="carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next">';
-					 	html += '    <span class="carousel-control-next-icon" aria-hidden="true"></span>';
-						html += '    <span class="visually-hidden">Next</span>';
-						html += '  </a>';
-						html += '</div>';
+					   	html += '  		<a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">';
+						html += '    		<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
+						html += '    		<span class="visually-hidden">Previous</span>';
+					  	html += '  		</a>';
+						html += '  		<a class="carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next">';
+					 	html += '    		<span class="carousel-control-next-icon" aria-hidden="true"></span>';
+						html += '    		<span class="visually-hidden">Next</span>';
+						html += '  		</a>';
+						html += '	</div>';
 					}
 					
 					// 상세보기
-					html += '<table class="table">';
-					html += '  <thead>';
-					html += '    <tr>';
-					html += '      	<th scope="col">' + data.saleMember.saleNic + '</th>';
-					html += '      	<th scope="col">';
+					html += '	<table class="table">';
+					html += '  	<thead>';
+					html += '   	<tr>';
+					html += '      		<th scope="col">' + data.saleMember.saleNic + '</th>';
+					html += '      		<th scope="col">';
 
-					html += '    	<div class="sale_reg_btn dropleft">';
+					html += '    		<div class="sale_reg_btn dropleft">';
 					
 					// 조아요 버튼
 					var heartImage = "heart.png";
@@ -346,27 +359,27 @@
 						heartImage = "emptyheart.png";
 						goodDiv = 1; 
 					}
-					html += '			<a href="javascript:fnGoodProc(' + goodDiv + ');"><img src="/image/icon/' + heartImage + '" style="width:15px;"></a>';
+					html += '				<a href="javascript:fnGoodProc(' + goodDiv + ');"><img src="/image/icon/' + heartImage + '" style="width:15px;"></a>';
 					
 					// 내 글인 경우에만 수정, 삭제 허용 START
 					if(memIdx == data.saleMember.saleIdx){
-						html += '    	<a class="btn btn-white" data-toggle="dropdown" style="cursor:pointer;">';
-						html += '    		<img src="/image/icon/usefulbutton.png" style="width:15px;">';
-						html += '		</a>';
-						html += '    	<div class="dropdown-menu">';
-						html += '    		<a class="dropdown-item" href="javascript:fnSaleDel(' + saleNo + ');">삭제</a>';
-						html += '    	    <a class="dropdown-item" href="javascript:fnSaleUpdForm(' + saleNo + ');">수정</a>';
-						html += '    	</div>';
+						html += '    		<a class="btn btn-white" data-toggle="dropdown" style="cursor:pointer;">';
+						html += '    			<img src="/image/icon/usefulbutton.png" style="width:15px;">';
+						html += '			</a>';
+						html += '    		<div class="dropdown-menu">';
+						html += '    			<a class="dropdown-item" href="javascript:fnSaleDel(' + saleNo + ');">삭제</a>';
+						html += '    	 	   <a class="dropdown-item" href="javascript:fnSaleUpdForm(' + saleNo + ');">수정</a>';
+						html += '    		</div>';
 					}
-					html += '    	</div>';
+					html += '    		</div>';
 			
 					
-					html += '      	</th>';
-					html += '    </tr>';
-					html += '  </thead>';
-					html += '  <tbody>';
+					html += '      		</th>';
+					html += '   	 </tr>';
+					html += '  		</thead>';
+					html += '  		<tbody>';
 					
-					html += '    <tr>';			
+					html += '    	<tr>';			
 				
 					// 판매여부(판매중 : I, 예약중 : B, 판매완료 : E)		
 					var selectI = '';
@@ -382,64 +395,67 @@
 												
 					// 내 글인 경우에만 판매여부변경 START
 					if(memIdx == data.saleMember.saleIdx){	
-						html += '      	<td>';
-						html += '			<select id="saleDiv" class="form-control form-select">';
-						html += '  				<option value="I" ' + selectI + '>판매중</option>';
-						html += '  				<option value="B" ' + selectB + '>예약중</option>';
-						html += '  				<option value="E" ' + selectE + '>판매완료</option>';
-						html += '			</select>';
-						html += '		</td>';
-						html += '      	<td></td>';		
+						html += '      		<td>';
+						html += '				<select id="saleDiv" class="form-control form-select">';
+						html += '  					<option value="I" ' + selectI + '>판매중</option>';
+						html += '  					<option value="B" ' + selectB + '>예약중</option>';
+						html += '  					<option value="E" ' + selectE + '>판매완료</option>';
+						html += '				</select>';
+						html += '			</td>';
+						html += '      		<td></td>';		
 						
 					}else {
 						// 판매중
 						if(data.saleMember.saleDiv == 'I'){
 							// 카카오페이 결제 이용
 							if(data.saleMember.payDiv == 'K'){
-								html += '      	<td>';					
-								html += '      		<a href="javascript:fnKakaoPay();"><img width="50px" src="/image/icon/kakaopay.png"></a>';
-								html += '		</td>';						
-								html += '      	<td></td>';		
+								html += '      		<td>';					
+								html += '      			<a href="javascript:fnKakaoPay();"><img width="50px" src="/image/icon/kakaopay.png"></a>';
+								html += '			</td>';						
+								html += '      		<td></td>';		
 							}		
 						// 예약중	
 						}else if(data.saleMember.saleDiv == 'B'){
-							html += '      	<td>';					
-							html += '      		<span class="badge badge-success">예약중</span>&nbsp;';
-							html += '		</td>';						
-							html += '      	<td></td>';		
+							html += '      		<td>';					
+							html += '      			<span class="badge badge-success">예약중</span>&nbsp;';
+							html += '			</td>';						
+							html += '      		<td></td>';		
 						// 판매완료	
 						}else if(data.saleMember.saleDiv == 'E'){
-							html += '      	<td>';					
-							html += '      		<span class="badge badge-dark">거래완료</span>&nbsp;';
-							html += '		</td>';						
-							html += '      	<td></td>';			
+							html += '      		<td>';					
+							html += '      			<span class="badge badge-dark">거래완료</span>&nbsp;';
+							html += '			</td>';						
+							html += '     	 	<td></td>';			
 						}					
 					}	
-					html += '    </tr>';		
+					html += '   	</tr>';		
 					
-					html += '    <tr>';
-					html += '      	<td colspan="2">';
-					html += '			<div class="sale_title">' + data.saleMember.saleTitle + '</div><br>';
+					html += '    	<tr>';
+					html += '      		<td colspan="2">';
+					html += '				<div class="sale_title">' + data.saleMember.saleTitle + '</div><br>';
 					html += data.saleMember.saleDate + '<br><br>';
 					html += data.saleMember.saleCmt + '<br><br>';
-					html += '			<div class="sale_amount">' + data.saleMember.saleAmount + '원</div><br><br>';
+					html += '				<div class="sale_amount">' + data.saleMember.saleAmount + '원</div><br><br>';
 					
 					html += '댓글 <span id="reply_span">' + data.saleMember.replyCnt + '</span>개 ＊ 조아요 <span id="good_span">' + data.saleMember.goodCnt + '</span> ＊ 조회 ' + data.saleMember.readCnt + '<br>';
 					
-					html += '    </tr>';
-					html += '  </tbody>';
-					html += '</table>';
+					html += '    	</tr>';
+					html += '  	</tbody>';
+					html += '	</table>';
 				
-					html += '<!-- 댓글 등록 폼 -->';
-					html += '<div class="w-90">';					
-					html += '	<div class="input-group mb-3">';
-					html += '		<textarea id="reply_content" class="form-control" aria-label="With textarea"></textarea>';
-					html += '  		<button class="btn btn-outline-secondary" type="button" id="reply_button" onclick="fnReplyBtnClick(); return false;">Button</button>';
-					html += '	</div>';
+					html += '	<!-- 댓글 등록 폼 -->';
+					html += '	<div class="w-90">';					
+					html += '		<div class="input-group mb-3">';
+					html += '			<textarea id="reply_content" class="form-control" aria-label="With textarea"></textarea>';
+					html += '  			<button class="btn btn-outline-secondary" type="button" id="reply_button" onclick="fnReplyBtnClick(); return false;">Button</button>';
+					html += '		</div>';
 
-					html += '	<!-- 댓글 목록 -->';
-					html += '	<div id="comList" name="comList"></div>';
-					html += '</div><br><br><br><br>';		
+					html += '		<!-- 댓글 목록 -->';
+					html += '		<div id="comList" name="comList"></div>';
+					html += '	</div>';		
+					
+					html += '	<div class="bottomArea"></div>';
+					html += '</div>';
 				
 					$('#market').append(html);
 
@@ -473,8 +489,7 @@
 						
 						html += '<div id="rely_div_' + data[i].replyNo + '" class="container pt-3 pb-3 border-bottom">';
 						html += '	<div class="row">';
-						html += '		<div class="col-sm-9">';
-
+						html += '		<div class="col-12 col-sm-12">';
 
 						// 내 댓글인 경우에만 수정, 삭제 허용 START
 						html += '    			<div class="reply_upd_btn dropleft">';
@@ -484,6 +499,7 @@
 							html += '    				<img src="/image/icon/usefulbutton.png" style="width:15px;">';
 							html += '				</a>';
 							html += '    			<div class="dropdown-menu">';
+							
 							html += '    				<a class="dropdown-item" href="javascript:fnReplyDel(' + data[i].replyNo + ');">삭제</a>';
 							html += '    			    <a class="dropdown-item" href="javascript:fnReplyUpdForm(' + data[i].replyNo + ');">수정</a>';
 							html += '    			</div>';
@@ -491,7 +507,6 @@
 						html += '    			</div>';
 						// 내 댓글인 경우에만 수정, 삭제 허용 END
 						
-
 						
 						html += '			<div class="row">';
 						html += '				<div class="col-2 col-sm-2">';
@@ -519,7 +534,7 @@
 						html += '	</div>';
 						
 						
-						html += '</div>';
+						html += '</div><br>';
 
 						$('#comList').append(html);
 					} 	
@@ -765,6 +780,7 @@
 					var html = '';
 					// 검색
 					html += '<div class="write_form" >';
+					html += '	<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
 					html += '	<div>마켓 글쓰기</div>';
 					html += '	<div class="write_form_btn" >';
 					html += ' 	 	<button type="button" class="btn btn-outline-primary" onclick="fnSaleUpd(' + saleNo + ');">완료</button>';
@@ -1323,6 +1339,7 @@
 			var html = '';
 			// 검색
 			html += '<div class="write_form" >';
+			html += '	<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
 			html += '	<div>마켓 글쓰기</div>';
 			html += '	<div class="write_form_btn" >';
 			html += ' 	 	<button type="button" class="btn btn-outline-primary" onclick="fnSaleReg();">완료</button>';

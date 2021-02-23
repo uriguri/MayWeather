@@ -37,4 +37,5 @@ public interface MemberDao {
 	//아이디 존재 유무확인(유효성검사)
 	int selectMemberByIdCount(String memId);
 	
+	
 }

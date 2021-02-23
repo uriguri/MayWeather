@@ -20,7 +20,7 @@ public class NaverLoginUtil {
 	
 	private final static String CLIENT_ID = "MdczNclpufLIZAvryTGf";
 	private final static String CLIENT_SECRET = "9kQfOSZtfz";
-	private final static String REDIRECT_URI = "http://localhost:8080/naver/oauthNaver";
+	private final static String REDIRECT_URI = "http://localhost:8080/members/naver/oauthNaver";
 	private final static String SESSION_STATE = "oauth_state";
 	
 	/* 프로필 조회 API URL */
@@ -82,14 +82,16 @@ public class NaverLoginUtil {
 	}
 	
 	/* Access Token을 이용하여 네이버 사용자 프로필 API를 호출 */
-	public String getUserProfile(HttpSession session, OAuth2AccessToken oauthToken) throws IOException{
+	public String getUserProfile(OAuth2AccessToken oauthToken) throws IOException{
 		OAuth20Service oauthService =new ServiceBuilder()
 			.apiKey(CLIENT_ID)
 			.apiSecret(CLIENT_SECRET)
 			.callback(REDIRECT_URI).build(NaverLoginApi.instance());
+		
 		OAuthRequest request = new OAuthRequest(Verb.GET, PROFILE_API_URL, oauthService);
 		oauthService.signRequest(oauthToken, request);
 		Response response = request.send();
+		
 		return response.getBody();
 	}
 	

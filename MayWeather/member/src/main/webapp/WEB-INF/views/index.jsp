@@ -23,7 +23,6 @@
       var memNic = '<%=(String)session.getAttribute("memnic")%>';
       var memLoc = '<%=(String)session.getAttribute("memloc")%>';
 </script>    
-<script src="<c:url value="/js/market.js"/>"></script>
 
 <!-- 기본 CSS파일 -->
 <link rel="styleSheet" href="<c:url value="/css/default.css"/>">
@@ -39,7 +38,6 @@
 <link rel="styleSheet" href="<c:url value="/css/member/login-register.css"/>"/>
 <link rel="styleSheet" href="<c:url value="/css/member/bootstrap.css"/>"/>
 <link rel="styleSheet" href="<c:url value="/css/member/mypage.css"/>"/>
-
 
 
 <!-- alert 창 변경 sweetalert -->
@@ -64,10 +62,15 @@
     <div class="memContent">
 
         <div class="content" id="memberMain">
+		
 
 
 <div id="naverIdLogin">
 	<a id="naverIdLogin_loginButton" href="javascript:void(0);" role="button" onclick="naverLogin(); return false;"><img src="https://static.nid.naver.com/oauth/big_g.PNG" width=120></a>
+</div>
+
+<div>
+	<input type="button" onclick="getNaverInfo();" value="네이버정보가져오기">
 </div>
            <%--  <!-- 회원가입 로그인 div -->
             <div class="container">
@@ -344,19 +347,44 @@ function naverLogin(){
 		error: function(){
 			console.log("네이버로그인실패");
 		}
-
 	});
 
 }
-
 </script>
+
+<script>
+function getNaverInfo(){
+	
+
+	$.ajax({
+		type: 'GET',
+		url: '/members/naver/oauthNaver',
+		async: false,
+		dataType: 'json',
+		success: function(naverMem){
+			console.log(naverMem);
+			
+		},
+		error: function(){
+			console.log("유저정보 가져오기 실패");
+		}
+		
+		
+	}); 
+
+}
+</script>
+
+
 
 
 <!-- 마이페이지 JS -->
 <script src="<c:url value="/js/member/mypage.js"/>"></script>
 <script src="<c:url value="/js/member/bootstrap.js"/>" type="text/javascript"></script>
 
-	
+<!-- MARKET JS파일 -->
+<script src="<c:url value="/js/market.js"/>"></script>
+
 	<!-- 푸터 -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>
 </body>

@@ -1,7 +1,10 @@
 package com.mw.member.util;
 
+import org.springframework.stereotype.Service;
+
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
+@Service
 public class NaverLoginApi extends DefaultApi20{
 	
 	 protected NaverLoginApi(){
