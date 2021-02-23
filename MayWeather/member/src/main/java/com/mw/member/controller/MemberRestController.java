@@ -1,10 +1,14 @@
 package com.mw.member.controller;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mw.member.domain.KakaoLoginInfo;
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.MemberEditRequest;
@@ -34,8 +43,10 @@ import com.mw.member.service.MemberPhotoEditService;
 import com.mw.member.service.MemberPhotoSaveService;
 import com.mw.member.service.MemberPhotoUploadService;
 import com.mw.member.service.MemberRegService;
+import com.mw.member.util.NaverLoginUtil;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/members")
 public class MemberRestController {
 	
@@ -68,6 +79,9 @@ public class MemberRestController {
 	
 	@Autowired
 	private MemberKakaoLoginService kakaoLoginService;
+	
+	@Autowired
+	private NaverLoginUtil naverLoginUtil;
 	
 	
 	@PostMapping // 회원가입 
@@ -151,6 +165,54 @@ public class MemberRestController {
 		return deleteService.deleteMem(memIdx);
 	}
 	
+	@GetMapping("/naver")
+	public String getNaverAuthUrl(HttpSession session) {
+		String reqUrl = naverLoginUtil.getAutorizationUrl(session);
+		return reqUrl;
+	}
+	
+	@GetMapping("/naver/oauthNaver")
+		public String oauthNaver(HttpServletRequest request, HttpServletResponse response) throws IOException {
+			
+			Gson gson = new Gson();
+			
+			HttpSession session = request.getSession();
+			String code = request.getParameter("code");
+			String state = request.getParameter("state");
+			String error = request.getParameter("error");
+
+			    // 로그인 팝업창에서 취소버튼 눌렀을경우
+			    if ( error != null ){
+			        if(error.equals("access_denied")){
+			            return "redirect:/members/naver";
+			        }
+			    }
+			OAuth2AccessToken oauthToken;
+			oauthToken = naverLoginUtil.getAccessToken(session, code, state);
+			
+			String loginInfo = naverLoginUtil.getUserProfile(session, oauthToken);
+			
+			JsonElement element = JsonParser.parseString(loginInfo);
+			JsonObject jsonObj = element.getAsJsonObject();
+			JsonObject callbackResponse = (JsonObject) jsonObj.get("response");
+			String naverUniqueNo = callbackResponse.get("id").toString();
+			
+			if (naverUniqueNo != null && !naverUniqueNo.equals("")) {
+
+		       
+		        
+		        // 리턴받은 naverUniqueNo 해당하는 회원정보 조회 후 로그인 처리 후 메인으로 이동
+		        
+
+		    // 네이버 정보조회 실패
+		    } else {
+		        System.out.println("네이버 정보조회 실패");
+		    }
+			
+			return "redirect:/";
+			
+			
+		}
 	
 	
 	

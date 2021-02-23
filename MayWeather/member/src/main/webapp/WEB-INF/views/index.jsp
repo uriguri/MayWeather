@@ -15,8 +15,7 @@
 
 <!-- 카카오로그인  -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<!-- 카카오맵 -->
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4d5c5170c5e04e72b1bbee5949951a83&libraries=services"></script>
+
 
 <!-- MARKET JS파일 -->
 <script type="text/javascript">
@@ -66,6 +65,10 @@
 
         <div class="content" id="memberMain">
 
+
+<div id="naverIdLogin">
+	<a id="naverIdLogin_loginButton" href="javascript:void(0);" role="button" onclick="naverLogin(); return false;"><img src="https://static.nid.naver.com/oauth/big_g.PNG" width=120></a>
+</div>
            <%--  <!-- 회원가입 로그인 div -->
             <div class="container">
 
@@ -326,6 +329,27 @@
 	});
 	</script>
 	</c:if>
+
+<script>
+function naverLogin(){
+	
+	$.ajax({
+		type: 'GET',
+		url: '/members/naver',
+		async: false,
+		dataType: 'text',
+		success: function(naverRes) {
+			location.href=naverRes;
+		},
+		error: function(){
+			console.log("네이버로그인실패");
+		}
+
+	});
+
+}
+
+</script>
 
 
 <!-- 마이페이지 JS -->
