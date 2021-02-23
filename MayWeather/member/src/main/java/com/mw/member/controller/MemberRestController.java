@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -86,8 +87,6 @@ public class MemberRestController {
 	@Autowired 
 	private NaverRegService naverRegService;
 	
-	
-
 	@PostMapping // 회원가입
 	public String memberReg(@RequestBody MemberRegRequest regRequest) {
 		return regService.memberReg(regRequest) > 0 ? "Y" : "N";
@@ -130,7 +129,7 @@ public class MemberRestController {
 		rda.addAttribute("type", "delete");
 		rda.addAttribute("result", "ok");
 
-		return "logoutSUCESS";
+		return "logoutSUCCESS";
 	}
 
 	@PutMapping("/edit/{memIdx}") // 정보수정
@@ -153,7 +152,7 @@ public class MemberRestController {
 
 		photoUploadService.uploadPhotoMember(memIdx, memPhoto);
 
-		return "SUCESS";
+		return "SUCCESS";
 	}
 
 	@DeleteMapping("/delete/{memIdx}") // 회원탈퇴
@@ -169,12 +168,18 @@ public class MemberRestController {
 	}
 
 	@GetMapping("/naver/oauthNaver")
-	public String oauthNaver(HttpServletRequest request, HttpServletResponse response, 
-							@RequestParam String code, @RequestParam String state, HttpSession session) throws Exception {
+	public ModelAndView oauthNaver(HttpServletRequest request, HttpServletResponse response, 
+							@RequestParam String code, @RequestParam String state, HttpSession session, Model model) throws Exception {
 		
-		naverRegService.naverMemberReg(request, response, code, state, session);
+		ModelAndView mav = new ModelAndView();
 		
-		return "redirect:/";
+		mav.setViewName("redirect:http://localhost:8080/");
+		
+		if(naverRegService.naverMemberReg(request, response, code, state, session) == 0) {
+			model.addAttribute("loginCheck", "loginSUCCESS");
+		}
+		
+		return mav;
 	
 	}
 

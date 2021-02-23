@@ -1,7 +1,6 @@
 package com.mw.member.service;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.google.gson.JsonElement;
@@ -65,10 +63,27 @@ public class NaverRegService {
 		System.out.println(naverGender);
 		NaverRegRequest naverRegRequest = new NaverRegRequest();
 		
+		int idChk = dao.selectMemberByIdCount(naverId);
+		
+		System.out.println(idChk);
+		
 		
 		Member member = naverRegRequest.regRequest(naverId, naverName, naverGender);
 		
-		result = dao.insertMem(member);
+		
+		if(idChk > 0) {
+			
+			member = dao.selectKakaoLogin(naverId);
+			
+			request.getSession().setAttribute("loginInfo", member.toKakaoLoginInfo());
+			
+		} else {
+			
+			result = dao.insertMem(member);
+		}
+		
+		
+		
 		
 		return result;
 	}

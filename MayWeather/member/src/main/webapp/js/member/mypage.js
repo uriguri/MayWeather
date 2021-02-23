@@ -33,6 +33,7 @@ function memberMain(){
 		memberMain +='<div class="content-modal">';
 		memberMain +='<div class="social">';
 		memberMain +='<a id="custom-login-btn" href="javascript:kakaoLogin()"> <img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="200"/></a>';
+		memberMain +='<a id="naverIdLogin_loginButton" href="javascript:void(0);" role="button" onclick="naverLogin(); return false;"><img src="https://static.nid.naver.com/oauth/big_g.PNG" width=200 style="margin-top: 15px;"></a>';
 		memberMain +='</div>';
 		memberMain +='<div class="division">';
 		memberMain +='<div class="line l"></div>';
@@ -176,6 +177,10 @@ function memberMain(){
 		memberMain +='</div>';
 
 	$('.content').html(memberMain);
+
+	var memIdx = '<%=(String)session.getAttribute("memIdx")%>';
+	
+	console.log(memIdx);
 	
 	if(memIdx != null){
 		var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';

@@ -24,6 +24,7 @@
       var memLoc = '<%=(String)session.getAttribute("memloc")%>';
 </script>    
 
+
 <!-- 기본 CSS파일 -->
 <link rel="styleSheet" href="<c:url value="/css/default.css"/>">
 
@@ -63,15 +64,13 @@
 
         <div class="content" id="memberMain">
 		
+		<input type="hidden" value="${loginInfo}">
+
+		<input type="hidden" value="${loginCheck}">
+		
+		
 
 
-<div id="naverIdLogin">
-	<a id="naverIdLogin_loginButton" href="javascript:void(0);" role="button" onclick="naverLogin(); return false;"><img src="https://static.nid.naver.com/oauth/big_g.PNG" width=120></a>
-</div>
-
-<div>
-	<input type="button" onclick="getNaverInfo();" value="네이버정보가져오기">
-</div>
            <%--  <!-- 회원가입 로그인 div -->
             <div class="container">
 
@@ -353,28 +352,8 @@ function naverLogin(){
 </script>
 
 <script>
-function getNaverInfo(){
-	
 
-	$.ajax({
-		type: 'GET',
-		url: '/members/naver/oauthNaver',
-		async: false,
-		dataType: 'json',
-		success: function(naverMem){
-			console.log(naverMem);
-			
-		},
-		error: function(){
-			console.log("유저정보 가져오기 실패");
-		}
-		
-		
-	}); 
-
-}
 </script>
-
 
 
 
