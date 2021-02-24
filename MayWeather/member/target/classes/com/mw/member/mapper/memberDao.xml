@@ -71,5 +71,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select count(*) from mem where memId=#{memId}
 	</select>
 
+	<!-- 이름으로 아이디 값 반환(아이디찾기) -->
+	<select id="selectMemberByName" resultType="String">
+	SELECT memId From mem where memName=#{memName} 
+	</select>
+	
+	<!-- 새로운 비밀번호로 변경(임시비밀번호) -->
+	<update id="updateMemberPw" parameterType="com.mw.member.domain.Member">
+		UPDATE mem SET memPw=#{param1} WHERE memId=#{param2}
+	</update>
 
 </mapper>

@@ -58,6 +58,11 @@
 .list_image {
 	width : 100px;
 	height : 100px;
+	margin: 15px 5px 0 5px;
+}
+
+.div-margin{
+	margin: 0 10px 0 10px ;	
 }
 
 .thumbnail{
@@ -162,4 +167,45 @@
 
 .align_right{
 	text-align: right;
+}
+
+.dropdown_div {
+   display: none;	
+   width: 50px;
+   top : 20px;	
+   right: 25px;
+   position: absolute;
+   background-color : white;
+}
+
+.dropdown_item {
+   padding: 5px 10px;
+   border: 1px solid #ddd;
+   
+}
+
+.dropdown_div_reply {
+   display: none;	
+   width: 80px;
+   height: 65px;
+   top : 20px;	
+   right: 25px;
+   position: absolute;
+   background-color : white;
+   z-index: 10;
+}
+
+.dropdown_item_reply {
+   padding: 5px 5px 0 5px;
+   border: 1px solid #ddd;
+   
+}
+
+#reply_button {
+   margin: 5px 0 5px 0 ;	
+}
+
+#reply_reg_div{
+	padding: 0 5px 0 5px;
+	margin: 0 5px 0 5px;	
 }

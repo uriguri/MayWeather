@@ -1,6 +1,8 @@
-// 모달 닫기
 
-// 회원가입, 로그인 모달 닫기
+
+
+// 모달 닫기
+// 로그인 모달 닫기
 function closeLoginModal() {
 $('#loginModal').modal("hide");
 }
@@ -47,7 +49,7 @@ function memberMain(){
 		memberMain +='<div id="idLoginMsg"></div>';
 		memberMain +='<input id="memPw" class="form-control" type="password" placeholder="Password" name="memPw">';
 		memberMain +='<div id="pwLoginMsg"></div>';
-		memberMain +='<input class="btn btn-default btn-login" type="button" value="Login" name="loginButton" id="loginButton">';
+		memberMain +='<input class="btn btn-default btn-login" type="button" value="Login" onclick="memberLoginBtn();" name="loginButton" id="loginButton">';
 		memberMain +='</form>';
 		memberMain +='</div>';
 		memberMain +='</div>';
@@ -75,7 +77,7 @@ function memberMain(){
 		memberMain +='<option value="M">남성</option>';
 		memberMain +='<option value="N">선택하지 않음</option>';
 		memberMain +='</select>';
-		memberMain +='<input class="btn btn-default btn-register" type="button" value="가입 하기" name="commit" id="commit">';
+		memberMain +='<input class="btn btn-default btn-register" type="button" value="가입 하기" onclick="memberRegBtn();" name="commit" id="commit">';
 		memberMain +='</form>';
 		memberMain +='</div>';
 		memberMain +='</div>';
@@ -171,30 +173,43 @@ function memberMain(){
 		memberMain +='<div class="mem-notice">내 방명록(정은님꺼 연결)</div>';
 		memberMain +='</div>';
 		memberMain +='<div class="mypage-body-3">';
+		memberMain +='<div class="mem-forgot">아이디/비밀번호 찾기</div>';
+		memberMain +='<hr class="mypage-hr">';
 		memberMain +='<div class="mem-delete" data-toggle="modal" data-target="#mypageModal" data-whatever="회원 탈퇴">회원 탈퇴</div>';
 		memberMain +='</div>';
 		memberMain +='</div>';
 		memberMain +='</div>';
 
 	$('.content').html(memberMain);
-
-	var memIdx = '<%=(String)session.getAttribute("memIdx")%>';
 	
-	console.log(memIdx);
 	
-	if(memIdx != null){
+	if(memIdx != 'null' && memIdx != ''){
 		var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
 		memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://localhost:8080/fileupload/member/'+memPhoto+'">';
 		memInfoLogin +='</div>';	
 		memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
 		memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">내위치 : '+memLoc+'</div>';
 		
-		var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="#">로그아웃</a>' 
+		var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>' 
 	
 		$('#memInfo').html(memInfoLogin);
+		
 		$('#memRegloginBtn').html(logoutBtn);
 	
 		$('#mypageMarket').css('display','block');
+		
+		memIdx = $('#memIdxVal').val();
+		memId = $('#memIdVal').val();
+		memName = $('#memNameVal').val();
+		memGender = $('#memGenderVal').val();
+		memPhoto = $('#memPhotoVal').val();
+		
+		console.log(memIdx);
+		console.log(memId);
+		console.log(memName);
+		console.log(memGender);
+		console.log(memPhoto);
+		
 		
 		if(memEmailchk == 'N') {
 			$('#memMailState').css('display','block');
@@ -204,45 +219,44 @@ function memberMain(){
 	
 }
 
-
-//회원가입
-$(document).on("click","#commit",function(e){
-
+//회원가입 완료 버튼 사용시
+function memberRegBtn(){
+	
 	var memId = $('#memIdReg').val();
 	var memPw = $('#memPwReg').val();
 	var memName = $('#nickName').val();
 	var memGender = $('#genderSelect option:selected').val();
-
+	
 	var member = {
-		memId : memId,
-		memPw : memPw,
-		memName : memName,
-		memGender : memGender
-	};
+			memId : memId,
+			memPw : memPw,
+			memName : memName,
+			memGender : memGender
+		};
 
-	// REST POST
 	$.ajax({
 		type : 'POST',
 		url : '/members',
 		contentType : 'application/json',
-		/* dataType: 'json', */
 		data : JSON.stringify(member),
-		/* async : false, */
 		success : function(regDone) {
 			
-			console.log(regDone);
+				console.log(regDone);
 			
-			if (regDone == 'Y') {
-				new swal("가입을 축하합니다!", "이제 로그인 할 수 있어요!", "success");
-				closeLoginModal();
-				
-			} else {
-				new swal("오류 발생!", "다시 시도해주세요!", "error");
-			}
-		},
+				if (regDone == 'Y') {
+					new swal("가입을 축하합니다!", "이제 로그인 할 수 있어요!", "success");
+					
+					closeLoginModal();
+					
+				} else {
+					new swal("오류 발생!", "다시 시도해주세요!", "error");
+				}
+			},
+			
 		beforeSend:function(){
 			$('#regLoading').addClass('display_block');
 		},
+			
 		complete:function(){
 			$('#regLoading').removeClass('display_block');
 		},
@@ -253,10 +267,9 @@ $(document).on("click","#commit",function(e){
 					+ error);
 		}
 	});
-});
+}
 
 //회원가입 유효성 검사
-
 //아이디 유효성
 $(document).on("focusout","#memIdReg",function(){
 	var re =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -380,11 +393,9 @@ $(document).on("focusin","#memPwRegChk",function(){
 	regPwChkChkBox.prop('checked', false);
 });
 
-//로그인
-
-$(document).on("click","#loginButton",function(e){
-	e.preventDefault();
-
+//로그인 완료버튼 사용시
+function memberLoginBtn(){
+	
 	var memId = $('#memId').val();
 	var memPw = $('#memPw').val();
 
@@ -424,7 +435,7 @@ $(document).on("click","#loginButton",function(e){
 					memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">내위치 : '+memLoc+'</div>';
 					
 
-				var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="#">로그아웃</a>' 
+				var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>' 
 				
 				$('#memInfo').html(memInfoLogin);
 				$('#memRegloginBtn').html(logoutBtn);
@@ -446,9 +457,9 @@ $(document).on("click","#loginButton",function(e){
 				  "error:" + error);
 		}
 
-	});
+	});	
+}
 
-});
 
 //로그인 유효성 검사
 
@@ -497,36 +508,34 @@ $(document).on("focusin","#memPw",function(){
 	loginPwMsg.removeClass('display_block');
 });
 
-
-
 //카카오 로그인
 
 //SDK 초기화
 Kakao.init('4d5c5170c5e04e72b1bbee5949951a83');
 
-//SDK 초기화 상태 확인
+//SDK 초기화 상태 확인 문제시 확인필요함
 console.log(Kakao.isInitialized());
 
 function kakaoLogin(){
 	
-	Kakao.Auth.login({
-		scope:'profile, account_email, gender',
-		success: function(authObj) {
-			Kakao.API.request({
-				url: '/v2/user/me',
-				success: function(userKakao) {
-					var kakaoInfo = userKakao.kakao_account;
-					var kakaoNamePhoto = userKakao.kakao_account.profile;
+Kakao.Auth.login({
+	scope:'profile, account_email, gender',
+	success: function(authObj) {
+		Kakao.API.request({
+			url: '/v2/user/me',
+			success: function(userKakao) {
+				var kakaoInfo = userKakao.kakao_account;
+				var kakaoNamePhoto = userKakao.kakao_account.profile;
 
-					kMemId = kakaoInfo.email;
-					kMemName = kakaoNamePhoto.nickname;
-					kMemGender ='' 
+				kMemId = kakaoInfo.email;
+				kMemName = kakaoNamePhoto.nickname;
+				kMemGender ='' 
 						
-					if(kakaoInfo.gender == 'male'){
-						kMemGender = 'M';
-					} else {
-						kMemGender = 'F';
-					}
+				if(kakaoInfo.gender == 'male'){
+					kMemGender = 'M';
+				} else {
+					kMemGender = 'F';
+				}
 					
 					kMember = {
 						memId: kMemId,
@@ -600,12 +609,12 @@ function kakaoLogin(){
 								memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
 								memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">카카오 로그인 사용 중 입니다!</div>';
 								
-								var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="#">로그아웃</a>'
+								var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>'
 									
 								//상단 Info html변경
 								$('#memInfo').html(memInfoLogin);
 								
-								//마켓 영역 안보이게하기
+								//마켓 영역 보이게하기
 								$('#mypageMarket').css('display','block');
 								
 								//로그아웃 버튼으로 체인지
@@ -623,42 +632,56 @@ function kakaoLogin(){
 						}); //ajax end
 					} // else end
 					
-					}
+				}
 			});
 		}
 	});
 }
 
+// 네이버 로그인
+function naverLogin(){
+	
+	$.ajax({
+		type: 'GET',
+		url: '/members/naver',
+		async: false,
+		dataType: 'text',
+		success: function(naverRes) {
+			location.href=naverRes;
+		},
+		error: function(){
+			console.log("네이버로그인실패");
+		}
+	});
 
-
-
+}
 
 //로그아웃 (동적생성 버튼 클릭 + Swal Button : True False)
 
-$(document).on('click', '#memLogoutBtn', function(){
-
-		Swal.fire({
-			title: '정말 로그아웃 하시겠어요?',
-			icon: 'info',
-			showCancelButton: true,
-			confirmButtonText: '네!로그아웃 할게요.',
-			cancelButtonText: '아니요. 더 머무를게요.',
-		}).then((result) => {
-			if(result.isConfirmed) {
-			
-				$.ajax({
-					type : 'GET',
-					url : '/members/logout',
-					dataType: 'text',
-					success : function(logout){
-					
-					sessionStorage.clear();
-					location.reload();
-					}
-				});
-			}
-		})	
-});
+function memberLogoutBtn(){
+	
+	Swal.fire({
+		title: '정말 로그아웃 하시겠어요?',
+		icon: 'info',
+		showCancelButton: true,
+		confirmButtonText: '네!로그아웃 할게요.',
+		cancelButtonText: '아니요. 더 머무를게요.',
+	}).then((result) => {
+		if(result.isConfirmed) {
+		
+			$.ajax({
+				type : 'GET',
+				url : '/members/logout',
+				dataType: 'text',
+				success : function(logout){
+				
+				sessionStorage.clear();
+				location.reload();
+				}
+			});
+		}
+	});	
+}
 		
 // 회원 정보 수정
 $(document).on("click",".mem-change",function(){
@@ -758,8 +781,13 @@ $(document).on("click",".mem-delete",function(){
 	memberDeleteHtml += '</form>';
 	memberDeleteHtml += '</div>';
 	
+	if(memIdx != 'null' && memIdx != ''){
+	
 	$('.modal-body-mypage').html(memberDeleteHtml);
 	$('.nologin-msg').css('display', 'none');
+	
+	}
+	
 	
 	$(document).on("click","#modalDoneBtn",function(){
 	
@@ -773,8 +801,11 @@ $(document).on("click",".mem-delete",function(){
 					console.log(deleteDone);
 					
 					if (deleteDone == 1) {
-						new swal("회원 탈퇴 완료", "다시 돌아오실꺼죠..?", "info");
-	
+						new swal("회원 탈퇴 완료", "다시 돌아오실꺼죠..? 2초뒤 메인으로 이동합니다.", "info");
+						
+						sessionStorage.clear();
+						setTimeout("location.reload()", 2000);
+						
 					} else {
 						new swal("오류 발생!", "다시 시도해주세요!", "error");
 					}
@@ -783,7 +814,7 @@ $(document).on("click",".mem-delete",function(){
 		            alert("code:"+request.status +"\n" +
 		            	  "message:"+request.responseText +"\n" +
 		                  "error:" +error);
-		        }
+		        },
 	
 			});
 		} else {
@@ -841,9 +872,13 @@ $(document).on("click",".mem-photochange",function(){
 	memberPhotoHtml += '</div>';
 	
 	
+	if(memIdx != 'null' && memIdx != ''){
 	
 	$('.modal-body-mypage').html(memberPhotoHtml);
 	$('.nologin-msg').css('display', 'none');
+	
+	}
+	
 	
 	// 프로필사진 업로드 버튼
 	$(document).on('click', '#uploadBtn', function(e){
@@ -945,6 +980,122 @@ $(document).on("click",".mem-photochange",function(){
 	});   
 	
 });	//프로필 사진 변경 end		
+
+
+//아이디 비밀번호 찾기
+$(document).on('click','.mem-forgot',function(){
+	
+	var memForgot = '';
+	memForgot +='<div class="mem-id-pw-find-div" style="margin-top: 150px;">';
+	memForgot +='<div class="mem-id-find-div">	';
+	memForgot +='<div class="mem-id-find-header">';
+	memForgot +='<h3 id="memFindTitle">아이디 찾기</h3>';
+	memForgot +='<hr class="mem-find-hr">';
+	memForgot +='</div>';
+	memForgot +='<div class="mem-id-find-body">';
+	memForgot +='<div class="mem-id-find-box">';
+	memForgot +='<div class="mem-id-find-content">';
+	memForgot +='<span>가입시 입력한 <strong>이름(닉네임)</strong>을 입력해주세요!</span>';
+	memForgot +='<div>';
+	memForgot +='<input id="memIdFindInput" type="text">';
+	memForgot +='</div>';
+	memForgot +='<div>';
+	memForgot +='<button id="memIdFindBtn" type="button" class="btn btn-info">아이디 찾기!</button>';
+	memForgot +='</div>';
+	memForgot +='<div>';
+	memForgot +='<div id="idFindResult"></div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+	memForgot +='<div class="mem-pw-find-div">';
+	memForgot +='<div class="mem-pw-find-header">';
+	memForgot +='<h3 id="memFindTitle">비밀번호 찾기</h3>';
+	memForgot +='<hr class="mem-find-hr">';
+	memForgot +='</div>';
+	memForgot +='<div class="mem-pw-find-body">';
+	memForgot +='<div class="mem-pw-find-box">';
+	memForgot +='<div class="mem-pw-find-content">';
+	memForgot +='<span>가입시 입력한 <strong>ID(이메일)</strong>을 입력해주세요!</span>';
+	memForgot +='<div>';
+	memForgot +='<input id="memPwFindInput" type="text">';
+	memForgot +='</div>';
+	memForgot +='<div>';
+	memForgot +='<button id="memPwFindBtn" type="button" class="btn btn-info">비밀번호 찾기!</button>';
+	memForgot +='</div>';
+	memForgot +='<div>';
+	memForgot +='<div id="pwFindResult"></div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+	memForgot +='</div>';
+
+	$('#memberMain').html(memForgot);
+
+//아이디 찾기	
+$(document).on('click','#memIdFindBtn',function(){
+	
+	var idFindName = $('#memIdFindInput').val();
+	
+	console.log(idFindName);
+	
+	$.ajax({
+		type: 'GET',
+		url: '/members/idfind',
+		data: {memName:idFindName},
+		success: function(findId){
+			
+			console.log(findId);
+			
+			if(findId === ""){
+				
+				$('#idFindResult').text('회원님의 ID를 찾을 수 없습니다. 다시 확인해주세요.');
+				
+			} else {
+				
+				var viewIdResult = '';
+				viewIdResult += '회원님의 아이디는<br> <strong>'+findId+'</strong> 입니다.';
+				
+				$('#idFindResult').html(viewIdResult);	
+			}	
+		}
+	});
+});
+
+//비밀번호 찾기
+$(document).on('click','#memPwFindBtn',function(){
+	
+	var pwFindId = $('#memPwFindInput').val();
+	
+	console.log(pwFindId);
+	$.ajax({
+		type: 'POST',
+		url: '/members/pwfind',
+		data: {memId:pwFindId},
+		success: function(pwFindDone){
+			
+			if(pwFindDone == 1) {				
+				$('#pwFindResult').text('등록된 이메일로 임시비밀번호를 보내드렸습니다.');
+				
+			} else {
+				$('#pwFindResult').text('존재하지 않거나 없는 아이디입니다 다시 확인해주세요.');
+			}
+		},
+		beforeSend: function(){
+			var rePwBeforeSend = '<img width="50" height="50" src="http://localhost:8080/fileupload/member/ajaxloading.gif">';
+			
+			$('#pwFindResult').html(rePwBeforeSend);
+		}
+		
+	});
+	
+});
+
+});
+
 
 
 

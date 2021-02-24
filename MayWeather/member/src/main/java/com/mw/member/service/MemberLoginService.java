@@ -10,6 +10,7 @@ import com.mw.member.dao.MemberDao;
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.Member;
 import com.mw.member.domain.MemberLoginRequest;
+import com.mw.member.util.Sha256;
 
 @Service
 public class MemberLoginService {
@@ -18,6 +19,9 @@ public class MemberLoginService {
 	
 	@Autowired
 	private SqlSessionTemplate template;
+	
+	@Autowired
+	private Sha256 sha256;
 	
 	public LoginInfo login(MemberLoginRequest loginRequest, HttpServletRequest request) {
 		
@@ -28,16 +32,21 @@ public class MemberLoginService {
 		String memId = loginRequest.getMemId();
 		String memPw = loginRequest.getMemPw();
 		
-		Member member = dao.selectLogin(memId, memPw);
+		String memEncryptPw = sha256.encrypt(memPw);
+		
+		Member member = dao.selectLogin(memId, memEncryptPw);
 		
 		System.out.println(member);
 		
 	
+		System.out.println("체크체크중체크체크중");
 		
 		if(member != null) {
 			
-			if(member.getMemEmailchk() == "Y") {
+			if(member.getMemEmailchk() == 'Y') {
+				
 				request.getSession().setAttribute("loginInfo", member.toLoginInfo());
+				
 				loginCheck = true;
 				
 			} else {

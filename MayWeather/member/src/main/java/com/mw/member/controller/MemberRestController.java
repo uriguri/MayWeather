@@ -1,7 +1,5 @@
 package com.mw.member.controller;
 
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,10 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mw.member.domain.KakaoLoginInfo;
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.MemberEditRequest;
@@ -37,11 +31,13 @@ import com.mw.member.service.KakaoRegService;
 import com.mw.member.service.MemberDeleteService;
 import com.mw.member.service.MemberEditService;
 import com.mw.member.service.MemberIdCheckService;
+import com.mw.member.service.MemberIdFindService;
 import com.mw.member.service.MemberKakaoLoginService;
 import com.mw.member.service.MemberLoginService;
 import com.mw.member.service.MemberPhotoEditService;
 import com.mw.member.service.MemberPhotoSaveService;
 import com.mw.member.service.MemberPhotoUploadService;
+import com.mw.member.service.MemberPwFindService;
 import com.mw.member.service.MemberRegService;
 import com.mw.member.service.NaverRegService;
 import com.mw.member.util.NaverLoginUtil;
@@ -86,6 +82,12 @@ public class MemberRestController {
 
 	@Autowired 
 	private NaverRegService naverRegService;
+	
+	@Autowired
+	private MemberIdFindService idFindService;
+	
+	@Autowired
+	private MemberPwFindService pwFindService;
 	
 	@PostMapping // 회원가입
 	public String memberReg(@RequestBody MemberRegRequest regRequest) {
@@ -170,18 +172,24 @@ public class MemberRestController {
 	@GetMapping("/naver/oauthNaver")
 	public ModelAndView oauthNaver(HttpServletRequest request, HttpServletResponse response, 
 							@RequestParam String code, @RequestParam String state, HttpSession session, Model model) throws Exception {
-		
 		ModelAndView mav = new ModelAndView();
-		
 		mav.setViewName("redirect:http://localhost:8080/");
-		
-		if(naverRegService.naverMemberReg(request, response, code, state, session) == 0) {
-			model.addAttribute("loginCheck", "loginSUCCESS");
-		}
+		naverRegService.naverMemberReg(request, response, code, state, session);
 		
 		return mav;
 	
 	}
-
+	
+	@GetMapping("/idfind")
+	public String findMemId(@RequestParam("memName") String memName) {
+		
+		return idFindService.findIdByName(memName);
+	}
+	
+	@PostMapping("/pwfind")
+	public int findMemPw(@RequestParam("memId") String memId) {
+		
+		return pwFindService.rePwSend(memId);
+	}
 }
 

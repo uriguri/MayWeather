@@ -30,7 +30,13 @@ public class MemberRegService {
 		dao = template.getMapper(MemberDao.class);
 
 		Member member = regRequest.memberRegRequest();
-		sha256.encrypt(member.getMemPw());
+		
+		// 요청 비밀번호 암호화
+		String memEncryptPw = sha256.encrypt(member.getMemPw());
+		
+		// 암호화 된 비밀번호 저장
+		member.setMemPw(memEncryptPw);
+		
 		
 		result = dao.insertMem(member);
 

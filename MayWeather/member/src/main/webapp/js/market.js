@@ -208,7 +208,7 @@
 						html += '		</select>&nbsp;';
 						html += '  		<input type="text" id="searchTitle" value="' + searchTitle + '" class="form-control" onclass="form-control" placeholder="" aria-label="" aria-describedby="search_btn">';
 						html += '		<div class="input-group-append">';
-						html += '  			<button class="btn btn-outline-primary" type="button" id="search_btn">Search</button>';	
+						html += '  			<button class="btn btn-primary" type="button" id="search_btn">Search</button>';	
 						html += '		</div>';
 						html += '	</div>';
 						html += '</div>';
@@ -232,7 +232,7 @@
 						html += '      <div class="mw-100"><img class="list_image" src="' + mainFileName + '"></div>';
 						html += '    </div>';
 						html += '    <div class="w-75">';
-						html += '      <div class="p-3">';
+						html += '      <div class="p-3 div-margin">';
 						
 						// 판매여부(판매중 : i, 예약중 : B, 판매완료 : E)
 						var addDiv = '';
@@ -292,26 +292,30 @@
 					saleReplyCnt = data.saleMember.replyCnt;
 					saleGoodCnt = data.saleMember.goodCnt;
 					
-					var html = '';
+					var html = ''
 					html += '<div class="container border">';
 										
 					// 이미지 목록
 					if(data.imageList.length > 0){
-						html += '	<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">';
-						html += '		<ol class="carousel-indicators">';
+			
+						html += '	<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">';
+						html += '		<!-- Indicators -->';
+						html += '  		<ol class="carousel-indicators">';
 				
 						for(var i = 0 ; i < data.imageList.length ; i++) {
 							addClass = '';
 							if(i == 0){
 								addClass = 'active';								
 							}
-							html += '		<li data-bs-target="#carouselExampleDark" data-bs-slide-to="' + i + '" class="' + addClass + '"></li>';
+							html += '    		<li data-target="#carousel-example-generic" data-slide-to="' + i + '" class="' + addClass + '"></li>';							
 						}
 						 
-						html += '		</ol>';
-						html += '		<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
+						html += '			</ol>';
+
+						html += '			<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
 						
-						html += '		<div class="carousel-inner">';
+						html += '  		<!-- Wrapper for slides -->';
+						html += '  		<div class="carousel-inner" role="listbox">';
 						
 
 						for(var i = 0 ; i < data.imageList.length; i++) {
@@ -321,25 +325,28 @@
 								addClass = 'active';								
 							}							
 							
-							html += '		<div class="carousel-item ' + addClass + '">';
-							html += '			<img src="' + data.imageList[i].fileNameAll +'" class="d-block image_list" alt="...">';
-							html += '      		<div class="carousel-caption d-none d-md-block">';
-							html += '        		<h5></h5>';
-							html += '        		<p></p>';
-							html += '     	 	</div>';
-							html += '   	</div>';
+							html += '    	<div class="item ' + addClass + '">';
+							html += '      		<img src="' + data.imageList[i].fileNameAll +'" class="image_list" alt="...">';
+							html += '      		<div class="carousel-caption">';
+							html += '      		</div>';
+							html += '    	</div>';
 						}
 						html += '  		</div>';
 						
-					   	html += '  		<a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">';
-						html += '    		<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
-						html += '    		<span class="visually-hidden">Previous</span>';
-					  	html += '  		</a>';
-						html += '  		<a class="carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next">';
-					 	html += '    		<span class="carousel-control-next-icon" aria-hidden="true"></span>';
-						html += '    		<span class="visually-hidden">Next</span>';
-						html += '  		</a>';
+						html += '	<!-- Controls -->';
+						html += '	<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">';
+						html += '		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>';
+						html += '  	 <span class="sr-only">Previous</span>';
+						html += '	</a>';
+						html += '	<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">';
+						html += '		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>';
+						html += '  	 <span class="sr-only">Next</span>';
+						html += '	</a>';
+						html += '</div>';
+											
+
 						html += '	</div>';
+				
 					}
 					
 					// 상세보기
@@ -349,7 +356,7 @@
 					html += '      		<th scope="col">' + data.saleMember.saleNic + '</th>';
 					html += '      		<th scope="col">';
 
-					html += '    		<div class="sale_reg_btn dropleft">';
+					html += '    		<div class="sale_reg_btn">';
 					
 					// 조아요 버튼
 					var heartImage = "heart.png";
@@ -359,21 +366,22 @@
 						heartImage = "emptyheart.png";
 						goodDiv = 1; 
 					}
-					html += '				<a href="javascript:fnGoodProc(' + goodDiv + ');"><img src="/image/icon/' + heartImage + '" style="width:15px;"></a>';
-					
+					html += '				<a href="javascript:fnGoodProc(' + goodDiv + ');"><img src="/image/icon/' + heartImage + '" style="width:15px;"></a>&nbsp;';
+
 					// 내 글인 경우에만 수정, 삭제 허용 START
 					if(memIdx == data.saleMember.saleIdx){
-						html += '    		<a class="btn btn-white" data-toggle="dropdown" style="cursor:pointer;">';
-						html += '    			<img src="/image/icon/usefulbutton.png" style="width:15px;">';
-						html += '			</a>';
-						html += '    		<div class="dropdown-menu">';
-						html += '    			<a class="dropdown-item" href="javascript:fnSaleDel(' + saleNo + ');">삭제</a>';
-						html += '    	 	   <a class="dropdown-item" href="javascript:fnSaleUpdForm(' + saleNo + ');">수정</a>';
+						
+						html += '    		<img src="/image/icon/usefulbutton.png" style="width:15px;" onclick="fnDropDownDisp(\'dropdown_sale\');">';
+						html += '    		<div id="dropdown_sale" class="dropdown_div">';
+						html += '    			<div class="dropdown_item">';
+						html += '					<a href="javascript:fnSaleDel(' + saleNo + ');">삭제</a><br>';
+						html += '    	 	   		<a href="javascript:fnSaleUpdForm(' + saleNo + ');">수정</a>';
+						html += '    			</div>';
 						html += '    		</div>';
+							
 					}
 					html += '    		</div>';
 			
-					
 					html += '      		</th>';
 					html += '   	 </tr>';
 					html += '  		</thead>';
@@ -444,10 +452,10 @@
 					html += '	</table>';
 				
 					html += '	<!-- 댓글 등록 폼 -->';
-					html += '	<div class="w-90">';					
-					html += '		<div class="input-group mb-3">';
+					html += '	<div class="col-12">';					
+					html += '		<div class="input-group mb-3 border-bottom align_right">';
 					html += '			<textarea id="reply_content" class="form-control" aria-label="With textarea"></textarea>';
-					html += '  			<button class="btn btn-outline-secondary" type="button" id="reply_button" onclick="fnReplyBtnClick(); return false;">Button</button>';
+					html += '  			<button class="btn btn-primary" type="button" id="reply_button" onclick="fnReplyBtnClick(); return false;">등록</button>';
 					html += '		</div>';
 
 					html += '		<!-- 댓글 목록 -->';
@@ -471,6 +479,17 @@
 			});			
 		}       
 		
+		// 드롭다운 display 
+		function fnDropDownDisp(id){
+
+		    if($("#" + id).css("display") == "none"){   
+		        jQuery('#' + id).show();  
+		    } else {  
+		        jQuery('#' + id).hide();  
+		    }  
+		
+		}
+		
 		// 댓글 목록 
 		function fnReplyList(){
 			$('#comList *').remove();
@@ -485,50 +504,40 @@
 
 					for(var i = 0 ; i < data.length; i++) {
 						var html = '';
-						
-						
 						html += '<div id="rely_div_' + data[i].replyNo + '" class="container pt-3 pb-3 border-bottom">';
 						html += '	<div class="row">';
 						html += '		<div class="col-12 col-sm-12">';
 
 						// 내 댓글인 경우에만 수정, 삭제 허용 START
-						html += '    			<div class="reply_upd_btn dropleft">';
+						html += '    			<div class="reply_upd_btn">';
 						
 						if(memIdx == data[i].replyIdx){
-							html += '    			<a class="btn btn-white" data-toggle="dropdown" style="cursor:pointer;">';
-							html += '    				<img src="/image/icon/usefulbutton.png" style="width:15px;">';
-							html += '				</a>';
-							html += '    			<div class="dropdown-menu">';
-							
-							html += '    				<a class="dropdown-item" href="javascript:fnReplyDel(' + data[i].replyNo + ');">삭제</a>';
-							html += '    			    <a class="dropdown-item" href="javascript:fnReplyUpdForm(' + data[i].replyNo + ');">수정</a>';
+							html += '    			<img src="/image/icon/usefulbutton.png" style="width:15px;" onclick="fnDropDownDisp(\'dropdown_reply_' + data[i].replyNo + '\');">';
+							html += '    			<div id="dropdown_reply_' + data[i].replyNo + '" class="dropdown_div_reply">';
+							html += '    				<div id="dropdown_item_reply_' + data[i].replyNo + '" class="dropdown_item_reply">';
+							html += '						<p onclick="fnReplyDel(' + data[i].replyNo + ');">삭제</p>';
+							html += '    	 	 	  		<p onclick="fnDropDownDisp(\'dropdown_reply_' + data[i].replyNo + '\'); fnReplyUpdForm(' + data[i].replyNo + ');">수정</p>';
+							html += '    				</div>';
 							html += '    			</div>';
 						}
 						html += '    			</div>';
 						// 내 댓글인 경우에만 수정, 삭제 허용 END
-						
 						
 						html += '			<div class="row">';
 						html += '				<div class="col-2 col-sm-2">';
 						html += '					이미지';
 						html += '				</div>';
 						html += '				<div id="reply_view_div_' + data[i].replyNo + '" class="col-10 col-sm-10">';
-
 						html += '        			<h5 class="card-title">' + data[i].replyNic + '</h5>';
 						html += '        			<h5 id="reply_view_cnt_' + data[i].replyNo + '" class="card-title">' + data[i].replyCnt + '</h5>';
 						html += '       	 		<p class="card-text">' + data[i].replyDate + '</p>';
-						
 						html += '				</div>';
 						
 						// 댓글 수정폼
 						html += '				<div id="reply_upd_div_' + data[i].replyNo + '" class="col-10 col-sm-10 " style="display:none">';
-
 						html += '					<textarea id="reply_content_' + data[i].replyNo + '" class="form-control" aria-label="With textarea">' + data[i].replyCnt + '</textarea>';
 						html += ' 					<div class="btn-group reply_upd_div pt-1" role="group" aria-label="Basic example"><button type="button" onclick="fnReplyUpd(' + data[i].replyNo + ')" class="btn btn-info">수정</button><button type="button" onclick="fnReplyView(' + data[i].replyNo + ');" class="btn btn-info">취소</button></div>';
-
-						
 						html += '				</div>';
-						
 						html += '			</div>';
 						html += '		</div>';
 						html += '	</div>';
@@ -641,12 +650,12 @@
 						html += '  	<ul class="list-group list-group-flush">';
 					
 						for(var i = 0 ; i < data.length; i++) {
-							html += '    	<li class="list-group-item">' + data[i].replyNic + '&nbsp;<button type="button" class="btn btn-outline-primary" onclick="fnSaleDivReg(' + data[i].replyIdx + ');">선택</button></li>';
+							html += '    	<li class="list-group-item">' + data[i].replyNic + '&nbsp;<button type="button" class="btn btn-primary" onclick="fnSaleDivReg(' + data[i].replyIdx + ');">선택</button></li>';
 
 						}	
 
 						
-						html += '    	<li class="list-group-item">선택 안하고 판매완료&nbsp;<button type="button" class="btn btn-outline-primary" onclick="fnViewInfo(' + saleNo + ');">선택</button></li>';
+						html += '    	<li class="list-group-item">선택 안하고 판매완료&nbsp;<button type="button" class="btn btn-primary" onclick="fnViewInfo(' + saleNo + ');">선택</button></li>';
 						html += '  	</ul>';
 						html += '</div>';	
 											
@@ -783,7 +792,7 @@
 					html += '	<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
 					html += '	<div>마켓 글쓰기</div>';
 					html += '	<div class="write_form_btn" >';
-					html += ' 	 	<button type="button" class="btn btn-outline-primary" onclick="fnSaleUpd(' + saleNo + ');">완료</button>';
+					html += ' 	 	<button type="button" class="btn btn-primary" onclick="fnSaleUpd(' + saleNo + ');">완료</button>';
 					html += '	</div>';
 					html += '</div>';
 				
@@ -1216,7 +1225,8 @@
 						if(mainFileName == '' || mainFileName == null){
 							mainFileName = '/image/icon/default.png';
 						}
-							html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
+						
+						html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
 						html += '<div class="container border">';
 						
 						html += '  <div class="row g-2">';
@@ -1283,7 +1293,7 @@
 						if(mainFileName == '' || mainFileName == null){
 							mainFileName = '/image/icon/default.png';
 						}
-							html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
+						html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
 						html += '<div class="container border">';
 						
 						html += '  <div class="row g-2">';
@@ -1342,7 +1352,7 @@
 			html += '	<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
 			html += '	<div>마켓 글쓰기</div>';
 			html += '	<div class="write_form_btn" >';
-			html += ' 	 	<button type="button" class="btn btn-outline-primary" onclick="fnSaleReg();">완료</button>';
+			html += ' 	 	<button type="button" class="btn btn-primary" onclick="fnSaleReg();">완료</button>';
 			html += '	</div>';
 			html += '</div>';
 		
@@ -1464,7 +1474,6 @@
 		
 		// 댓글 수정폼
 		function fnReplyUpdForm(replyNo) {
-
 			// 댓글 수정폼 보이게
 			$('#reply_view_div_' + replyNo).hide();
 			$('#reply_upd_div_' + replyNo).show();
@@ -1527,7 +1536,7 @@
 				saleNo : nowSaleNo,
 				replyNo : replyNo				
 			};
-			
+		
 			$.ajax({
 				url : myHostUrl + '/reply/del',
 				type : 'POST',

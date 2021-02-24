@@ -19,7 +19,7 @@ public class Member {
 	private String memBookmark;
 	private String memGender;
 	private String memEmailCode;
-	private String memEmailchk;
+	private char memEmailchk;
 	private int memSocial;
 	private int memState;
 	private Timestamp memRegdate;

@@ -10,9 +10,9 @@ public class LoginInfo {
 			private String memGender;
 			private String memPhoto;
 			private String memLoc;
-			private String memEmailchk;
+			private char memEmailchk;
 			
-			public LoginInfo(int memIdx, String memId, String memName, String memGender, String memPhoto, String memLoc, String memEmailchk) {
+			public LoginInfo(int memIdx, String memId, String memName, String memGender, String memPhoto, String memLoc, char memEmailchk) {
 				this.memIdx = memIdx;
 				this.memId = memId;
 				this.memName = memName;
