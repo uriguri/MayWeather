@@ -1,8 +1,17 @@
 		var page = 1;
 		var totalPage = 1;
 		
-		//var myHostUrl = 'http://localhost:8080/market';
-		var myHostUrl = 'http://ec2-3-35-27-93.ap-northeast-2.compute.amazonaws.com:8080/mwMarket';
+		//var marketUrl = 'http://localhost:8080/market';
+		
+		//var marketUrl = 'http://ec2-3-35-27-93.ap-northeast-2.compute.amazonaws.com:8080/mwMarket';
+		
+		var marketUrl = 'http://192.168.0.90:8080/market';
+		
+		//var clientUrl = 'http://localhost:8081';
+		
+		//var clientUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
+		
+		var clientUrl = '192.168.0.35:8080/member';
 		
 		//임의의 file object영역
         var fileObject = {};
@@ -20,21 +29,18 @@
 		$(document).ready(function(){
 
 			var paramDiv = getParameter("div");
-	
+			
 			// 카카오페이 결제인 경우		
 			var kSaleNo = getParameter("saleNo");
-			
-			// http://localhost:8081?div=mysale
-					
-			// mysale : 내 판매 목록, mybuy : 내 구매 목록, mygood : 내 관심 목록
-			if (paramDiv == "mysale" || paramDiv == "mybuy" || paramDiv == "mygood") {
-				fnMyList(paramDiv);
+
+			// mysale : 내 판매 목록 fnMyList('mysale')
+			// mybuy : 내 구매 목록, fnMyList('mybuy')
+			// mygood : 내 관심 목록 fnMyList('mygood')
+
+			// http://localhost:8081/?div=ksuccess&saleNo=80
 			// ksuccess : 카카오페이 결제 성공 , kfail : 카카오페이 결제 실패, kcancel : 카카오페이 결제 취소				
-			}else if(paramDiv == "ksuccess" || paramDiv == "kfail" || paramDiv == "kcancel"){	
+			if(paramDiv == "ksuccess" || paramDiv == "kfail" || paramDiv == "kcancel"){								
 				fnKakaoPayResult(paramDiv, kSaleNo);
-			}else {
-				// 판매 목록 호출 
-				//fnSaleList(page);
 			}
 		});
 		
@@ -82,7 +88,7 @@
 			$('#market *').remove();
             
 			$.ajax({
-				url : myHostUrl + '/sale/' + paramDiv,
+				url : marketUrl + '/sale/' + paramDiv + '/' + jsessionId,
 				type : 'GET',
 				success : function(data){
 
@@ -94,7 +100,7 @@
 						mainFileName = data[i].fileName;
 	
 						if(mainFileName == '' || mainFileName == null){
-							mainFileName = '/image/icon/default.png';
+							mainFileName = '' + clientUrl + '/image/icon/default.png';
 						}
 						html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
 						html += '<div class="container border">';
@@ -120,7 +126,7 @@
 						html += '        <p class="card-text">' + data[i].saleDate + '</p>';
 						
 						
-						html += '		 <p class="card-text align_right"><img src="/image/icon/comment.png" width="15px"> ' + data[i].replyCnt + ' <img src="/image/icon/heart.png" width="15px"> ' + data[i].goodCnt + '</p>';
+						html += '		 <p class="card-text align_right"><img src="' + clientUrl + '/image/icon/comment.png" width="15px"> ' + data[i].replyCnt + ' <img src="' + clientUrl + '/image/icon/heart.png" width="15px"> ' + data[i].goodCnt + '</p>';
 						
 						html += '      </div>';
 						html += '    </div>';
@@ -177,7 +183,7 @@
 				};	
 
 			$.ajax({
-				url : myHostUrl + '/sale',
+				url : marketUrl + '/sale',
 				type : 'POST',
 				data : JSON.stringify(data),
 				contentType : 'application/json; charset=UTF-8',
@@ -222,7 +228,7 @@
 						mainFileName = data.saleList[i].fileName;
 	
 						if(mainFileName == '' || mainFileName == null){
-							mainFileName = '/image/icon/default.png';
+							mainFileName = clientUrl + '/image/icon/default.png';
 						}
 						html = '<a href="javascript:fnViewInfo(' + data.saleList[i].saleNo + ')">';
 						html += '<div class="container border">';
@@ -248,7 +254,7 @@
 						html += '        <p class="card-text">' + data.saleList[i].saleDate + '</p>';
 						
 						
-						html += '		 <p class="card-text align_right"><img src="/image/icon/comment.png" width="15px"> ' + data.saleList[i].replyCnt + ' <img src="/image/icon/heart.png" width="15px"> ' + data.saleList[i].goodCnt + '</p>';
+						html += '		 <p class="card-text align_right"><img src="' + clientUrl + '/image/icon/comment.png" width="15px"> ' + data.saleList[i].replyCnt + ' <img src="' + clientUrl + '/image/icon/heart.png" width="15px"> ' + data.saleList[i].goodCnt + '</p>';
 						
 						html += '      </div>';
 						html += '    </div>';
@@ -283,10 +289,19 @@
 			nowSaleNo = saleNo;
 			
 			var addClass = "active";
+			alert(jsessionId);
+			var data = {
+				saleNo : saleNo,
+				jsessionId : jsessionId
+			};
 
 			$.ajax({
-				url : myHostUrl + '/sale/view/' + saleNo,
-				type : 'GET',
+				url : marketUrl + '/sale/view',
+				type : 'POST',
+				data : JSON.stringify(data),
+				contentType : 'application/json; charset=UTF-8',
+				//dataType : 'json',
+				async : false, 
 				success : function(data){
 	
 					saleReplyCnt = data.saleMember.replyCnt;
@@ -312,7 +327,7 @@
 						 
 						html += '			</ol>';
 
-						html += '			<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
+						html += '			<div class="back_class"><img id="back_btn" src="' + clientUrl + '/image/icon/back.png"></div>';
 						
 						html += '  		<!-- Wrapper for slides -->';
 						html += '  		<div class="carousel-inner" role="listbox">';
@@ -366,12 +381,12 @@
 						heartImage = "emptyheart.png";
 						goodDiv = 1; 
 					}
-					html += '				<a href="javascript:fnGoodProc(' + goodDiv + ');"><img src="/image/icon/' + heartImage + '" style="width:15px;"></a>&nbsp;';
+					html += '				<a href="javascript:fnGoodProc(' + goodDiv + ');"><img src="' + clientUrl + '/image/icon/' + heartImage + '" style="width:15px;"></a>&nbsp;';
 
 					// 내 글인 경우에만 수정, 삭제 허용 START
 					if(memIdx == data.saleMember.saleIdx){
 						
-						html += '    		<img src="/image/icon/usefulbutton.png" style="width:15px;" onclick="fnDropDownDisp(\'dropdown_sale\');">';
+						html += '    		<img src="' + clientUrl + '/image/icon/usefulbutton.png" style="width:15px;" onclick="fnDropDownDisp(\'dropdown_sale\');">';
 						html += '    		<div id="dropdown_sale" class="dropdown_div">';
 						html += '    			<div class="dropdown_item">';
 						html += '					<a href="javascript:fnSaleDel(' + saleNo + ');">삭제</a><br>';
@@ -418,7 +433,7 @@
 							// 카카오페이 결제 이용
 							if(data.saleMember.payDiv == 'K'){
 								html += '      		<td>';					
-								html += '      			<a href="javascript:fnKakaoPay();"><img width="50px" src="/image/icon/kakaopay.png"></a>';
+								html += '      			<a href="javascript:fnKakaoPay();"><img width="50px" src="' + clientUrl + '/image/icon/kakaopay.png"></a>';
 								html += '			</td>';						
 								html += '      		<td></td>';		
 							}		
@@ -498,7 +513,7 @@
 			var saleNo = nowSaleNo;
 
 			$.ajax({
-				url : myHostUrl + '/reply/' + saleNo,
+				url : marketUrl + '/reply/' + saleNo,
 				type : 'GET',
 				success : function(data){
 
@@ -512,7 +527,7 @@
 						html += '    			<div class="reply_upd_btn">';
 						
 						if(memIdx == data[i].replyIdx){
-							html += '    			<img src="/image/icon/usefulbutton.png" style="width:15px;" onclick="fnDropDownDisp(\'dropdown_reply_' + data[i].replyNo + '\');">';
+							html += '    			<img src="' + clientUrl + '/image/icon/usefulbutton.png" style="width:15px;" onclick="fnDropDownDisp(\'dropdown_reply_' + data[i].replyNo + '\');">';
 							html += '    			<div id="dropdown_reply_' + data[i].replyNo + '" class="dropdown_div_reply">';
 							html += '    				<div id="dropdown_item_reply_' + data[i].replyNo + '" class="dropdown_item_reply">';
 							html += '						<p onclick="fnReplyDel(' + data[i].replyNo + ');">삭제</p>';
@@ -561,10 +576,16 @@
 			// 로그인 체크 
 			fnLoginChk();
 		
+			var data = {
+				saleNo : nowSaleNo,
+				jsessionId : jsessionId
+			};
+		
 			$.ajax({
-				url : myHostUrl + '/sale/pay/' + nowSaleNo,
-				type : 'GET',
-				//contentType : 'application/json; charset=UTF-8',
+				url : marketUrl + '/sale/pay/',
+				type : 'POST',
+				data : JSON.stringify(data),
+				contentType : 'application/json; charset=UTF-8',
 				//dataType : 'json',
 				async : false, 
 				success : function(msg){
@@ -594,7 +615,7 @@
 			};
 
 			$.ajax({
-				url : myHostUrl + '/sale/salediv',
+				url : marketUrl + '/sale/salediv',
 				type : 'POST',
 				data : JSON.stringify(data),
 				contentType : 'application/json; charset=UTF-8',
@@ -630,7 +651,7 @@
 			$('#market *').remove();
 
 			$.ajax({
-				url : myHostUrl + '/reply/sale/' + saleNo,
+				url : marketUrl + '/reply/sale/' + saleNo,
 				type : 'GET',
 				success : function(data){
 					// 댓글 등록자 없이 판매 완료한 경우
@@ -640,7 +661,7 @@
 						var html = '';
 						html += '<div class="card w-90">';
 						html += '	<div class="card-header text-center">';
-						html += '		<img src="/image/icon/ootd2.png" width="100px" alt="...">';
+						html += '		<img src="' + clientUrl + '/image/icon/ootd2.png" width="100px" alt="...">';
 						html += '	</div>';			
 
 						html += '  	<div class="card-body">';
@@ -683,7 +704,7 @@
 
 
 			$.ajax({
-				url : myHostUrl + '/sale/buyreg',
+				url : marketUrl + '/sale/buyreg',
 				type : 'POST',
 				data : JSON.stringify(data),
 				contentType : 'application/json; charset=UTF-8',
@@ -713,20 +734,23 @@
 			if(kDiv == "ksuccess"){
 
 				// 페이지 테그 삭제
-				$('#market *').remove();
-				
+				$('.content *').remove();
+									
+				var html = '';
+				html = '<div id="market" name="market"></div>';
+				$('.content').append(html);
+														
 				$.ajax({
-					url : myHostUrl + '/sale/payview/' + kSaleNo,
+					url : marketUrl + '/sale/payview/' + kSaleNo,
 					type : 'GET',
 					success : function(data){
-						
+				
 						var mainFileName = data.saleMember.fileName;
 						if(mainFileName == '' || mainFileName == null){
-							mainFileName = '/image/icon/default.png';
+							mainFileName = clientUrl + '/image/icon/default.png';
 						}
 						
-						var html = '';
-						html += '<div class="card w-90">';
+						html = '<div class="card w-90">';
 						html += '	<div class="card-header text-center">';
 						html += '		<img src="' + mainFileName + '" width="100px" alt="...">';
 						html += '	</div>';			
@@ -751,7 +775,7 @@
 						html += '	</div>';
 						  
 						html += '</div>';	
-											
+										
 						$('#market').append(html);
 					},
 					error : function(e){
@@ -782,14 +806,14 @@
 			nowSaleNo = saleNo;
 		    
 			$.ajax({
-				url : myHostUrl + '/sale/view/' + saleNo,
+				url : marketUrl + '/sale/view/' + saleNo,
 				type : 'GET',
 				success : function(data){
 						
 					var html = '';
 					// 검색
 					html += '<div class="write_form" >';
-					html += '	<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
+					html += '	<div class="back_class"><img id="back_btn" src="' + clientUrl + '/image/icon/back.png"></div>';
 					html += '	<div>마켓 글쓰기</div>';
 					html += '	<div class="write_form_btn" >';
 					html += ' 	 	<button type="button" class="btn btn-primary" onclick="fnSaleUpd(' + saleNo + ');">완료</button>';
@@ -800,7 +824,7 @@
 		            html += '<div id="attach" class="p-3">';
 		            html += '	<div class="img_upload_div">';
 		            html += '		<label for="uploadInput">';
-		            html += '    		<img class="img_upload" src="/image/icon/carmera.png">';
+		            html += '    		<img class="img_upload" src="' + clientUrl + '/image/icon/carmera.png">';
 		            html += '     	</label>';
 		            html += '     	<input id="uploadInput" style="display: none" type="file" name="filedata" multiple onchange="addPreview($(this));"/>';
 		            html += '	</div>';
@@ -813,7 +837,7 @@
 						
 						for(var i = 0 ; i < data.imageList.length ; i++) {
 							html += '<div class="preview_box" value="' + i  +'">';
-	                        html += '	<a class="img_delete" href="#" value="' + i  +'" onclick="deletePreview(this, ' + data.imageList[i].fileNo + ')"><img class="x-btn" src="/image/icon/x.png"></a>';
+	                        html += '	<a class="img_delete" href="#" value="' + i  +'" onclick="deletePreview(this, ' + data.imageList[i].fileNo + ')"><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>';
 	                        html += '	<img class="thumbnail rounded" src="' + data.imageList[i].fileNameAll + '">';                         
 	                        html += '</div>';
 						}
@@ -871,6 +895,7 @@
 	
 		// 상품 등록
 		function fnSaleReg(){
+		
 			var saleTitle = $('#saleTitle');
 			var saleAmount = $('#saleAmount');
 			var saleCmt = $('#saleCmt');
@@ -899,11 +924,11 @@
 			var form = $('#saleRegForm')[0];
 	        var formData = new FormData(form);
 
-	        
 	        formData.append('saleTitle', $('#saleTitle').val());
 	        formData.append('saleAmount', $('#saleAmount').val());
 	        formData.append('saleCmt', $('#saleCmt').val());
 	        formData.append('payDiv', $("input:radio[id=payDiv]:checked").val());
+	        formData.append('jsessionId', jsessionId);
 
 	        for (var index = 0; index < Object.keys(fileObject).length; index++) {
 	            //formData 공간에 files라는 이름으로 파일을 추가한다.
@@ -919,7 +944,7 @@
 	            contentType : false,
 	            cache : false,
 	            timeout : 600000,
-	            url : myHostUrl + '/sale/reg',
+	            url : marketUrl + '/sale/reg',
 	            //dataType : 'JSON',
 	            data : formData,
 	            success : function(result) {
@@ -979,7 +1004,7 @@
 	        formData.append('saleTitle', $('#saleTitle').val());
 	        formData.append('saleAmount', $('#saleAmount').val());
 	        formData.append('saleCmt', $('#saleCmt').val());
-	        formData.append('payDiv', $('#payDiv').val());
+	        formData.append('payDiv', $("input:radio[id=payDiv]:checked").val());
 	        formData.append('delImage', orgDelImage.trim());
 	        
 	        /* 	
@@ -987,7 +1012,7 @@
 					saleTitle : $('#saleTitle').val(),
 					saleAmount : $('#saleAmount').val(),
 					saleCmt : $('#saleCmt').val(),
-					payDiv : $('#payDiv').val(),
+					payDiv : $("input:radio[id=payDiv]:checked").val(),
 					saleAmount : $('#saleAmount').val()
 				};	
 			 
@@ -1009,7 +1034,7 @@
 	            contentType : false,
 	            cache : false,
 	            timeout : 600000,
-	            url : myHostUrl + '/sale/upd',
+	            url : marketUrl + '/sale/upd',
 	            //dataType : 'JSON',
 	            data : formData,
 	            success : function(result) {
@@ -1054,7 +1079,7 @@
                                               
                         $("#preview").append(
                                         '<div class="preview_box" value="' + imgNum  +'">'
-                                                + '<a class="img_delete" href="#" value="' + imgNum  +'" onclick="deletePreview(this, ' + imgNum  +')"><img class="x-btn" src="/image/icon/x.png"></a>'
+                                                + '<a class="img_delete" href="#" value="' + imgNum  +'" onclick="deletePreview(this, ' + imgNum  +')"><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>'
                                                 + '<img class="thumbnail rounded" src="' + img.target.result + '">'
                                                 + '</div>');
 
@@ -1110,11 +1135,12 @@
 			
 			var data = {
 					saleNo : nowSaleNo,
-					goodDiv : goodDiv
+					goodDiv : goodDiv,
+					jsessionId : jsessionId					
 				};
 
 			$.ajax({
-				url : myHostUrl + '/sale/good',
+				url : marketUrl + '/sale/good',
 				type : 'POST',
 				data : JSON.stringify(data),
 				contentType : 'application/json; charset=UTF-8',
@@ -1146,7 +1172,7 @@
 			fnLoginChk();	
 			
 			$.ajax({
-				url : myHostUrl + '/sale/gooddel/' + nowSaleNo,
+				url : marketUrl + '/sale/gooddel/' + nowSaleNo,
 				type : 'GET',
 				contentType : 'application/json; charset=UTF-8',
 				//dataType : 'json',
@@ -1176,7 +1202,7 @@
 			fnLoginChk();
 
 			$.ajax({
-				url : myHostUrl + '/sale/del/' + saleNo,
+				url : marketUrl + '/sale/del/' + saleNo,
 				type : 'GET',
 				contentType : 'application/json; charset=UTF-8',
 				//dataType : 'json',
@@ -1211,7 +1237,7 @@
 			$('#market *').remove();
             
 			$.ajax({
-				url : myHostUrl + '/sale/mybuy',
+				url : marketUrl + '/sale/mybuy',
 				type : 'GET',
 				success : function(data){
 
@@ -1223,7 +1249,7 @@
 						mainFileName = data[i].fileName;
 	
 						if(mainFileName == '' || mainFileName == null){
-							mainFileName = '/image/icon/default.png';
+							mainFileName = clientUrl + '/image/icon/default.png';
 						}
 						
 						html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
@@ -1250,7 +1276,7 @@
 						html += '        <p class="card-text">' + data[i].saleDate + '</p>';
 						
 						
-						html += '		 <p class="card-text align_right"><img src="/image/icon/comment.png" width="15px"> ' + data[i].replyCnt + ' <img src="/image/icon/heart.png" width="15px"> ' + data[i].goodCnt + '</p>';
+						html += '		 <p class="card-text align_right"><img src="' + clientUrl + '/image/icon/comment.png" width="15px"> ' + data[i].replyCnt + ' <img src="' + clientUrl + '/image/icon/heart.png" width="15px"> ' + data[i].goodCnt + '</p>';
 						
 						html += '      </div>';
 						html += '    </div>';
@@ -1279,7 +1305,7 @@
 			$('#market *').remove();
             
 			$.ajax({
-				url : myHostUrl + '/sale/mygood',
+				url : marketUrl + '/sale/mygood',
 				type : 'GET',
 				success : function(data){
 
@@ -1291,7 +1317,7 @@
 						mainFileName = data[i].fileName;
 	
 						if(mainFileName == '' || mainFileName == null){
-							mainFileName = '/image/icon/default.png';
+							mainFileName = clientUrl + '/image/icon/default.png';
 						}
 						html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
 						html += '<div class="container border">';
@@ -1317,7 +1343,7 @@
 						html += '        <p class="card-text">' + data[i].saleDate + '</p>';
 						
 						
-						html += '		 <p class="card-text align_right"><img src="/image/icon/comment.png" width="15px"> ' + data[i].replyCnt + ' <img src="/image/icon/heart.png" width="15px"> ' + data[i].goodCnt + '</p>';
+						html += '		 <p class="card-text align_right"><img src="' + clientUrl + '/image/icon/comment.png" width="15px"> ' + data[i].replyCnt + ' <img src="' + clientUrl + '/image/icon/heart.png" width="15px"> ' + data[i].goodCnt + '</p>';
 						
 						html += '      </div>';
 						html += '    </div>';
@@ -1349,7 +1375,7 @@
 			var html = '';
 			// 검색
 			html += '<div class="write_form" >';
-			html += '	<div class="back_class"><img id="back_btn" src="/image/icon/back.png"></div>';
+			html += '	<div class="back_class"><img id="back_btn" src="' + clientUrl + '/image/icon/back.png"></div>';
 			html += '	<div>마켓 글쓰기</div>';
 			html += '	<div class="write_form_btn" >';
 			html += ' 	 	<button type="button" class="btn btn-primary" onclick="fnSaleReg();">완료</button>';
@@ -1360,7 +1386,7 @@
             html += '<div id="attach" class="p-3">';
             html += '	<div class="img_upload_div">';
             html += '		<label for="uploadInput">';
-            html += '    		<img class="img_upload" src="/image/icon/carmera.png">';
+            html += '    		<img class="img_upload" src="' + clientUrl + '/image/icon/carmera.png">';
             html += '     	</label>';
             html += '     	<input id="uploadInput" style="display: none" type="file" name="filedata" multiple onchange="addPreview($(this));"/>';
             html += '	</div>';
@@ -1388,7 +1414,7 @@
  			html += '      		</div>';
  			html += '        	<div class="form-group">';
  			html += '          		<label for="exampleFormControlTextarea1"></label>';
- 			html += '          		<textarea id="saleCmt" name="saleCmt" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>';
+ 			html += '          		<textarea id="saleCmt" name="saleCmt" class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="게시글 내용을 작성해주세요."></textarea>';
  			html += '        	</div>';
 			
 			html += '		</td>';
@@ -1416,11 +1442,12 @@
 			
 			var data = {
 				saleNo : nowSaleNo,
-				replyCnt : $('#reply_content').val()
+				replyCnt : $('#reply_content').val(),
+				jsessionId : jsessionId
 			};
 
 			$.ajax({
-				url : myHostUrl + '/reply/reg',
+				url : marketUrl + '/reply/reg',
 				type : 'POST',
 				data : JSON.stringify(data),
 				contentType : 'application/json; charset=UTF-8',
@@ -1453,7 +1480,7 @@
 		
 		// 로그인 체크 
 		function fnLoginChk(){
-			if(memIdx == null){
+			if(memIdx == null || memIdx == ''){
 				alert('로그인 후 이용해주세요.');
 				return false;
 			}
@@ -1500,7 +1527,7 @@
 			};
 
 			$.ajax({
-				url : myHostUrl + '/reply/upd',
+				url : marketUrl + '/reply/upd',
 				type : 'POST',
 				data : JSON.stringify(data),
 				contentType : 'application/json; charset=UTF-8',
@@ -1538,7 +1565,7 @@
 			};
 		
 			$.ajax({
-				url : myHostUrl + '/reply/del',
+				url : marketUrl + '/reply/del',
 				type : 'POST',
 				data : JSON.stringify(data),
 				contentType : 'application/json; charset=UTF-8',

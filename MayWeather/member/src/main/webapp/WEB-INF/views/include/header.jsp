@@ -6,8 +6,8 @@
 		<img src="<c:url value="/image/logo/mwlogo.png"/>" width="119px" class="logoimage">
 		
 		<!-- 테스트용 -->
-  		<input type="hidden" value="${memidx}" name="memidxsession" id="memidxsession">
-    	<input type="hidden" value="${memnic}" name="memnicsession" id="memnicsession">
+  		<input type="hidden" value="${sessionScope.memIdx}" name="memidxsession" id="memidxsession">
+    	<input type="hidden" value="${sessionScope.memName}" name="memnicsession" id="memnicsession">
 	</header>
 	
 	

@@ -9,6 +9,7 @@ public class MemberKakaoRequest {
 	private String memName;
 	private String memGender;
 	private String memPhoto;
+	private char memEmailchk;
 	private int memSocial;
 
 	public Member kakaoRegRequest() {
@@ -20,6 +21,9 @@ public class MemberKakaoRequest {
 		
 		// memSocial로 카카오 가입자구분
 		member.setMemSocial(1);
+		
+		// 카카오에서 인증후 로그인 하기때문에 메일체크 X
+		member.setMemEmailchk('Y');
 		
 		return member;
 	}

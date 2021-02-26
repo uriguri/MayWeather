@@ -15,8 +15,7 @@
                class="menuicons"></td>
             <td><img src="image/icon/market.png" width="30"
                class="menuicons" onclick="fnSaleList(1)"></td>
-            <td><img src="image/icon/mypage2.png" width="23"
-               class="menuicons" onclick="memberMain()"></td>
+            <td><img src="image/icon/mypage2.png" width="23" class="menuicons" onclick="memberMain()"></td>
          </tr>
          <tr>
             <td>HOME</td>

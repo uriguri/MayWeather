@@ -1,6 +1,6 @@
 
 #write_btn {
-    background-image: url(/image/icon/write.png);
+    background-image: url(http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/write.png);
     width: 50px;
     height: 50px;
     background-size: 30px;
@@ -15,17 +15,6 @@
     cursor: pointer;
     z-index: 10;
 }
-
-/*
-#write_btn {
-	position: absolute;
-	right: 30px;
-	bottom : 80px;
-	background-color: #64c2eb;
-	padding: 10px;	
-	border-radius: 40px;
-}
-*/
 
 .write_form{
 	position : relative;

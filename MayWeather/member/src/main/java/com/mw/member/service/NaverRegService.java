@@ -18,6 +18,7 @@ import com.mw.member.dao.MemberDao;
 import com.mw.member.domain.Member;
 import com.mw.member.domain.NaverRegRequest;
 import com.mw.member.util.NaverLoginUtil;
+import com.mw.member.util.RedisService;
 
 @Service
 public class NaverRegService {
@@ -30,8 +31,11 @@ public class NaverRegService {
 	@Autowired
 	private NaverLoginUtil naverLoginUtil;
 	
+	@Autowired
+	private RedisService redisService;
+	
 	public int naverMemberReg(HttpServletRequest request, HttpServletResponse response, 
-			String code, String state, HttpSession session) throws IOException {
+			String code, String state, HttpSession session, String jSessionId) throws IOException {
 		
 		int result = 0;
 		
@@ -70,13 +74,18 @@ public class NaverRegService {
 		
 		Member member = naverRegRequest.regRequest(naverId, naverName, naverGender);
 		
-		
+		//아이디체크가 1이상이면 이미 가입된 아이디이므로 로그인
 		if(idChk > 0) {
 			
 			member = dao.selectKakaoLogin(naverId);
 			
-			request.getSession().setAttribute("loginInfo", member.toKakaoLoginInfo());
+			//기존 세션 저장
+			/* request.getSession().setAttribute("loginInfo", member.toKakaoLoginInfo()); */
 			
+			//레디스 세션 저장
+			redisService.setMemInformation(member.toLoginInfo(), jSessionId, session);
+			
+		//아이디체크가 0이면 가입시킴	
 		} else {
 			
 			result = dao.insertMem(member);

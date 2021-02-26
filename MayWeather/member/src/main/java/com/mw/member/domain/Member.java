@@ -23,6 +23,7 @@ public class Member {
 	private int memSocial;
 	private int memState;
 	private Timestamp memRegdate;
+	private String jsessionId;
 	
 	public Member() {
 		getRandomString();
@@ -44,7 +45,7 @@ public class Member {
 	}
 	
 	public LoginInfo toLoginInfo() {
-		return new LoginInfo(memIdx, memId, memName, memGender, memPhoto, memLoc, memEmailchk);
+		return new LoginInfo(String.valueOf(memIdx), memId, memName, memGender, memPhoto, memLoc, String.valueOf(memEmailchk), String.valueOf(memSocial), jsessionId);
 	}
 	
 	public KakaoLoginInfo toKakaoLoginInfo() {

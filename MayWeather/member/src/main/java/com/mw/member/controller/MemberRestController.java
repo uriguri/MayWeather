@@ -41,6 +41,7 @@ import com.mw.member.service.MemberPwFindService;
 import com.mw.member.service.MemberRegService;
 import com.mw.member.service.NaverRegService;
 import com.mw.member.util.NaverLoginUtil;
+import com.mw.member.util.RedisService;
 
 @RestController
 @CrossOrigin
@@ -89,6 +90,9 @@ public class MemberRestController {
 	@Autowired
 	private MemberPwFindService pwFindService;
 	
+	@Autowired
+	private RedisService redisService;
+	
 	@PostMapping // 회원가입
 	public String memberReg(@RequestBody MemberRegRequest regRequest) {
 		return regService.memberReg(regRequest) > 0 ? "Y" : "N";
@@ -105,20 +109,21 @@ public class MemberRestController {
 	}
 
 	@PostMapping("/kakaologin") // 카카오로그인 public
-	public KakaoLoginInfo kakaoLogin(@RequestBody MemberKakaoRequest kakaoRequest, HttpServletRequest request,
-			Model model) {
+	public LoginInfo kakaoLogin(@RequestBody MemberKakaoRequest kakaoRequest, HttpServletRequest request,
+			Model model, String jSessionId, HttpSession session) {
 
-		model.addAttribute("loginCheck", kakaoLoginService.login(kakaoRequest, request));
+		model.addAttribute("loginCheck", kakaoLoginService.login(kakaoRequest, request, jSessionId, session));
 
-		return kakaoLoginService.login(kakaoRequest, request);
+		return kakaoLoginService.login(kakaoRequest, request, jSessionId, session);
 	}
 
-	@PostMapping("/login") // 로그인
-	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, HttpServletRequest request, Model model) {
+	@PostMapping("/login/{originJsessionId}") // 로그인
+	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, HttpServletRequest request, Model model,
+							@PathVariable("originJsessionId") String jSessionId, HttpSession session) {
 
-		model.addAttribute("loginCheck", loginService.login(loginRequest, request));
+		model.addAttribute("loginCheck", loginService.login(loginRequest, request, jSessionId, session));
 
-		return loginService.login(loginRequest, request);
+		return loginService.login(loginRequest, request, jSessionId, session);
 	}
 
 	@GetMapping("/logout") // 로그아웃
@@ -136,7 +141,7 @@ public class MemberRestController {
 
 	@PutMapping("/edit/{memIdx}") // 정보수정
 	public int editMem(@RequestBody MemberEditRequest editRequest, @PathVariable("memIdx") int memIdx) {
-
+		
 		return editService.editMember(editRequest, memIdx);
 	}
 
@@ -171,10 +176,10 @@ public class MemberRestController {
 
 	@GetMapping("/naver/oauthNaver")
 	public ModelAndView oauthNaver(HttpServletRequest request, HttpServletResponse response, 
-							@RequestParam String code, @RequestParam String state, HttpSession session, Model model) throws Exception {
+							@RequestParam String code, @RequestParam String state, HttpSession session, Model model, String jSessionId) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:http://localhost:8080/");
-		naverRegService.naverMemberReg(request, response, code, state, session);
+		naverRegService.naverMemberReg(request, response, code, state, session, jSessionId);
 		
 		return mav;
 	

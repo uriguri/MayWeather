@@ -16,15 +16,6 @@
 <!-- 카카오로그인  -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
-
-<!-- MARKET JS파일 -->
-<script type="text/javascript">
-      var memIdx = '<%=(String)session.getAttribute("memidx")%>';
-      var memNic = '<%=(String)session.getAttribute("memnic")%>';
-      var memLoc = '<%=(String)session.getAttribute("memloc")%>';
-</script>    
-
-
 <!-- 기본 CSS파일 -->
 <link rel="styleSheet" href="<c:url value="/css/default.css"/>">
 
@@ -40,37 +31,35 @@
 <link rel="styleSheet" href="<c:url value="/css/member/bootstrap.css"/>"/>
 <link rel="styleSheet" href="<c:url value="/css/member/mypage.css"/>"/>
 
-
 <!-- alert 창 변경 sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+<!-- redis loginInfo -->
+<script type="text/javascript">
+var originJsessionId = '${cookie.JSESSIONID.value}';
 
+var jsessionId = '${sessionScope.jsessionId}';
+
+var memIdx = '${sessionScope.memIdx}';
+var memName = '${sessionScope.memName}';
+var memId = '${sessionScope.memId}';
+var memLoc = '${sessionScope.memLoc}';
+var memGender = '${sessionScope.memGender}';
+var memPhoto = '${sessionScope.memPhoto}';
+var memEmailchk = '${sessionScope.memEmailchk}';
+
+console.log(originJsessionId)
+console.log(jsessionId);
+console.log(memIdx);
+console.log(memName);
+console.log(memId);
+console.log(memLoc);
+console.log(memGender);
+console.log(memPhoto);
+console.log(memEmailchk);
+</script>
 
 </head>
-
-<style>
-
-.mem-id-find-content, .mem-pw-find-content{
-	text-align: center;
-    background-color: white;
-    border-radius: 10px;
-    margin: 0px 5px;
-    padding: 25px;
-}
-
-.mem-id-find-content>div, .mem-pw-find-content>div{
-	margin-top: 10px;
-}
-
-.mem-find-hr{
-	border-top: 1px solid #aaaaaa;
-}
-
-.mem-pw-find-div, .mem-id-find-div{
-	margin: 40px 10px 0px 10px;
-}
-
-</style>
 
 <body class="bg_color">
 
@@ -81,22 +70,12 @@
 
     <div class="memContent">
 
-        <div class="content" id="memberMain">
+        <div class="content">
+   	
+   
 		
-		<input id="memIdxVal" type="hidden" value="${loginInfo.memIdx}">
-		<input id="memIdVal" type="hidden" value="${loginInfo.memId}">
-		<input id="memNameVal" type="hidden" value="${loginInfo.memName}">
-		<input id="memGenderVal" type="hidden" value="${loginInfo.memGender}">
-		<input id="memPhotoVal" type="hidden" value="${loginInfo.memPhoto}">
-
-		${loginInfo}
-		${loginInfo.memIdx}
-		${loginInfo.memId}
-		${loginInfo.memName}
-		${loginInfo.memGender}
-		${loginInfo.memPhoto}
 		
-
+		
            <%--  <!-- 회원가입 로그인 div -->
             <div class="container">
 
@@ -347,26 +326,8 @@
     </div>
 </div>
 
-<script>
-var memIdx = $('#memIdxVal').val();
-var memId = $('#memIdVal').val();
-var memName = $('#memNameVal').val();
-var memGender = $('#memGenderVal').val();
-var memPhoto = $('#memPhotoVal').val();
 
-console.log(memIdx);
-console.log(memId);
-console.log(memName);
-console.log(memGender);
-console.log(memPhoto);
-
-</script>
-
-		<input id="memIdxVal" type="hidden" value="${loginInfo.memIdx}">
-		<input id="memIdVal" type="hidden" value="${loginInfo.memId}">
-		<input id="memNameVal" type="hidden" value="${loginInfo.memName}">
-		<input id="memGenderVal" type="hidden" value="${loginInfo.memGender}">
-		<input id="memPhotoVal" type="hidden" value="${loginInfo.memPhoto}">
+	
 
 	<!-- 로그인 체크가 없을경우 로그인 모달 팝업 -->
 	<c:if test="${not loginCheck}">
@@ -377,12 +338,17 @@ console.log(memPhoto);
 	</script>
 	</c:if>
 
+
+
+
 <!-- 마이페이지 JS -->
 <script src="<c:url value="/js/member/mypage.js"/>"></script>
 <script src="<c:url value="/js/member/bootstrap.js"/>" type="text/javascript"></script>
 
 <!-- MARKET JS파일 -->
 <script src="<c:url value="/js/market.js"/>"></script>
+
+
 
 	<!-- 푸터 -->
 	<%@ include file="/WEB-INF/views/include/footer.jsp"%>

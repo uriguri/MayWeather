@@ -87,9 +87,13 @@ html{
 	padding: 5px 0px 0px 75px;
 }
 .mem-info-loc{
-	margin: 5px 0px 5px 75px;
+	margin-left: 10px;
 	background-color: white;
-	padding: 0px 0px 0px 10px
+}
+
+.mem-info-loc-icon{
+	width: 15px;
+    margin: 0px 10px;
 }
 
 .mem-mail-state {
@@ -101,11 +105,12 @@ html{
 	background-color: white;
 	border: 7px solid #f5f5f5;
 	border-radius: 15px;
-	padding: 10px
+	padding: 10px;
 }
 
 .mypage-body-1>div, .mypage-body-2>div, .mypage-body-3>div {
 	background-color: white;
+	padding: 10px;
 }
 
 .mypage-title-div{
@@ -241,3 +246,34 @@ td.photo-td, th.photo-th{
 #regLoading{
 	margin: 10px 10px 10px 80px;
 }
+
+.mem-id-find-content, .mem-pw-find-content{
+	text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0px 5px;
+    padding: 25px;
+}
+
+.mem-id-find-content>div, .mem-pw-find-content>div{
+	margin-top: 10px;
+}
+
+.mem-find-hr{
+	border-top: 1px solid #aaaaaa;
+}
+
+.mem-pw-find-div, .mem-id-find-div{
+	margin: 40px 10px 0px 10px;
+}
+
+.mypage-hr{
+	overflow: hidden;
+	margin: 5px 0px;
+}
+
+.login-reg-hr{
+	overflow: hidden;
+	margin-top: 20px;
+}
+

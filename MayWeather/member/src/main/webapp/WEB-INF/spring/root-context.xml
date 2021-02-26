@@ -12,7 +12,7 @@
 	<!-- dataSource -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
 		p:driverClassName="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
-		p:jdbcUrl="jdbc:log4jdbc:mysql://localhost:3306/open?serverTimezone=UTC"
+		p:jdbcUrl="jdbc:log4jdbc:mysql://openproject.cvy6kvgyxklz.ap-northeast-2.rds.amazonaws.com:3306/open?serverTimezone=UTC"
 		p:username="aia" p:password="aia" />
 
 	<!-- SqlSessionFactoryBean 등록 -->
