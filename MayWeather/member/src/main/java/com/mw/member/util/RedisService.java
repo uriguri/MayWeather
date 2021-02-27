@@ -1,8 +1,5 @@
 package com.mw.member.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +15,16 @@ public class RedisService {
 
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
+
 	
 	/* Redis에 사용자 정보 등록 */
-	
 	public void setMemInformation(LoginInfo loginInfo, String jSessionId, HttpSession session) {
 		
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setValueSerializer(new StringRedisSerializer());
 		
 		String key = jSessionId;
+		
 		
 		/*
 		 * Map<String, Object> mapMemberInfo = new HashMap<String, Object>();
@@ -39,6 +37,7 @@ public class RedisService {
 		 * mapMemberInfo.put("memEmailchk", loginInfo.getMemEmailchk());
 		 * mapMemberInfo.put("memSocial", loginInfo.getMemSocial());
 		 */
+		
 		
 		Gson gson = new Gson();
 		
@@ -62,12 +61,9 @@ public class RedisService {
 		 session.setAttribute("memGender", loginInfo.getMemGender());
 		 session.setAttribute("memEmailchk", loginInfo.getMemEmailchk());
 		 
-	
-		
 	}
 	
 	/* Redis 에서 정보를 가져온다 */
-	
 	public LoginInfo getMemInformation(String sessionId) {
 		
 		String key = sessionId;

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mw.member.dao.MemberDao;
-import com.mw.member.domain.KakaoLoginInfo;
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.Member;
 import com.mw.member.domain.MemberKakaoRequest;

@@ -1,8 +1,10 @@
 //AWS 경로
-//var awsUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
+var awsUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
 
-var awsUrl = '192.168.0.35:8080/member';
-
+var localUrl = '192.168.0.35:8080/member';
+	
+var rootUrl	= awsUrl;
+	
 // 모달 닫기
 
 // 로그인 모달 닫기
@@ -23,7 +25,7 @@ $('#loginModal').modal("show");
 
 // 마이페이지 출력
 function memberMain(){
-	console.log(1231321);
+	console.log('마이페이지 출력');
 	
 	var memberMain = '';
 		memberMain +='<div class="container">';
@@ -205,7 +207,7 @@ function memberMain(){
 		//마켓영역 none->block
 		$('#mypageMarket').css('display','block');
 		
-		//이메일체크 확인되면서 N이라면 미인증 회원 메세지 출력
+		//이메일체크 N이라면 미인증 회원 메세지 출력
 		if(memEmailchk != 'null' && memEmailchk == 'N') {
 				$('#memMailState').css('display','block');
 				$('#memMailState').text('미 인증 회원입니다 이메일 인증을 해주세요.');
@@ -234,7 +236,7 @@ function memberRegBtn(){
 		
 		$.ajax({
 			type : 'POST',
-			url : awsUrl + '/members',
+			url : rootUrl + '/members',
 			contentType : 'application/json',
 			data : JSON.stringify(member),
 			success : function(regDone) {
@@ -274,6 +276,7 @@ function memberRegBtn(){
 }
 
 //회원가입 유효성 검사
+
 //아이디 유효성
 $(document).on("focusout","#memIdReg",function(){
 	var re =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
@@ -292,7 +295,7 @@ $(document).on("focusout","#memIdReg",function(){
 	} else {
 		
 	$.ajax({
-			url : awsUrl + '/members/idcheck',
+			url : rootUrl + '/members/idcheck',
 			data : {memId:regId},
 			success : function(data){
 				if(data=='Y'){
@@ -432,8 +435,6 @@ $(document).on("focusin","#nickName",function(){
 //로그인 완료버튼 사용시
 function memberLoginBtn(){
 	
-	alert(awsUrl + '/members/login');
-	
 	var memId = $('#memId').val();
 	var memPw = $('#memPw').val();
 
@@ -444,7 +445,7 @@ function memberLoginBtn(){
 
 	$.ajax({
 		type : 'POST',
-		url : '/members/login/'+originJsessionId,
+		url : rootUrl+ '/members/login/'+originJsessionId,
 		contentType : 'application/json; charset=utf-8',
 		dataType : 'json',
 		data : JSON.stringify(member),
@@ -452,15 +453,13 @@ function memberLoginBtn(){
 
 			console.log(loginDone);
 
-			memPhoto = loginDone.memPhoto;
-			memName = loginDone.memName;
-			memIdx = loginDone.memIdx;
-			
-			//memEmailId = loginDone.memId;
-			jsessionId = loginDone.jsessionId;
+            jsessionId = loginDone.jsessionId;
 			alert(jsessionId);
 			
+			memIdx = loginDone.memIdx;
 			memId = loginDone.memId;
+			memName = loginDone.memName;
+			memPhoto = loginDone.memPhoto;
 			memLoc = loginDone.memLoc;
 			memEmailchk = loginDone.memEmailchk;
 
@@ -470,16 +469,13 @@ function memberLoginBtn(){
 				
 			// 로그인 성공
 			} else {
-				
-				
-				
+
 				var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
 					memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
 					memInfoLogin +='</div>';	
 					memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
 					memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
 					
-
 				var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>' 
 				
 				$('#memInfo').html(memInfoLogin);
@@ -589,7 +585,7 @@ Kakao.Auth.login({
 					
 					$.ajax({
 						type: 'GET',
-						url: awsUrl + '/members/idcheck',
+						url: rootUrl + '/members/idcheck',
 						data: {memId:kMemId},
 						async: false,
 						success : function(idChk){
@@ -607,7 +603,7 @@ Kakao.Auth.login({
 						
 						$.ajax({
 							type:'POST',
-							url : awsUrl + '/members/kakao',
+							url : rootUrl + '/members/kakao',
 							contentType : 'application/json',
 							data : JSON.stringify(kMember),
 							async: false,
@@ -635,7 +631,7 @@ Kakao.Auth.login({
 						
 						$.ajax({
 							type:'POST',
-							url: awsUrl + '/members/kakaologin',
+							url: rootUrl + '/members/kakaologin/' + originJsessionId,
 							contentType:'application/json; charset=utf-8',
 							dataType:'json',
 							data:JSON.stringify(kMember),
@@ -687,7 +683,7 @@ function naverLogin(){
 	
 	$.ajax({
 		type: 'GET',
-		url: awsUrl + '/members/naver',
+		url: rootUrl + '/members/naver',
 		async: false,
 		dataType: 'text',
 		success: function(naverRes) {
@@ -715,9 +711,9 @@ function memberLogoutBtn(){
 		
 			$.ajax({
 				type : 'GET',
-				url : '/members/logout',
+				url : rootUrl+'/members/logout',
 				dataType: 'text',
-				success : function(logout){
+				success : function(){
 				
 				sessionStorage.clear();
 				location.reload();
@@ -773,13 +769,15 @@ $(document).on("click",".mem-change",function(){
         	
         $.ajax({
             type: 'PUT',
-            url: awsUrl + '/members/edit/'+memIdx,
+            url: rootUrl + '/members/'+memIdx,
             contentType: 'application/json',
             dataType: 'json',
             data: JSON.stringify(updateMember),
             success: function(updateDone) {
                 
-                if (updateDone == 1) {
+                memName = updateDone.memName;
+                
+                if (updateDone != 'null' && updateDone != '') {
                     new swal("정보 수정 완료!", "멋진 닉네임이에요.", "success");
                     closeMypageModal();
                     
@@ -847,7 +845,7 @@ $(document).on("click",".mem-delete",function(){
 		
 			$.ajax({
 				type : 'DELETE',
-				url : awsUrl + '/members/delete/'+ memIdx,
+				url : rootUrl + '/members/'+ memIdx,
 				success : function(deleteDone) {
 					
 					console.log(deleteDone);
@@ -940,15 +938,6 @@ $(document).on("click",".mem-photochange",function(){
 		file_ajax_submit(uploadPhotoName);
 		
 		console.log(uploadPhotoName);
-		
-		var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-		memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+uploadPhotoName+'">';
-		memInfoLogin +='</div>';	
-		memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-		memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
-		
-		$('#memInfo').html(memInfoLogin);	
-		
 	});
 	
 	// 업로드시 실행될 function
@@ -963,7 +952,7 @@ $(document).on("click",".mem-photochange",function(){
 		
 		$.ajax({
 			type: 'POST',
-			url: awsUrl + '/members/upload/photo/'+memIdx,
+			url: rootUrl + '/members/upload/'+memIdx,
 			enctype: 'multipart/form-data',
 			data: data,
 			async: false,
@@ -978,7 +967,15 @@ $(document).on("click",".mem-photochange",function(){
 				console.log("error:", e);
 				$('#uploadBtn').prop('disabled', false);
 			}
+		}).done(function(){
+		
+			var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
+			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+uploadPhotoName+'">';
+			memInfoLogin +='</div>';	
+			memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
+			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
 			
+			$('#memInfo').html(memInfoLogin);
 		});
 	}
 	
@@ -997,7 +994,7 @@ $(document).on("click",".mem-photochange",function(){
 				
 		$.ajax({
 			type: 'PUT',
-			url: awsUrl + '/members/edit/photo',
+			url: rootUrl + '/members/edit/photo',
 			contentType: 'application/json',
 		    dataType: 'json',
 		    data: JSON.stringify(uploadMember),
@@ -1096,7 +1093,7 @@ $(document).on('click','#memIdFindBtn',function(){
 	
 	$.ajax({
 		type: 'GET',
-		url: awsUrl + '/members/idfind',
+		url: rootUrl + '/members/idfind',
 		data: {memName:idFindName},
 		success: function(findId){
 			
@@ -1125,7 +1122,7 @@ $(document).on('click','#memPwFindBtn',function(){
 	console.log(pwFindId);
 	$.ajax({
 		type: 'POST',
-		url: awsUrl + '/members/pwfind',
+		url: rootUrl + '/members/pwfind',
 		data: {memId:pwFindId},
 		success: function(pwFindDone){
 			

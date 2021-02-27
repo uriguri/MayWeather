@@ -23,12 +23,16 @@ public class Member {
 	private int memSocial;
 	private int memState;
 	private Timestamp memRegdate;
+	
+	//redis 사용을 위해 추가
 	private String jsessionId;
+	
 	
 	public Member() {
 		getRandomString();
 	}
 	
+	//이메일 코드 난수생성
 	private void getRandomString() {
 		Random r  = new Random(System.nanoTime());
 		
@@ -44,13 +48,12 @@ public class Member {
 		this.memEmailCode = new String(sb);
 	}
 	
+	
 	public LoginInfo toLoginInfo() {
 		return new LoginInfo(String.valueOf(memIdx), memId, memName, memGender, memPhoto, memLoc, String.valueOf(memEmailchk), String.valueOf(memSocial), jsessionId);
 	}
 	
-	public KakaoLoginInfo toKakaoLoginInfo() {
-		return new KakaoLoginInfo(memIdx, memId, memName, memGender, memPhoto, memSocial);
-	}
+	
 	
 	public Member idxGetToMember(int memIdx, String memPhoto) {
 		Member member = new Member();

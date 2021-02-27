@@ -29,7 +29,7 @@ public interface MemberDao {
 	//int updateMember(Member member, int memIdx);
 	
 	//멤버 정보 업데이트
-	int updateMember(Map<String, Object> editMap);
+	Member updateMember(Map<String, Object> editMap);
 
 	//멤버 사진 업로드
 	int updatePhoto(Member member);

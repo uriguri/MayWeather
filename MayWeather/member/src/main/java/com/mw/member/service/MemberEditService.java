@@ -19,10 +19,8 @@ public class MemberEditService {
 	@Autowired
 	private SqlSessionTemplate template;
 	
-	public int editMember(MemberEditRequest editRequest, int memIdx) {
+	public Member editMember(MemberEditRequest editRequest, int memIdx) {
 		
-		int result = 0;
-	
 		
 		Map<String, Object> editMap = new HashMap<String, Object>();
 		editMap.put("memName", editRequest.getMemName());
@@ -35,9 +33,11 @@ public class MemberEditService {
 	
 		// DB 업데이트
 		dao = template.getMapper(MemberDao.class);
+		dao.updateMember(editMap);
 		
-		result = dao.updateMember(editMap);
+		System.out.println(member);
 		
-		return result;
+		
+		return member;
 	}
 }

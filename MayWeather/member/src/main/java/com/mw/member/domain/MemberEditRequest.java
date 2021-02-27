@@ -9,9 +9,6 @@ public class MemberEditRequest {
 	private String memPw;
 	private String memName;
 
-	
-	
-	
 	public Member getToMember() {
 		Member member = new Member();
 		member.setMemIdx(memIdx);

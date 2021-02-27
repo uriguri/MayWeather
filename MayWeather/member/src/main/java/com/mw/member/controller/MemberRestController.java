@@ -20,8 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mw.member.domain.KakaoLoginInfo;
 import com.mw.member.domain.LoginInfo;
+import com.mw.member.domain.Member;
 import com.mw.member.domain.MemberEditRequest;
 import com.mw.member.domain.MemberKakaoRequest;
 import com.mw.member.domain.MemberLoginRequest;
@@ -108,9 +108,12 @@ public class MemberRestController {
 		return kakaoRegService.kakaoMemberReg(kakaoRequest) > 0 ? "Y" : "N";
 	}
 
-	@PostMapping("/kakaologin") // 카카오로그인 public
-	public LoginInfo kakaoLogin(@RequestBody MemberKakaoRequest kakaoRequest, HttpServletRequest request,
-			Model model, String jSessionId, HttpSession session) {
+	@PostMapping("/kakaologin/{originJsessionId}") // 카카오로그인 public
+	public LoginInfo kakaoLogin(@RequestBody MemberKakaoRequest kakaoRequest,
+								@PathVariable("originJsessionId") String jSessionId,
+								HttpServletRequest request,
+								Model model, 
+								HttpSession session) {
 
 		model.addAttribute("loginCheck", kakaoLoginService.login(kakaoRequest, request, jSessionId, session));
 
@@ -127,20 +130,15 @@ public class MemberRestController {
 	}
 
 	@GetMapping("/logout") // 로그아웃
-	public String logout(HttpSession session, RedirectAttributes rda) {
+	public void logout(HttpSession session) {
 
 		session.invalidate();
 
-		System.out.println("로그아웃!!!");
-
-		rda.addAttribute("type", "delete");
-		rda.addAttribute("result", "ok");
-
-		return "logoutSUCCESS";
+		System.out.println(session.getId() + "<======로그아웃!!!");
 	}
 
-	@PutMapping("/edit/{memIdx}") // 정보수정
-	public int editMem(@RequestBody MemberEditRequest editRequest, @PathVariable("memIdx") int memIdx) {
+	@PutMapping("/{memIdx}") // 정보수정
+	public Member editMem(@RequestBody MemberEditRequest editRequest, @PathVariable("memIdx") int memIdx) {
 		
 		return editService.editMember(editRequest, memIdx);
 	}
@@ -151,7 +149,7 @@ public class MemberRestController {
 		return photoEditService.editPhotoMember(photoEditRequest);
 	}
 
-	@PostMapping("/upload/photo/{memIdx}") // 사진 파일 업로드 & 유저 정보변경
+	@PostMapping("/upload/{memIdx}") // 사진 파일 업로드 & 유저 정보변경
 	public String uploadFile(@PathVariable("memIdx") int memIdx, @RequestParam("uploadPhotoName") String memPhoto,
 			@RequestParam("uploadPhoto") MultipartFile uploadPhoto, HttpServletRequest request) {
 
@@ -162,23 +160,27 @@ public class MemberRestController {
 		return "SUCCESS";
 	}
 
-	@DeleteMapping("/delete/{memIdx}") // 회원탈퇴
-	public int deleteMem(@PathVariable("memIdx") int memIdx) {
+	@DeleteMapping("/{memIdx}") // 회원탈퇴
+	public int deleteMem(@PathVariable("memIdx") int memIdx, HttpSession session) {
 
+		session.invalidate();
+		
 		return deleteService.deleteMem(memIdx);
 	}
 
-	@GetMapping("/naver")
+	@GetMapping("/naver") //REST API 네이버 로그인
 	public String getNaverAuthUrl(HttpSession session) {
 		String reqUrl = naverLoginUtil.getAutorizationUrl(session);
 		return reqUrl;
 	}
 
-	@GetMapping("/naver/oauthNaver")
+	@GetMapping("/naver/oauthNaver") //리다이렉트 페이지에서 정보를 얻고 가입 or 로그인 
 	public ModelAndView oauthNaver(HttpServletRequest request, HttpServletResponse response, 
 							@RequestParam String code, @RequestParam String state, HttpSession session, Model model, String jSessionId) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("redirect:http://localhost:8080/");
+		
+		mav.setViewName("redirect:http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/");
+		
 		naverRegService.naverMemberReg(request, response, code, state, session, jSessionId);
 		
 		return mav;

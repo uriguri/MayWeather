@@ -72,10 +72,6 @@ console.log(memEmailchk);
 
         <div class="content">
    	
-   
-		
-		
-		
            <%--  <!-- 회원가입 로그인 div -->
             <div class="container">
 
@@ -320,7 +316,6 @@ console.log(memEmailchk);
                 </div>
                </div>
             </div> --%>
-
 
         </div>
     </div>
