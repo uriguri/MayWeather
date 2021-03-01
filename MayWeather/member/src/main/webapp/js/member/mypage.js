@@ -1,7 +1,7 @@
 //AWS 경로
 var awsUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
 
-var localUrl = '192.168.0.35:8080/member';
+var localUrl = '';
 	
 var rootUrl	= awsUrl;
 	
@@ -26,6 +26,8 @@ $('#loginModal').modal("show");
 // 마이페이지 출력
 function memberMain(){
 	console.log('마이페이지 출력');
+	console.log(memIdx);
+	console.log(memName);
 	
 	var memberMain = '';
 		memberMain +='<div class="container">';
@@ -51,7 +53,7 @@ function memberMain(){
 		memberMain +='<div class="error"></div>';
 		memberMain +='<div class="form loginBox">';
 		memberMain +='<form method="post" action="" accept-charset="UTF-8">';
-		memberMain +='<input id="memId" class="form-control" type="text" placeholder="Email (ID로 사용됩니다.)" name="memId">';
+		memberMain +='<input id="memIdLogin" class="form-control" type="text" placeholder="Email (ID로 사용됩니다.)" name="memId">';
 		memberMain +='<div id="idLoginMsg"></div>';
 		memberMain +='<input id="memPw" class="form-control" type="password" placeholder="Password" name="memPw">';
 		memberMain +='<div id="pwLoginMsg"></div>';
@@ -435,11 +437,11 @@ $(document).on("focusin","#nickName",function(){
 //로그인 완료버튼 사용시
 function memberLoginBtn(){
 	
-	var memId = $('#memId').val();
+	var loginMemId = $('#memIdLogin').val();
 	var memPw = $('#memPw').val();
 
 	var member = {
-		memId : memId,
+		memId : loginMemId,
 		memPw : memPw
 	};
 
@@ -457,38 +459,55 @@ function memberLoginBtn(){
 			alert(jsessionId);
 			
 			memIdx = loginDone.memIdx;
-			memId = loginDone.memId;
 			memName = loginDone.memName;
 			memPhoto = loginDone.memPhoto;
 			memLoc = loginDone.memLoc;
 			memEmailchk = loginDone.memEmailchk;
-
+			memId = loginDone.memId;
+			
+			
+			
 			// 로그인 실패
 			if (memName == 'admin') {
 				shakeModal();
 				
 			// 로그인 성공
 			} else {
-
-				var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-					memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
-					memInfoLogin +='</div>';	
-					memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-					memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
+			
+				// 관리자 로그인시 해당 메뉴 추가
+				if(memIdx == '37'){
 					
-				var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>' 
+					
+					var adminMenu = '<div id="adminLoginMenu" style="background-color: white;">관리자 메뉴</div>' 
+					
+					closeLoginModal();
+						
+					$('.content').append(adminMenu);
+					
+					
+				} else {
+			
+					var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
+						memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+						memInfoLogin +='</div>';	
+						memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
+						memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
+						
+					var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>' 
+					
+					$('#memInfo').html(memInfoLogin);
+					$('#memRegloginBtn').html(logoutBtn);
+					$('#mypageMarket').css('display','block');
+					
+					if(memEmailchk != '' && memEmailchk == 'N') {
+						$('#memMailState').css('display','block');
+						$('#memMailState').text('미 인증 회원입니다 이메일 인증을 해주세요.');
+					}	
+					
+					// 로그인 후 자동 닫기
+					closeLoginModal();
 				
-				$('#memInfo').html(memInfoLogin);
-				$('#memRegloginBtn').html(logoutBtn);
-				$('#mypageMarket').css('display','block');
-				
-				if(memEmailchk != '' && memEmailchk == 'N') {
-					$('#memMailState').css('display','block');
-					$('#memMailState').text('미 인증 회원입니다 이메일 인증을 해주세요.');
-				}	
-				
-				// 로그인 후 자동 닫기
-				closeLoginModal();
+				}
 			}
 		},
 		error : function(request, status, error) {
@@ -499,7 +518,6 @@ function memberLoginBtn(){
 
 	});	
 }
-
 
 //로그인 유효성 검사
 
@@ -558,24 +576,54 @@ console.log(Kakao.isInitialized());
 
 function kakaoLogin(){
 	
-Kakao.Auth.login({
-	scope:'profile, account_email, gender',
-	success: function(authObj) {
-		Kakao.API.request({
-			url: '/v2/user/me',
-			success: function(userKakao) {
+	
+	Kakao.Auth.login({
+		scope:'profile, account_email, gender',
+		success: function(authObj) {
+			Kakao.API.request({
+				url: '/v2/user/me',
+				success: function(userKakao) {
 				var kakaoInfo = userKakao.kakao_account;
 				var kakaoNamePhoto = userKakao.kakao_account.profile;
 
 				kMemId = kakaoInfo.email;
 				kMemName = kakaoNamePhoto.nickname;
-				kMemGender ='' 
-						
-				if(kakaoInfo.gender == 'male'){
-					kMemGender = 'M';
-				} else {
-					kMemGender = 'F';
-				}
+				kMemGender ='' 	
+					if(kakaoInfo.gender == 'male'){
+						kMemGender = 'M';
+					} else {
+						kMemGender = 'F';
+					}
+					
+				kMember = {
+					memId: kMemId,
+					memName: kMemName,
+					memGender: kMemGender
+				};
+					
+				$.ajax({
+					type: 'GET',
+					url: rootUrl + '/members/idcheck',
+					data: {memId:kMemId},
+					async: false,
+					success : function(idChk){
+						kIdChk = idChk;
+					},
+					error : function(request, status, error) {
+						alert("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:"
+								+ error);
+					}
+				});
+				
+				// 데이터가 유지되는 구간
+
+				//아이디체크 Y == 가입이 가능한 아이디(중복없음)(가입시킴)
+				if(kIdChk == 'Y'){
+					console.log(kMemId);
+					console.log(kMemName);
+					console.log(kMember);
+					
 					
 					kMember = {
 						memId: kMemId,
@@ -584,98 +632,93 @@ Kakao.Auth.login({
 					};
 					
 					$.ajax({
-						type: 'GET',
-						url: rootUrl + '/members/idcheck',
-						data: {memId:kMemId},
+						type:'POST',
+						url : rootUrl + '/members/kakao',
+						contentType : 'application/json',
+						data : JSON.stringify(kMember),
 						async: false,
-						success : function(idChk){
-							kIdChk = idChk;
+						success : function(kRegDone) {
+				
+							if (kRegDone == 'Y') {
+								new swal("사용승인 성공!", "카카오로 다시 로그인해주세요!", "success");
+								closeLoginModal();
+								
+							} else {
+								new swal("이런!","문제가 발생했나봐요 다시 시도해주세요.", "error");
+								closeLoginModal();
+							}
 						},
 						error : function(request, status, error) {
 							alert("code:" + request.status + "\n" + "message:"
 									+ request.responseText + "\n" + "error:"
 									+ error);
 						}
+						
 					});
 					
-					// 아이디체크 Y == 가입이 가능한 아이디(중복없음)(가입시킴)
-					if(kIdChk == 'Y'){
-						
-						$.ajax({
-							type:'POST',
-							url : rootUrl + '/members/kakao',
-							contentType : 'application/json',
-							data : JSON.stringify(kMember),
-							async: false,
-							success : function(kRegDone) {
+				//아이디체크 != Y 가입이 불가능한 아이디(중복있음 - 로그인)	
+				} else {
 					
-								if (kRegDone == 'Y') {
-									new swal("사용승인 성공!", "카카오로 다시 로그인해주세요!", "success");
-									closeLoginModal();
-									
-								} else {
-									new swal("이런!","문제가 발생했나봐요 다시 시도해주세요.", "error");
-									closeLoginModal();
-								}
-							},
-							error : function(request, status, error) {
-								alert("code:" + request.status + "\n" + "message:"
-										+ request.responseText + "\n" + "error:"
-										+ error);
-							}
-							
-						});
-						
-					// 아이디체크 != Y 가입이 불가능한 아이디(중복있음 - 로그인)	
-					} else {
-						
-						$.ajax({
-							type:'POST',
-							url: rootUrl + '/members/kakaologin/' + originJsessionId,
-							contentType:'application/json; charset=utf-8',
-							dataType:'json',
-							data:JSON.stringify(kMember),
-							async: false,
-							success: function(kLoginDone){
-								
-								memName = kLoginDone.memName;
-								memIdx = kLoginDone.memIdx;
-								memId = kLoginDone.memId;
-								memPhoto = kLoginDone.memPhoto;
-								
-								var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-								memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
-								memInfoLogin +='</div>';	
-								memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-								memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">카카오 로그인 사용 중 입니다!</div>';
-								
-								var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>'
-									
-								//상단 Info html변경
-								$('#memInfo').html(memInfoLogin);
-								
-								//마켓 영역 보이게하기
-								$('#mypageMarket').css('display','block');
-								
-								//로그아웃 버튼으로 체인지
-								$('#memRegloginBtn').html(logoutBtn);
-								
-								//로그인 완료후 모달 닫기
-								closeLoginModal();
-							},
-							 error: function(request,status,error) {
-					                alert("code:"+request.status +"\n" +
-					                	  "message:"+request.responseText +"\n" +
-					                      "error:" +error);
-					         }
-							
-						}); //ajax end
-					} // else end
+					kMember = {
+						memId: kMemId,
+						memName: kMemName,
+						memGender: kMemGender
+					};
 					
+					$.ajax({
+						type:'POST',
+						url: rootUrl + '/members/kakaologin/' + originJsessionId,
+						contentType:'application/json; charset=utf-8',
+						dataType:'json',
+						data:JSON.stringify(kMember),
+						async: false,
+						success: function(kLoginDone){
+							
+							memName = kLoginDone.memName;
+							memIdx = kLoginDone.memIdx;
+							memId = kLoginDone.memId;
+							memPhoto = kLoginDone.memPhoto;
+							
+							var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
+							memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+							memInfoLogin +='</div>';	
+							memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
+							memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">카카오 로그인 사용 중 입니다!</div>';
+							
+							var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>'
+								
+							//상단 Info html변경
+							$('#memInfo').html(memInfoLogin);
+							
+							//마켓 영역 보이게하기
+							$('#mypageMarket').css('display','block');
+							
+							//로그아웃 버튼으로 체인지
+							$('#memRegloginBtn').html(logoutBtn);
+							
+							//로그인 완료후 모달 닫기
+							closeLoginModal();
+						},
+						 error: function(request,status,error) {
+				              alert("code:"+request.status +"\n" +
+				              	  "message:"+request.responseText +"\n" +
+				                    "error:" +error);
+				       }
+						
+					}); //ajax end
+				} // else end
+		
+
+				
+				
 				}
+		
 			});
+			
 		}
+
 	});
+	
 }
 
 // 네이버 로그인
@@ -723,84 +766,231 @@ function memberLogoutBtn(){
 	});	
 }
 		
-// 회원 정보 수정
+//회원 정보 수정
 $(document).on("click",".mem-change",function(){
 	
 	if(memIdx != 'null' && memIdx != ''){
 	
+	console.log(memId);
+	console.log(memIdx);
+	console.log(memName);
+	console.log(memPhoto);
+	console.log(memLoc);
+	console.log(memGender);
+	
 	var memberUpdateHtml = "";
     memberUpdateHtml += '<div class="update-mem-content" id="updateMemContent">'
-    memberUpdateHtml += '<h3 style="background-color: white; margin: 20px 0px 0px 20px">내 정보</h3>'
+    memberUpdateHtml += '<h3 style="background-color: white; margin: 10px 0px 10px 15px">내 정보</h3>'
     memberUpdateHtml += '<hr class="mypage-hr">'
-    memberUpdateHtml += '<div style="background-color: white; margin: 20px 0px 0px 20px" class="update-id" id="updateId">'
-    memberUpdateHtml += 'ID(이메일) *아이디 변경은 불가능합니다.<br>'
-    memberUpdateHtml += '<div style="background-color: white; margin: 15px 0px 0px 50px; font-weight: bold;" >현재 아이디 : '+ memId +'</div>'
+    memberUpdateHtml += '<div style="background-color: white; margin-left: 40px;" class="update-id" id="updateId">'
+    memberUpdateHtml += '<strong>ID(이메일)</strong> <br> *아이디 변경은 불가능합니다.<br>'
+    memberUpdateHtml += '<div style="background-color: white; margin: 15px 0px 15px 35px; font-weight: bold;" >현재 아이디 : '+memId+' </div>'
     memberUpdateHtml += '</div>'
     memberUpdateHtml += '<hr class="mypage-hr">'
     memberUpdateHtml += '<div style="background-color: white;" class="update-name" id="updateName">'
-    memberUpdateHtml += '<h3 style="background-color: white; margin: 20px 0px 0px 20px">닉네임 변경</h3>'
+    memberUpdateHtml += '<h4 style="background-color: white; margin: 15px 0px 5px 15px">닉네임 변경</h4>'
     memberUpdateHtml += '<div style="background-color: white; text-align: center; font-weight: bold;">현재 닉네임 : '+ memName +'</div>'
-    memberUpdateHtml += '<div style="background-color: white; text-align: center;">새로운 닉네임</div> <input style="margin: 10px 90px; background-color: white;" id="memNewName" type="text" name="memNewName">'
-    /* memberUpdateHtml += '<input id="memNewNameBtn" type="button" class="memNewNameBtn" value="변경하기">' */
+    memberUpdateHtml += '<div style="background-color: white; text-align: center; margin-top: 10px;">새로운 닉네임</div> <input style="margin: 10px 90px; background-color: white;" id="memNewName" type="text" name="memNewName">'
+    memberUpdateHtml += '<input style="margin: 0px 0px 10px 120px;" id="nameChangeBtn" class="btn btn-info" type="button" value="닉네임 변경">' 
     memberUpdateHtml += '</div>'
     memberUpdateHtml += '<hr class="mypage-hr">'
     memberUpdateHtml += '<div class="update-pw" id="updatePw">'
-    memberUpdateHtml += '<h3 style="background-color: white; margin: 20px 0px 0px 20px">비밀번호 변경</h3>'
+    memberUpdateHtml += '<h4 style="background-color: white; margin: 15px 0px 5px 15px">비밀번호 변경</h4>'
     memberUpdateHtml += '<form style="background-color: white; margin-left: 20px;" method="post">'
-    memberUpdateHtml += '기존 비밀번호<input style="background-color: white" type="password" id="memOldPw" class="mem-old-pw"><br>'
-    memberUpdateHtml += '새 비밀번호<input style="margin: 10px 0px 10px 13px; background-color: white;" type="password" id="memNewPw" class="mem-new-pw"><br>'
-    memberUpdateHtml += '비밀번호 확인<input style="background-color: white" type="password" id="memNewPwChk" class="mem-new-pw-chk">'
+    memberUpdateHtml += '기존 비밀번호<input style="background-color: white; margin-left: 27px;" type="password" id="memOldPw" class="mem-old-pw"><span id="oldPwCheckImg" style="margin-left: 10px;"></span><br>'
+    memberUpdateHtml += '<input id="oldPwChkBox" type="checkbox">';
+    memberUpdateHtml += '새 비밀번호<input style="margin: 10px 0px 10px 40px; background-color: white;" type="password" id="memNewPw" class="mem-new-pw" placeholder="  4자 이상 12자 이하"><span id="newPwCheckImg" style="margin-left: 10px;"></span><br>'
+    memberUpdateHtml += '<input id="newPwChkBox" type="checkbox">';
+    memberUpdateHtml += '새 비밀번호 확인<input style="background-color: white; margin-left: 10px;" type="password" id="memNewPwReChk" class="mem-new-pw-chk"><span id="newPwReCheckImg" style="margin-left: 10px;"></span>'
+    memberUpdateHtml += '<input id="newPwReChkBox" type="checkbox">';
     memberUpdateHtml += '</form>'
+    memberUpdateHtml += '<input style="margin: 10px 0px 10px 110px;" id="pwChangeBtn" class="btn btn-info" type="button" value="비밀번호 변경">' 
     memberUpdateHtml += '</div>'
     memberUpdateHtml += '</div>'
     
     $('.modal-body-mypage').html(memberUpdateHtml);
     $('.nologin-msg').css('display', 'none');
     
-    $(document).on("click","#modalDoneBtn",function(){
-    	
-        var updateMember = {
-            memIdx: memIdx,
-            memName: $('#memNewName').val(),
-            memPw: $('#memNewPw').val()
-        };
-        
-        	memName = $('#memNewName').val();
-        	
-        $.ajax({
-            type: 'PUT',
-            url: rootUrl + '/members/'+memIdx,
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(updateMember),
-            success: function(updateDone) {
-                
-                memName = updateDone.memName;
-                
-                if (updateDone != 'null' && updateDone != '') {
-                    new swal("정보 수정 완료!", "멋진 닉네임이에요.", "success");
-                    closeMypageModal();
-                    
-                } else {
-                    new swal("오류 발생!", "다시 시도해주세요!", "error");
-                    closeMypageModal();
-                }
-            },
-            error: function(request,status,error) {
-                alert("code:"+request.status +"\n" +
-                	  "message:"+request.responseText +"\n" +
-                      "error:" +error);
-            }
-        }).done(function(){
-        	var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
+	// 멤버 닉네임 수정
+	$(document).on("click","#nameChangeBtn",function(){
+	
+		var updateName = $('#memNewName').val();
+	
+		var jsonName = {memName: updateName};
+		
+		$.ajax({
+			type: 'PUT',
+			url: rootUrl + '/members/name/'+memIdx,
+			contentType:'application/json; charset=utf-8',
+			data:JSON.stringify(jsonName),
+			success: function(updateNameDone){
+			
+				alert(updateNameDone);
+				memName = updateNameDone;
+				
+				 if (updateNameDone != 'null' && updateNameDone != '') {
+	                new swal("정보 수정 완료!", "멋진 닉네임이에요.", "success");
+	                closeMypageModal();
+	                
+	            } else {
+	                new swal("오류 발생!", "다시 시도해주세요!", "error");
+	                closeMypageModal();
+	            }
+				
+			},
+			error: function(request,status,error) {
+	            alert("code:"+request.status +"\n" +
+	            	  "message:"+request.responseText +"\n" +
+	                  "error:" +error);
+	        }
+	        
+		}).done(function(){
+	    	var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
 			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
 			memInfoLogin +='</div>';	
 			memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
 			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
 			
 			$('#memInfo').html(memInfoLogin);	
-        });
-    });
+	    });
+	
+	});
+	
+	// 멤버 비밀번호 수정
+	$(document).on("click","#pwChangeBtn",function(){
+			
+		var updatePw = $('#memNewPw').val();
+		
+		var jsonPw = {memPw: updatePw};
+		
+		if( $('#oldPwChkBox').is(":checked") && $('#newPwChkBox').is(":checked") && $('#newPwReChkBox').is(":checked") ){
+			
+			$.ajax({
+				type: 'PUT',
+				url: rootUrl + '/members/pw/'+memIdx,
+				contentType:'application/json; charset=utf-8',
+				data:JSON.stringify(jsonPw),
+				success: function(updatePwDone){
+					
+					if (updatePwDone != 'null' && updatePwDone != '') {
+		                new swal("비밀번호 변경 완료!", "다음 접속시 새로운 비밀번호를 사용하세요.", "success");
+		                closeMypageModal();
+		                
+		            } else {
+		                new swal("오류 발생!", "다시 시도해주세요!", "error");
+		                closeMypageModal();
+		            }
+					
+				},
+				error: function(request,status,error) {
+		            alert("code:"+request.status +"\n" +
+		            	  "message:"+request.responseText +"\n" +
+		                  "error:" +error);
+				}
+				
+			});
+			
+		} else {
+			
+			new swal("다시 확인해주세요!", "입력한 항목을 다시 확인해주세요", "error");
+		}
+
+		
+		
+	});
+	    
+  	// 기존 비밀번호 입력 유효성 검사
+  	$(document).on("focusout","#memOldPw",function(){
+  		var oldPw = $(this).val();
+  		var jsonOldPw = {memPw: oldPw};
+  		
+  		var oldChkBox = $('#oldPwChkBox');
+  		
+  		var equlOldPw = '<img id="oldPwGood" width="30" height="30" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/image/icon/greencheck.png">';
+  		var noEqulOldPw = '<img id="oldPwX" width="30" height="30" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/image/icon/redx.png">';
+  		
+  		$.ajax({
+  			type: 'POST',
+  			url: rootUrl + '/members/pwcheck/'+memIdx,
+  			contentType:'application/json; charset=utf-8',
+			data:JSON.stringify(jsonOldPw),
+  			success: function(pwCheckDone){
+  				
+  				if(pwCheckDone == '1'){				
+  					$('#oldPwCheckImg').html(equlOldPw);
+  					oldChkBox.prop('checked', true);
+  				
+  				} else {
+  					$('#oldPwCheckImg').html(noEqulOldPw);
+  					oldChkBox.prop('checked', false);
+  				}
+  			}, 
+  			error : function(){
+  				
+  				$('#oldPwCheckImg').html(noEqulOldPw);
+  			}
+  			
+  		});
+  	});
+  	
+  	$(document).on("focusin","#memOldPw",function(){
+  		$(this).val('');
+		$('#oldPwCheckImg').html('');
+		oldChkBox.prop('checked', false);
+  	});
+  
+  	// 새 비밀번호 입력 유효성 검사
+  	$(document).on("focusout","#memNewPw",function(){
+  		var newPw = $(this).val();
+  		
+  		var newChkBox = $('#newPwChkBox');
+  		
+  		var goodNewPw = '<img id="oldPwGood" width="30" height="30" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/image/icon/greencheck.png">';
+  		var badNewPw = '<img id="oldPwX" width="30" height="30" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/image/icon/redx.png">';
+  		
+  		if(newPw.length < 4 || newPw.length > 12){
+  			$('#newPwCheckImg').html(badNewPw);
+  			newChkBox.prop('checked', false);
+  			
+  		} else {
+  			$('#newPwCheckImg').html(goodNewPw);
+  			newChkBox.prop('checked', true);
+  		}
+  	});
+  	
+  	$(document).on("focusin","#memNewPw",function(){
+  		$(this).val('');
+  		$('#newPwCheckImg').html('');
+  		newChkBox.prop('checked', false);
+  	});
+  	
+  	// 새 비밀번호 확인 유효성 검사
+  	$(document).on("focusout","#memNewPwReChk",function(){
+  		var newRePw = $(this).val();
+  		var newPw = $('#memNewPw').val();
+  		
+  		var newReChkBox = $('#newPwReChkBox');
+  		
+  		var goodRePw = '<img id="oldPwGood" width="30" height="30" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/image/icon/greencheck.png">';
+  		var badRePw = '<img id="oldPwX" width="30" height="30" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/image/icon/redx.png">';
+  		
+  		if(newPw == newRePw){
+  			$('#newPwReCheckImg').html(goodRePw);
+  			newReChkBox.prop('checked', true);
+  			
+  		} else {
+  			$('#newPwReCheckImg').html(badRePw);
+  			newReChkBox.prop('checked', false);
+  		}
+  		
+  	});
+  	
+  	$(document).on("focusin","#memNewPwReChk",function(){
+  		$(this).val('');
+  		$('#newPwReCheckImg').html('');
+  		newReChkBox.prop('checked', false);
+  	});
+    
     
 	} else {
 	
@@ -810,6 +1000,7 @@ $(document).on("click",".mem-change",function(){
 });
 
 
+
 //회원 정보 삭제 
 
 $(document).on("click",".mem-delete",function(){
@@ -817,14 +1008,14 @@ $(document).on("click",".mem-delete",function(){
 	var memberDeleteHtml = "";
 	memberDeleteHtml += '<div class="delete-id" id="deleteId">';
 	memberDeleteHtml += '<div class="delete-id" id="deleteId">';
-	memberDeleteHtml += '<h1>회원 탈퇴</h1>';
-	memberDeleteHtml += '<div style="background-color: white;" class="delete-info" id="deleteInfo">';
-	memberDeleteHtml += '<img style="margin: 10px 0px 10px 140px; border-radius: 40px;" width="50" height="50" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+	memberDeleteHtml += '<h3 style="margin-left: 15px;">회원 탈퇴</h3>';
+	memberDeleteHtml += '<div style="background-color: white; padding: 10px;" class="delete-info" id="deleteInfo">';
+	memberDeleteHtml += '<img style="margin: 10px 0px 10px 130px; border-radius: 40px;" width="50" height="50" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
 	memberDeleteHtml += '<h2 style="text-align: center; background-color: white;">'+memName+'님</h2>';
-	memberDeleteHtml += '정말로 탈퇴하시겠어요?<br>탈퇴 후 동일한 아이디로 1개월간 재가입이 제한됩니다.';
+	memberDeleteHtml += '정말로 탈퇴하시겠어요?<br>탈퇴 후 기존 아이디로 재가입이 제한됩니다.';
 	memberDeleteHtml += '</div>';
 	memberDeleteHtml += '<hr class="mypage-hr">';
-	memberDeleteHtml += '<form style="background-color: white;" method="post">';
+	memberDeleteHtml += '<form style="background-color: white; padding: 15px;" method="post">';
 	memberDeleteHtml += '정말 탈퇴하시겠어요?<input type="checkbox" id="deleteChk1" class="deleteChk"><br>';
 	memberDeleteHtml += '탈퇴 시 모든 정보는 사라집니다.<input type="checkbox" id="deleteChk2" class="deleteChk"><br>';
 	memberDeleteHtml += '모든 내용을 이해했고 탈퇴에 동의합니다.<input type="checkbox" id="deleteChk3" class="deleteChk"><br>';
@@ -1213,3 +1404,76 @@ $(document).on('click','.mem-like',function(){
 	console.log(memIdx);
 	myLikeList(1);
 }); 
+
+//관리자 메뉴 클릭 시
+$(document).on("click","#adminLoginMenu",function(){
+var adminLogin = '<table id="userTable"></table>';
+	
+	$('.content').html(adminLogin);
+	
+	memList();
+	
+});
+
+//관리자 메뉴 회원 리스트 출력
+function memList(){
+	$.ajax({
+		type: 'GET',
+		url: rootUrl + '/members/allmember',
+		contentType : 'application/json',
+		success : function(memberList){
+			
+			$('#userTable').html('');
+			console.log(memberList);
+				var upRow = '<tr style="text-align: center;">';
+					upRow += '<td>memIdx</td>';
+					upRow += '<td>memId</td>';
+					upRow += '<td>memName</td>';
+					upRow += '<td>memPhoto</td>';
+					upRow += '<td>memSocial</td>';
+					upRow += '</tr>';
+				$('#userTable').append(upRow);
+			
+			for(var i=0; i<memberList.length; i++){
+				var row = '';
+					row += '<tr id="userListTable">';
+					row += '<td>'+memberList[i].memIdx+'</td>';
+					row += '<td>'+memberList[i].memId+'</td>';
+					row += '<td>'+memberList[i].memName+'</td>';
+					row += '<td>'+memberList[i].memPhoto+'</td>';
+					row += '<td>'+memberList[i].memSocial+'</td>';
+					row += '<td><input id="memDeleteBtn" class="btn btn-info" type="button" value="유저 삭제"></td>';
+					row += '</tr>';
+				$('#userTable').append(row);
+				
+			}
+		}
+	
+	});
+}	
+
+// 관리자 메뉴 회원 삭제 
+$(document).on("click","#memDeleteBtn",function(){
+	var tr = $(this).parent().parent();
+	var td = tr.children();
+	var deleteIdx = td.eq(0).text();
+	
+	console.log(deleteIdx);
+	
+	$.ajax({
+		type: 'DELETE',
+		url: rootUrl + '/members/'+deleteIdx,
+		success: function(deleteDone){
+			
+			if(deleteDone == 1){
+				new swal("회원 삭제 완료", "이상 없음", "success");
+				memList();
+			} else {
+				new swal("오류발생", "문제 발생", "error");
+			}
+			
+		}
+		
+	});
+});
+	

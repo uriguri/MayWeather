@@ -227,7 +227,7 @@ td.photo-td, th.photo-th{
 	display: block;
 }
 
-#idChk, #pwChk, #pwChkChk, #nameChk{
+#idChk, #pwChk, #pwChkChk, #nameChk, #oldPwChkBox, #newPwChkBox, #newPwReChkBox{
 	display: none;
 }
 
@@ -277,3 +277,15 @@ td.photo-td, th.photo-th{
 	margin-top: 20px;
 }
 
+#userListTable{
+	border: 1px solid black;
+}
+
+#userListTable>td {
+	padding: 10px;
+}
+
+#userTable{
+	text-align: center;
+	margin: auto;
+}

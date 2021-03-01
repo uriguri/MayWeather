@@ -50,7 +50,7 @@ public class RedisService {
 		System.out.println(key);
 		System.out.println("====================");
 		System.out.println(loginInfo);
-		
+		System.out.println(loginInfo.getMemId());
 	
 		 session.setAttribute("jsessionId", jSessionId);
 		 session.setAttribute("memIdx", loginInfo.getMemIdx());

@@ -1,5 +1,7 @@
 package com.mw.member.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,10 +27,15 @@ import com.mw.member.domain.Member;
 import com.mw.member.domain.MemberEditRequest;
 import com.mw.member.domain.MemberKakaoRequest;
 import com.mw.member.domain.MemberLoginRequest;
+import com.mw.member.domain.MemberNameEditRequest;
 import com.mw.member.domain.MemberPhotoEditRequest;
+import com.mw.member.domain.MemberPwEditRequest;
 import com.mw.member.domain.MemberRegRequest;
+import com.mw.member.service.AdminService;
 import com.mw.member.service.KakaoRegService;
 import com.mw.member.service.MemberDeleteService;
+import com.mw.member.service.MemberEditNameService;
+import com.mw.member.service.MemberEditPwService;
 import com.mw.member.service.MemberEditService;
 import com.mw.member.service.MemberIdCheckService;
 import com.mw.member.service.MemberIdFindService;
@@ -37,6 +44,7 @@ import com.mw.member.service.MemberLoginService;
 import com.mw.member.service.MemberPhotoEditService;
 import com.mw.member.service.MemberPhotoSaveService;
 import com.mw.member.service.MemberPhotoUploadService;
+import com.mw.member.service.MemberPwCheckService;
 import com.mw.member.service.MemberPwFindService;
 import com.mw.member.service.MemberRegService;
 import com.mw.member.service.NaverRegService;
@@ -68,6 +76,9 @@ public class MemberRestController {
 
 	@Autowired
 	private MemberIdCheckService idCheckService;
+	
+	@Autowired
+	private MemberPwCheckService pwCheckService;
 
 	@Autowired
 	private MemberPhotoUploadService photoUploadService;
@@ -93,6 +104,17 @@ public class MemberRestController {
 	@Autowired
 	private RedisService redisService;
 	
+	@Autowired
+	private MemberEditNameService editNameService;
+	
+	@Autowired
+	private MemberEditPwService editPwService;
+	
+	@Autowired
+	private AdminService adminService;
+	
+	
+	
 	@PostMapping // 회원가입
 	public String memberReg(@RequestBody MemberRegRequest regRequest) {
 		return regService.memberReg(regRequest) > 0 ? "Y" : "N";
@@ -101,6 +123,15 @@ public class MemberRestController {
 	@GetMapping("/idcheck") // 중복 아이디 체크
 	public String idCheck(@RequestParam("memId") String memId) {
 		return idCheckService.chekId(memId);
+	}
+	
+	@PostMapping("/pwcheck/{memIdx}") // 동일한 비밀번호 체크
+	public int pwCheck(@RequestBody MemberPwEditRequest pwEditRequest,
+						  @PathVariable("memIdx") int memIdx
+						) {
+		
+		return pwCheckService.checkPw(pwEditRequest, memIdx);
+		
 	}
 
 	@PostMapping("/kakao") // 카카오 로그인시 기본정보로 회원가입
@@ -137,11 +168,28 @@ public class MemberRestController {
 		System.out.println(session.getId() + "<======로그아웃!!!");
 	}
 
-	@PutMapping("/{memIdx}") // 정보수정
-	public Member editMem(@RequestBody MemberEditRequest editRequest, @PathVariable("memIdx") int memIdx) {
+//	@PutMapping("/{memIdx}") // 정보수정
+//	public Member editMem(@RequestBody MemberEditRequest editRequest, @PathVariable("memIdx") int memIdx) {
+//		
+//		return editService.editMember(editRequest, memIdx);
+//	}
+	
+	@PutMapping(value = "/name/{memIdx}", produces = "application/text;charset=utf8") //닉네임 수정
+	public String editMemName(@RequestBody MemberNameEditRequest nameEditRequest,
+							  @PathVariable("memIdx") int memIdx
+							  ) {
 		
-		return editService.editMember(editRequest, memIdx);
+		return editNameService.editNameMember(nameEditRequest, memIdx);
 	}
+	
+	@PutMapping("/pw/{memIdx}") //비밀번호 수정
+	public String editMemPw(@RequestBody MemberPwEditRequest pwEditRequest,
+							@PathVariable("memIdx") int memIdx 
+							) {
+		
+		return editPwService.editPwMember(pwEditRequest, memIdx);
+	}
+	
 
 	@PutMapping("/edit/photo") // default 사진으로 수정
 	public int photoUpload(@RequestBody MemberPhotoEditRequest photoEditRequest) {
@@ -175,8 +223,14 @@ public class MemberRestController {
 	}
 
 	@GetMapping("/naver/oauthNaver") //리다이렉트 페이지에서 정보를 얻고 가입 or 로그인 
-	public ModelAndView oauthNaver(HttpServletRequest request, HttpServletResponse response, 
-							@RequestParam String code, @RequestParam String state, HttpSession session, Model model, String jSessionId) throws Exception {
+	public ModelAndView oauthNaver(HttpServletRequest request, 
+								   HttpServletResponse response, 
+								   @RequestParam String code, 
+								   @RequestParam String state,
+								   String jSessionId,
+								   HttpSession session, 
+								   Model model) throws Exception {
+		
 		ModelAndView mav = new ModelAndView();
 		
 		mav.setViewName("redirect:http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/");
@@ -198,5 +252,12 @@ public class MemberRestController {
 		
 		return pwFindService.rePwSend(memId);
 	}
+	
+	@GetMapping("/allmember")
+	public List<Member> memberList(){
+		
+		return adminService.getAllMember();
+	}
+	
 }
 

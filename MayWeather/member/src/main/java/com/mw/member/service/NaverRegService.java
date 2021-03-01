@@ -74,6 +74,8 @@ public class NaverRegService {
 		
 		Member member = naverRegRequest.regRequest(naverId, naverName, naverGender);
 		
+		jSessionId = session.getId();
+		
 		//아이디체크가 1이상이면 이미 가입된 아이디이므로 로그인
 		if(idChk > 0) {
 			

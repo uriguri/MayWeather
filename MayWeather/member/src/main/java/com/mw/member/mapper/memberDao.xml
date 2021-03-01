@@ -16,6 +16,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="memPhoto" property="memPhoto" />
 	</resultMap>
 	
+<!-- Member List -->
+<resultMap id="memberListResult" type="com.mw.member.domain.Member">
+	<id column="memIdx" property="memIdx"/>
+	<result column="memId" property="memId"/>
+	<result column="memName" property="memName"/>
+	<result column="memPhoto" property="memPhoto"/>
+	<result column="memRegdate" property="memRegdate"/>
+</resultMap>
+	
 	<!-- 회원가입 -->
 	<insert id="insertMem"
 		parameterType="com.mw.member.domain.Member" useGeneratedKeys="true"
@@ -70,6 +79,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectMemberByIdCount" resultType="int">
 	select count(*) from mem where memId=#{memId}
 	</select>
+	
+	<select id="selectPwBymemIdx" resultType="int">
+	select count(*) from mem WHERE memPw=#{param1} and memIdx=#{param2};
+	</select>
 
 	<!-- 이름으로 아이디 값 반환(아이디찾기) -->
 	<select id="selectMemberByName" resultType="String">
@@ -81,4 +94,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE mem SET memPw=#{param1} WHERE memId=#{param2}
 	</update>
 
+	<!-- IDX에 해당하는 유저의 이름을 변경 -->
+	<update id="updateMemberName" parameterType="com.mw.member.domain.Member">
+		UPDATE mem SET memName=#{param1} WHERE memIdx=#{param2}
+	</update>
+	
+	<!-- IDX에 해당하는 유저의 비밀번호를 변경 -->
+	<update id="updateMemberPwByIdx" parameterType="com.mw.member.domain.Member">
+		UPDATE mem SET memPw=#{param1} WHERE memIdx=#{param2}
+	</update>
+
+	<!-- 관리자 페이지 모든 회원 조회 -->
+	<select id="selectAllMemberList" resultMap="memberListResult">
+		SELECT * FROM mem
+	</select>
+	
 </mapper>

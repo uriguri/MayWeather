@@ -1,8 +1,10 @@
 package com.mw.member.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.mw.member.domain.Member;
+import com.mw.member.domain.MemberPwEditRequest;
 
 
 public interface MemberDao {
@@ -37,9 +39,24 @@ public interface MemberDao {
 	//아이디 존재 유무확인(유효성검사)
 	int selectMemberByIdCount(String memId);
 
+	//Idx멤버의 Pw 일치 여부확인
+	int selectPwBymemIdx(String memPw, int memIdx);
+	
 	//이름으로 검색하여 아이디 반환
 	String selectMemberByName(String memName);
 	
 	//멤버 패스워드 수정 (비밀번호찾기 임시 패스워드변경)
 	int updateMemberPw(String newPw, String memId);
+	
+	//Idx멤버 닉네임(이름) 변경
+	int updateMemberName(String memName, int memIdx);
+
+	//Idx멤버 비밀번호 변경
+	int updateMemberPwByIdx(String memPw, int memIdx);
+	
+	//모든 멤버 조회
+	List<Member> selectAllMemberList();
+	
+
+	
 }
