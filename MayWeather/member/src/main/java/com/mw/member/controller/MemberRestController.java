@@ -152,12 +152,12 @@ public class MemberRestController {
 	}
 
 	@PostMapping("/login/{originJsessionId}") // 로그인
-	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, HttpServletRequest request, Model model,
-							@PathVariable("originJsessionId") String jSessionId, HttpSession session) {
+	public LoginInfo login(@RequestBody MemberLoginRequest loginRequest, HttpSession session, 
+							@PathVariable("originJsessionId") String jSessionId) {
 
-		model.addAttribute("loginCheck", loginService.login(loginRequest, request, jSessionId, session));
+		
 
-		return loginService.login(loginRequest, request, jSessionId, session);
+		return loginService.login(loginRequest, jSessionId, session);
 	}
 
 	@GetMapping("/logout") // 로그아웃

@@ -16,16 +16,14 @@ public class RedisService {
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
 
-	
 	/* Redis에 사용자 정보 등록 */
 	public void setMemInformation(LoginInfo loginInfo, String jSessionId, HttpSession session) {
-		
+
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setValueSerializer(new StringRedisSerializer());
-		
+
 		String key = jSessionId;
-		
-		
+
 		/*
 		 * Map<String, Object> mapMemberInfo = new HashMap<String, Object>();
 		 * mapMemberInfo.put("memIdx", loginInfo.getMemIdx());
@@ -37,39 +35,37 @@ public class RedisService {
 		 * mapMemberInfo.put("memEmailchk", loginInfo.getMemEmailchk());
 		 * mapMemberInfo.put("memSocial", loginInfo.getMemSocial());
 		 */
-		
-		
+
 		Gson gson = new Gson();
-		
-		
+
 		redisTemplate.opsForValue().set(key, gson.toJson(loginInfo));
-		
-		
+
 		System.out.println(jSessionId);
 		System.out.println("====================");
 		System.out.println(key);
 		System.out.println("====================");
 		System.out.println(loginInfo);
 		System.out.println(loginInfo.getMemId());
-	
-		 session.setAttribute("jsessionId", jSessionId);
-		 session.setAttribute("memIdx", loginInfo.getMemIdx());
-		 session.setAttribute("memId", loginInfo.getMemId());
-		 session.setAttribute("memName", loginInfo.getMemName());
-		 session.setAttribute("memPhoto", loginInfo.getMemPhoto());
-		 session.setAttribute("memLoc", loginInfo.getMemLoc());
-		 session.setAttribute("memGender", loginInfo.getMemGender());
-		 session.setAttribute("memEmailchk", loginInfo.getMemEmailchk());
+
+		
+		  session.setAttribute("jsessionId", jSessionId);
+		  session.setAttribute("memIdx", loginInfo.getMemIdx());
+		  session.setAttribute("memId", loginInfo.getMemId());
+		  session.setAttribute("memName", loginInfo.getMemName());
+		  session.setAttribute("memPhoto", loginInfo.getMemPhoto());
+		  session.setAttribute("memLoc", loginInfo.getMemLoc());
+		  session.setAttribute("memGender", loginInfo.getMemGender());
+		  session.setAttribute("memEmailchk", loginInfo.getMemEmailchk());
 		 
+
 	}
-	
+
 	/* Redis 에서 정보를 가져온다 */
 	public LoginInfo getMemInformation(String sessionId) {
-		
+
 		String key = sessionId;
-		
-		LoginInfo result = new LoginInfo(
-				(String) redisTemplate.opsForHash().get(key, "memIdx"),
+
+		LoginInfo result = new LoginInfo((String) redisTemplate.opsForHash().get(key, "memIdx"),
 				(String) redisTemplate.opsForHash().get(key, "memId"),
 				(String) redisTemplate.opsForHash().get(key, "memName"),
 				(String) redisTemplate.opsForHash().get(key, "memPhoto"),
@@ -78,7 +74,7 @@ public class RedisService {
 				(String) redisTemplate.opsForHash().get(key, "memEmailchk"),
 				(String) redisTemplate.opsForHash().get(key, "memSocial"),
 				(String) redisTemplate.opsForHash().get(key, "jsessionId"));
-		
+
 		return result;
 	}
 }

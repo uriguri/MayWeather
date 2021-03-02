@@ -1,0 +1,92 @@
+@charset "UTF-8";
+
+
+	#weatherByTimeForm {
+    	max-width: 500px;
+        height: 650px;
+	}
+ 	
+ 	.weatherBT_title {
+ 		width: 100%;
+ 		height: 40px;
+ 		padding: 10px;
+ 	}
+ 	
+ 	.weatherBT_content {
+ 		width: 100%;
+ 		height: 330px;
+ 		padding: 5px;
+ 		border-radius: 10px;
+        text-align: center;
+        background-color: white;
+		overflow-x: auto; 
+		overflow-y: hidden;
+ 	}
+ 	
+ 	.weatherBT_content div, weatherBT_content tr, weatherBT_content td {
+ 		background-color: white;
+ 	}
+ 	
+ 	.weatherBT_table{
+ 		width: 50px;
+ 		height: 100%;
+ 		padding: 15px 10px;
+ 		background-color: white;
+ 		float: left;
+ 	}
+ 	
+ 	.weatherBT_table tr, .weatherBT_table td, .weatherBT_detail tr, .weatherBT_detail td {
+ 		background-color: white;
+ 	}
+ 	
+ 	.weatherBT_table table {
+ 		width: 50px;
+ 		height: 100%;
+ 	}
+ 	
+ 	.weatherBT_table tr {
+ 		border: 0px;
+ 		border-left: 1px solid #eee;
+ 		border-right: 1px solid #eee;
+ 	}
+ 	
+ 	#weatherTable_rain_percent {
+		text-align: left;
+		padding-left: 5px;
+	}
+	
+	#weatherTable_rain_percent [type=button] {
+		background-color: #64c2eb;
+		height: 8px;
+		border: 0px;
+		border-raidus: 30px;
+		
+		width: 30%;
+	}
+
+	.weatherBT_detail {
+		width: 100%;
+		height: 35%;
+		padding: 20px;
+		background-color: white;
+	}
+	
+	.weatherBT_detail table {
+		width: 300px;
+		height: 150px;
+		table-layout: fixed;
+	}
+	
+	.weatherBT_detail tr {
+		font-size: 0.9em;	
+	}
+	
+	.onleft {
+		text-align: left;
+	}
+	
+	.onright {
+		text-align: right;
+	}
+
+ 

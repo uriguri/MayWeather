@@ -1,0 +1,474 @@
+@charset "UTF-8";
+
+ 	/* ---------------------- GUESTBOOK 버튼 페이지 ---------------------- */
+ 
+	.moveToGb {
+		min-width: 375px;
+        max-width: 500px;
+        height: 650px;
+        float: left;
+	}
+
+    .moveToGb button {
+        margin: 10px;
+        width: 100px;
+        height: 100px;  
+        background-color: red;
+        color: white;
+        font-weight: 1.5em;
+        border: 0px;
+    }
+ 
+ 
+	/* ---------------------- GUESTBOOK 리스트 ---------------------- */
+	
+	.gblistForm {
+		min-width: 375px;
+		max-width: 500px;
+        max-height: 650px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin: auto;
+	}
+	
+	.gblist_title {
+		width: 100%;
+		height: 45px;
+		padding: 5px 0;
+	}
+	
+	.gblist_title span {
+		padding: 0px 65px;
+	}
+		
+	.gb_back_btn {
+		border: 0px;
+	}
+	
+	.reg_modal_open_btn {
+		border: 0px;
+	}
+	
+	.gblist {
+		width: 100%;
+		height: auto;
+		padding: 10px;
+		background-color: white;
+		border-radius: 5px;
+	}
+	
+	.gblist tr, .gblist td {
+		background-color: white;	
+	}
+	
+	.gblist_table {
+		width: 100%;
+		table-layout: fixed;
+	}
+	
+	.secretGb {
+		border: 2px solid #aaa;
+		background-color: #f5f5f5;
+	}
+ 
+ 	.gblist_width {
+ 		width: 100%;
+ 	}
+ 	
+ 	.gblist_memImgR {
+ 		width: 60px;
+ 		padding: 10px;
+ 		padding-top: 15px;
+ 	}
+ 	
+ 	.gblist_memImg {
+ 		border-radius: 50px;
+ 	}
+ 	
+ 	.gblist_name {
+ 		width: 180px;
+ 		padding-top: 10px;
+ 	}
+ 	 	
+ 	.gblist_btns {
+ 		width: 80px;
+ 		background-color: red;
+ 		text-align: right;
+ 		padding-right: 10px;
+ 	}
+ 	
+ 	.gblist_btns img {
+ 		position: relative;
+ 		top: 5px;
+ 		right: 5px;
+ 	}
+ 	
+ 	.gblist_info {
+ 	}
+ 	
+ 	.gblist_width button {
+ 		width: 30px;
+ 		height: 20px;
+ 		float: left;
+ 	}
+ 	
+ 	.gblist_con {
+ 		width: 100%;
+ 		height: 60px;
+ 		padding-bottom: 5px;
+ 	}
+ 	
+ 	.gblist_content {
+ 	 	width: 100%;
+ 	 	padding-top: 20px;
+ 	 	padding-bottom: 20px;
+ 	 	padding-right: 10px;
+ 	 	padding-left: 20px;
+ 		border-bottom: 1px solid #eee;
+ 		font-size: 0.9em;
+ 	}
+ 	
+ 	.gblist_uploadPhoto {
+ 		border-bottom: 1px solid #eee; 	
+ 		overflow: hidden;
+ 	}
+ 	
+ 	.gblist_uploadPhoto~div {
+ 		min-heigt: 70px;
+ 		max-height: 70px;
+ 		min-width: 70px;
+ 		max-width: 70px;
+ 		overflow: hidden;
+ 		text-align: center;
+ 	}
+ 	
+ 	.gblist_uploadPhoto img {
+ 		height: 70px;
+ 		width: auto;
+ 	}
+ 	
+ 	/* 사진 크게 보기 */
+ 	.gbOriginalImage {
+ 		position: fixed;
+    	top: 0px;
+    	left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+ 	}
+ 	
+ 	.gbBigImg {
+ 		width: auto;
+ 		height: auto;
+ 		position: relative;
+        background-color: white;
+        padding: 10px;
+        border-radius: 10px;
+ 	}
+ 	
+ 	/*  수정/삭제 메뉴 드롭다운 */    
+    .gbDropdown {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .gbDropdownContent {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f1f1f1;
+        min-width: 70px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    
+    .gbDropdownContent li {
+        color: black;
+        padding: 5px;
+        display: block;
+        font-size: 0.9em;
+    }
+    
+    .gbDropdownContent li:hover {
+        background-color: #ddd;
+    }
+    
+    .gbDropdown:hover .gbDropdownContent {
+        display: block;
+    }
+    
+    .gbDropdown:hover .dropdown {
+        background-color: white;
+        color: white;
+        text-align: center;
+    }
+    
+    .gbDropdown:hover .dropdown:first-child, .gbDropdown:hover .dropdown:nth-child(2) {
+        background-color: #424242;
+        margin: 1px;
+        border-radius: 5px;
+        font-weight: 800;
+    }
+ 	
+
+ 	
+ 	/* ---------------------- GUESTBOOK 리스트 끝 ---------------------- */
+ 	
+ 	
+ 	/* ---------------------- GUESTBOOK 등록 MODAL ---------------------- */
+ 	
+/*  	.modalFade {
+ 	    display:none;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 90%;
+        background-color:rgba( 255, 255, 255, 0.5 );
+        padding-top: 150px;
+        padding-left: 30px;
+    } */
+    
+   .regModal_wrapper {
+    	position: fixed;
+    	top: 0px;
+    	left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .updateModal_wrapper {
+    	position: fixed;
+    	top: 0px;
+    	left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .deleteModal_wrapper {
+    	position: fixed;
+    	top: 0px;
+    	left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+    }
+            
+    .regModal_wrapper tr, .regModal_wrapper td {
+        /* border: 1px solid; */
+    }
+ 
+    .regModal {
+        position: relative;
+        width: 400px;
+        height: 570px;
+        background-color: white;
+        margin: 20px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .regModal_back {
+    	border-radius: 10px 0 0 0;
+        float: left;
+    }
+    
+    /* 방명록 등록 모달창 헤더 */
+    .regModal_header {
+    	border-radius: 10px 10px 0 0;
+    }
+    
+    .reg_modal_close_btn {
+    	border: 0px;
+    	padding: 10px;
+    }
+    
+    .regModal_title {
+        text-align: center;
+        padding: 10px;
+        padding-right: 5px;
+        border-radius: 10px 10px 0 0;
+    }
+    
+    /* 방명록 등록 모달창 내용 */
+    .regModal_body {
+    	width: 100%;
+    	height: 86%;
+    	padding: 10px;
+    }
+    
+    .regModal_table {
+        width: 100%;
+        height: 460px;
+    }
+    
+    /* testtest */
+    .regModal_table tr, .regModal_table td {
+       /*  border: 1px solid; */
+    }
+    
+    .regModal_table td {
+    	/* padding: 10px; */
+    }
+    
+    .gbGreetArea {
+    	height: 100px;
+    }
+    
+    .gbTableExp {
+        width: 180px;
+        padding-left: 15px;
+        padding-bottom: 10px;
+    }
+    
+    .gbTableImg {
+        width: 110px;
+        text-align: center;
+        padding-bottom: 10px;
+    }
+    
+    .gbInsertArea1 {
+   		height: 80px;
+   		background-color: white;
+    }
+    
+    .gbInsertArea2 {
+    	height: 220px;
+    	background-color: white;
+    }
+    
+    .gbInsertPhoto {
+    	width: 80px;
+        padding: 25px;
+    }
+    
+    .gbInsertText {
+    	width: 215px;
+    	margin: 0 auto;
+    }
+    
+    textarea[name=gbContent] {
+        width: 95%;
+        height: 95%;
+        border: 0px;
+        border-radius: 10px;
+        padding: 20px;
+        padding-top: 25px;
+        background-color: white;
+        font-size: 0.9em;
+    }
+    
+	.gbInsertText input::placeholder {
+		color: grey;
+		vertical-align: baseline;
+	}
+    
+    .gbPreview {
+    	
+    }
+    
+    .deletePreviewImg {
+    	position: relative;
+    	top: 0;
+    	right: 0;
+    	width: auto;
+    	height: auto;
+    	background-color: white;
+    	padding: 5px;
+    	text-align: right;
+    	float: left;
+    }
+    
+    .deletePreviewImg img:nth-child(2) {
+    	position: relative;
+    	top: 0;
+    	right: 0;
+    }
+   
+   #deletePreview_btn {
+   		
+   }
+    
+    .gbSecretArea {
+    	width: 100%;
+    	height: 50px;
+    	padding-left: 50%;
+    }
+    
+    .gbSecretArea td {
+    	padding-left: 220px;
+    }
+    
+    .regModal_footer {
+    	background-color: white;
+    	border-radius: 0px 10px;
+    }
+    
+    #reg_submit_btn {
+        width: 100%;
+        height: 35px;
+        background-color: #ffd74e;
+        color: white;
+        border: 0px;
+        border-radius: 0 0 20px 20px;
+       	font-size: 1.1em;
+       	font-weight: bold;
+    }
+    
+    /* 방명록 수정 모달 */
+    .updateModal {
+        position: relative;
+        width: 400px;
+        height: 570px;
+        background-color: white;
+        margin: 20px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    
+    .updateModal_body {
+        width: 100%;
+    	height: 86%;
+    	padding: 10px;
+    }
+    
+    /* 방명록 삭제 모달 */
+    .deleteModal {
+    	position: relative;
+    	width: 350px;
+    	height: 200px;
+    	background-color: white;
+    	margin: 20px;
+    	padding: 15px;
+    	border-radius:10px;
+    }
+    
+    .deleteModal table  {
+    	width: 100%;
+    	height: 95%;
+    }
+    
+  	.gbDelChk {
+        width: 100%;
+    	height: 95px;
+    	text-align: center;
+    }
+    

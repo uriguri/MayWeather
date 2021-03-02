@@ -289,3 +289,9 @@ td.photo-td, th.photo-th{
 	text-align: center;
 	margin: auto;
 }
+
+#adminLoginMenu{
+	background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+}

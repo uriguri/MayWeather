@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">  -->
 
 <title>+WEATHER WEAR+</title>
 
@@ -26,6 +27,13 @@
 <script src="<c:url value="/js/ootd.js"/>"></script>
 <script src="<c:url value="/js/croppers.js"/>"></script>
 
+<!-- 메인 CSS -->
+<link rel="styleSheet" href="<c:url value="/css/main.css"/>">
+<link rel="styleSheet" href="<c:url value="/css/weather.css"/>">
+<link rel="styleSheet" href="<c:url value="/css/guestbook.css"/>">
+
+ 
+
 <!-- 마이페이지 CSS -->
 <link rel="styleSheet" href="<c:url value="/css/member/login-register.css"/>"/>
 <link rel="styleSheet" href="<c:url value="/css/member/bootstrap.css"/>"/>
@@ -36,6 +44,7 @@
 
 <!-- redis loginInfo -->
 <script type="text/javascript">
+
 var originJsessionId = '${cookie.JSESSIONID.value}';
 var jsessionId = '${sessionScope.jsessionId}';
 
@@ -47,7 +56,7 @@ var memGender = '${sessionScope.memGender}';
 var memPhoto = '${sessionScope.memPhoto}';
 var memEmailchk = '${sessionScope.memEmailchk}';
 
-console.log(originJsessionId)
+console.log(originJsessionId);
 console.log(jsessionId);
 console.log(memIdx);
 console.log(memName);
@@ -56,6 +65,7 @@ console.log(memLoc);
 console.log(memGender);
 console.log(memPhoto);
 console.log(memEmailchk);
+
 </script>
 
 </head>
@@ -64,14 +74,94 @@ console.log(memEmailchk);
 
 <!-- 상단 고정바 -->
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
-	
+
 <div class="memContents">
 
     <div class="memContent">
 
         <div class="content">
-
-
+			
+			<!-- 메인 wrap -->
+				<div class="content_wrap">
+					
+					<!-- 메인 -->
+					<div class="mainForm" id="mainForm"></div>
+					
+					<!-- 방명록 버튼 -->
+					<div class="moveToGb" id="moveToGb" style="display: none;"></div>
+					
+					<!-- 방명록 리스트 -->
+		    		<div class="gblistForm" id="gblistForm" style="display: none;"></div>
+	
+					<!-- 방명록 등록 (모달 창) -->
+			    	<form id="gbregForm">	
+			    		<div class="regModal_wrapper" style="display: none;">
+			    			<div class="regModal">
+			    			
+			    				<div class="regModal_header">
+		                             <div class="regModal_back">
+		                                 <button type="button" class="reg_modal_close_btn" onclick="closeRegModal()" ><img width="20" src="/image/main/back.png"></button>
+		                             </div>
+		                             <div class="regModal_title">방명록 남기기</div>
+		                         </div>
+			    					
+			    				<div class="regModal_body"></div>
+			    				
+			    				<div class="regModal_footer">
+		                           <button type="button" id="reg_submit_btn" onclick="regGuestbook()">보내기</button>
+		                       </div>
+		                       
+			    			</div>
+			    		</div>
+			    	</form>  
+			    	
+			    	<!-- 방명록 수정 (모달 창) -->
+			    	<form id="gbUpdateForm">	
+			    		<div class="updateModal_wrapper" style="display: none;">
+			    			<div class="updateModal">
+			    			
+			    				<div class="regModal_header">
+		                             <div class="regModal_back">
+		                                 <button type="button" class="reg_modal_close_btn" onclick="closeUpdateModal()"><img width="20" src="/image/main/back.png"></button>
+		                             </div>
+		                             <div class="regModal_title">방명록 수정하기</div>
+		                         </div>
+			    					
+			    				<div class="updateModal_body"></div>
+			    				
+			    				<div class="regModal_footer">
+		                           <button type="button" id="reg_submit_btn" onclick="updateGuestbook()">수정하기</button>
+		                       </div>
+		                       
+			    			</div>
+			    		</div>
+			    	</form>  
+			    	
+			    	<!-- 방명록 삭제 (모달 창) -->
+			    	<form id="gbDeleteForm">	
+			    		<div class="deleteModal_wrapper" style="display: none;">
+			    			<div class="deleteModal">
+			    			
+			    				<div class="regModal_header">
+		                             <div class="regModal_back">
+		                                 <button type="button" class="reg_modal_close_btn" onclick="closeDeleteModal()"><img width="20" src="/image/main/back.png"></button>
+		                             </div>
+		                             <div class="regModal_title">방명록 삭제하기</div>
+		                         </div>
+			    					
+			    				<div class="deleteModal_body"></div>
+			    				
+			    				<div class="regModal_footer">
+		                           <button type="button" id="reg_submit_btn" onclick="deleteGuestbook()">삭제하기</button>
+		                       </div>
+		                       
+			    			</div>
+			    		</div>
+			    	</form> 
+					
+				</div>
+			
+			
         </div>
     </div>
 </div>
@@ -101,6 +191,10 @@ console.log(memEmailchk);
 
 <!-- MARKET JS파일 -->
 <script src="<c:url value="/js/market.js"/>"></script>
+
+<!-- 메인 JS -->
+<script type="text/javascript" src="<c:url value="/js/location.js"/>" charset="UTF-8"></script> 
+<script type="text/javascript" src="<c:url value="/js/guestbook.js"/>" charset="UTF-8"></script>
 
 
 <!-- 푸터 -->

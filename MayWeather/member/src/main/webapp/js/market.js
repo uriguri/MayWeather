@@ -2,16 +2,16 @@
 		var totalPage = 1;
 		
 		//var marketUrl = 'http://localhost:8080/market';
-		
-		//var marketUrl = 'http://ec2-3-35-27-93.ap-northeast-2.compute.amazonaws.com:8080/mwMarket';
-		
-		var marketUrl = 'http://192.168.0.90:8080/market';
-		
 		//var clientUrl = 'http://localhost:8081';
 		
-		//var clientUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
+		// 로컬에서 레디스 테스트 
+//		var marketUrl = 'http://192.168.0.90:8080/market';
+//		var clientUrl = 'http://192.168.0.35:8080/member';
+				
+		// aws 
+		var marketUrl = 'http://ec2-3-35-27-93.ap-northeast-2.compute.amazonaws.com:8080/mwMarket';
+		var clientUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
 		
-		var clientUrl = '192.168.0.35:8080/member';
 		
 		//임의의 file object영역
         var fileObject = {};
@@ -74,8 +74,9 @@
 			    //window height + window scrollY 값이 document height보다 클 경우,
 			    if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
 			    	//실행할 로직 (콘텐츠 추가)
+					page++;
 					fnSaleList(page);
-			        page++;
+			        
 			    }
 			}
 		};
@@ -289,7 +290,7 @@
 			nowSaleNo = saleNo;
 			
 			var addClass = "active";
-			alert(jsessionId);
+
 			var data = {
 				saleNo : saleNo,
 				jsessionId : jsessionId
@@ -415,7 +416,18 @@
 					}else if(data.saleMember.saleDiv == 'E'){
 						selectE = 'selected';
 					}		
-												
+							
+					html += '      		<td>결제 방법 : </td>';
+					// 카카오페이 결제 이용
+					if(data.saleMember.payDiv == 'K'){	
+						html += '      		<td>카카오페이</td>';
+					}else{
+						html += '      		<td>직접 결제</td>';
+					}	
+					html += '    	</tr>';
+							
+					html += '    	<tr>';		
+																																
 					// 내 글인 경우에만 판매여부변경 START
 					if(memIdx == data.saleMember.saleIdx){	
 						html += '      		<td>';
@@ -455,7 +467,7 @@
 					
 					html += '    	<tr>';
 					html += '      		<td colspan="2">';
-					html += '				<div class="sale_title">' + data.saleMember.saleTitle + '</div><br>';
+					html += '				<div class="sale_title"><img class="img-circle" src="' + clientUrl	+ '/fileupload/member/' + data.saleMember.saleIdx + '.png"> ' + data.saleMember.saleTitle + '</div><br>';
 					html += data.saleMember.saleDate + '<br><br>';
 					html += data.saleMember.saleCmt + '<br><br>';
 					html += '				<div class="sale_amount">' + data.saleMember.saleAmount + '원</div><br><br>';
@@ -540,7 +552,7 @@
 						
 						html += '			<div class="row">';
 						html += '				<div class="col-2 col-sm-2">';
-						html += '					이미지';
+						html += '					<img class="img-circle" src="' + clientUrl	+ '/fileupload/member/' + data[i].replyIdx + '.png" width="100px" alt="...">';
 						html += '				</div>';
 						html += '				<div id="reply_view_div_' + data[i].replyNo + '" class="col-10 col-sm-10">';
 						html += '        			<h5 class="card-title">' + data[i].replyNic + '</h5>';
@@ -805,11 +817,20 @@
 			$('#market *').remove();
 			nowSaleNo = saleNo;
 		    
+			var data = {
+				saleNo : saleNo,
+				jsessionId : jsessionId
+			};
+    
 			$.ajax({
-				url : marketUrl + '/sale/view/' + saleNo,
-				type : 'GET',
+				url : marketUrl + '/sale/view/',
+				type : 'POST',
+				data : JSON.stringify(data),
+				contentType : 'application/json; charset=UTF-8',
+				//dataType : 'json',
+				async : false, 
 				success : function(data){
-						
+					
 					var html = '';
 					// 검색
 					html += '<div class="write_form" >';
@@ -958,7 +979,11 @@
 		                   
 		                } else if (result === -2) {
 		                    alert('파일이 10MB를 초과하였습니다.');
-		                  
+		                } else if (result === -3) {
+		                    alert('상품 등록에 실패하였습니다.');
+		                } else if (result === -4) {
+		                    alert('상품 이미지 등록에 실패하였습니다.');
+		                  		                  		                  
 		                } else {
 		                    alert('에러');
 		                    
@@ -1475,11 +1500,11 @@
 				} 				
 			});
 
-		//});
 		}
 		
 		// 로그인 체크 
 		function fnLoginChk(){
+		
 			if(memIdx == null || memIdx == ''){
 				alert('로그인 후 이용해주세요.');
 				return false;

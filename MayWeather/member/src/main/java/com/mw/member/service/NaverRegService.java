@@ -83,6 +83,14 @@ public class NaverRegService {
 			
 			//기존 세션 저장
 			/* request.getSession().setAttribute("loginInfo", member.toKakaoLoginInfo()); */
+			session.setAttribute("loginInfo", member.toLoginInfo());
+			session.setAttribute("memIdx", member.getMemIdx());
+			session.setAttribute("memName", member.getMemName());
+			session.setAttribute("memId", member.getMemId());
+			session.setAttribute("memLoc", member.getMemLoc());
+			session.setAttribute("memGender", member.getMemGender());
+			session.setAttribute("memPhoto", member.getMemPhoto());
+			session.setAttribute("memEmailchk", member.getMemEmailchk());
 			
 			//레디스 세션 저장
 			redisService.setMemInformation(member.toLoginInfo(), jSessionId, session);

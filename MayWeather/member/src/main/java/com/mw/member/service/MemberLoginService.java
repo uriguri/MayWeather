@@ -1,6 +1,5 @@
 package com.mw.member.service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -29,8 +28,9 @@ public class MemberLoginService {
 	private RedisService redisService;
 
 	
-	public LoginInfo login(MemberLoginRequest loginRequest, HttpServletRequest request, String jSessionId,
-			HttpSession session) {
+	public LoginInfo login(MemberLoginRequest loginRequest, 
+						   String jSessionId,
+						   HttpSession session ) {
 
 		dao = template.getMapper(MemberDao.class);
 
@@ -57,18 +57,26 @@ public class MemberLoginService {
 				member.setJsessionId(jSessionId);
 				
 				// 기존 세션 저장 방식
-				request.getSession().setAttribute("loginInfo", member.toLoginInfo());
-
+				session.setAttribute("loginInfo", member.toLoginInfo());
+				session.setAttribute("memIdx", member.getMemIdx());
+				session.setAttribute("memName", member.getMemName());
+				session.setAttribute("memId", member.getMemId());
+				session.setAttribute("memLoc", member.getMemLoc());
+				session.setAttribute("memGender", member.getMemGender());
+				session.setAttribute("memPhoto", member.getMemPhoto());
+				session.setAttribute("memEmailchk", member.getMemEmailchk());
+				
+				
 				// 레디스 세션 저장 방식
 				redisService.setMemInformation(member.toLoginInfo(), jSessionId, session);
 
 				// 레디스 세션 확인 
-//				 LoginInfo test = redisService.getMemInformation(jSessionId);
-//				 System.out.println(test.getMemIdx());
+				//LoginInfo test = redisService.getMemInformation(jSessionId);
+				//System.out.println(test.getMemIdx());
 				 
 
 			} else {
-				request.getSession().setAttribute("msg", "인증되지 않은 아이디입니다. 인증 후 로그인 해주세요.");
+				session.setAttribute("msg", "인증되지 않은 아이디입니다. 인증 후 로그인 해주세요.");
 			}
 			
 		} else {

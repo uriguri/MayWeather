@@ -1,0 +1,351 @@
+@charset "UTF-8";
+
+
+	.home_btn {
+		border: 0px;
+	}
+	
+	#gblist_btn {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	.content_wrap {
+        max-width: 500px;
+        min-height: 650px;
+        max-height: 650px;
+		margin: auto;
+		overflow-y:auto; 
+		overflow-x:hidden;
+	}
+
+    .mainForm {
+        max-width: 500px;
+        height: 650px;
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align: center;
+    }
+    
+    .font0 {
+    	font-size: 1.7em;
+    }
+    
+   	.font1 {
+   		font-size: 1.5em;
+   	}
+   	
+   	.font2 {
+   		font-size: 1.3em;
+   	}
+   	
+   	.font3 {
+   		font-size: 1.2em;
+   	}
+   	
+   	.font4 {
+   		font-size: 1.1em;
+   		font-weight: 900;
+   	}
+   	
+   	.font5 {
+   		font-size: 0.9em;
+   		font-weight: bold;
+   	}
+
+	.font6 {
+		font-size: 0.8em;
+	}    
+	
+	.font7 {
+		font-size: 0.7em;
+	}   
+	
+	.font8 {
+		font-size: 0.6em;
+	} 
+	
+	.font_left {
+		font-size: 0.9em;
+		text-align: left;
+	}
+	
+	/* 헤더 ---------------------------- */
+	
+	.header_loc {
+    	position: absolute;
+    	top: 40px;
+    	left: 145px;
+    }
+    
+    #btnLocc {
+  		width: 100px;
+    	background-color: #64c2eb;
+    	color: black;
+    	border: 0px;
+    	text-align: center;
+    }
+    
+    .header_time {
+    	width: 100%;
+    	height: 5%;
+    	background-color: #f5f5f5;
+    	color: grey;
+    	text-align: center;
+    }
+    
+
+    /* 위치  -----------------------------*/
+    .location {
+        width: 100%;
+        height: 3%;
+        text-align: center;
+    }
+ 
+    /* 날씨  -----------------------------*/
+    .weather {
+        width: 100%;
+        height: 25%;
+        text-align: center;
+        padding-top: 35px;
+    }
+    
+    .weatherBt_btn {
+        text-align: right;
+    }
+    
+    #weatherBt_btn {
+    	position: absolute;
+    	top: 110px;
+    	right: 10px;
+        background-color: #ffd74e;
+        padding: 5px;
+        border-radius: 10px;
+        border: 0px;
+        color: black;
+    }
+    
+    .weather_icon {
+    	width: 50%;
+        padding-left: 40px;
+        padding-right: 10px;
+        float: left;
+    }
+    
+    .weather_now {
+    	width: 50%;
+        float: left;
+    }
+    
+    .weather_now table {
+    	border-collapse: separate;
+    	width: 120px;
+    	height: 100px;
+    	table-layout: fixed;
+    	border-spacing: 3
+    	px;
+    }
+    
+    #tmp_max {
+    	text-align: right;
+    }
+    
+    #tmp_min {
+    	text-align: left;
+    	padding-left: 5px;
+    }
+    
+    #rainPercentBar {
+    	border-radius: 10px;
+    	width: 10px;
+    }
+    
+    /* 오늘의 코디 추천 ----------------------------- */
+    
+    .todayCodi_ootd, .todayCodi_item div, .todayCodi_recomm, .todayCodi_recomm div, .todayCodi_recomm td, .todayCodi_recomm tr, 
+    .todayCodi h5, .todayCodi_btn {
+    	background-color: white;
+    	/* border: 1px solid; */
+    }
+    
+    h5 {
+    	font-weight: 900;
+    }
+
+    
+    .todayCodi {
+        width: 100%;
+        height: 33%;
+        text-align: center;
+        background-color: white;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-radius: 25px;
+    }
+    
+    .todayCodi_ootd {
+        width: 40%;
+        height: 140px;
+        float: left;
+        padding-left: 20px;
+        font-size: 0.9em;
+        display: inline-block;
+        font-size: 0.8em;
+        /* border: 1px solid; */
+    }
+
+    .todayCodi_ootd_border {	
+    	width: 95%;
+    	height: 100%;
+    	padding: 5px;
+    	padding-left: 9px;
+    	/* background-color: #f5f5f5; */
+    }
+    
+    .todayCodi_ootd_border table {
+    	inline-height: center;
+    }
+    
+    .todayCodi_ootd td, .todayCodi_ootd tr {
+    	/* background-color: #f5f5f5; */
+    	color: black;
+    }
+    
+    .todayCodi_ootd_border td {
+    	padding-top: 5px;
+    }
+    
+    .todayCodi_recomm {
+    	width: 60%;
+    	height: 140px;
+    	float: left;
+    	/* border: 1px solid;  */
+    }
+    
+    .todayCodi_item {
+        width: 100%;
+        height: 80px;
+        float: left;
+        font-size: 0.9em;
+        /* border: 1px solid; */
+    }
+    
+    .todayCodi_item table, .todayCodi_item td {
+    	width: 95%;
+    	margin: auto;
+    	padding: 5px;
+    }
+    
+    .todayCodi_item_img {
+    	width: 85%;
+    	height: 45px;
+    	padding-left: 10px;
+    	float: left;
+        /* border: 1px solid; */
+        display: flex;
+    }
+    
+    .todayCodi_item_img1 {
+    	flex: 1;
+    }
+    
+    .todayCodi_item_img2 {
+    	flex: 1;
+    }
+    
+    .todayCodi_item_img3 {
+    	flex: 1;
+    }    
+    
+    .todayCodi_btn {
+    	width: 100%;
+    	height: max;
+        padding-top: 15px;
+        clear: both;
+        font-weight: 1.5em;
+    }
+    
+    #btnToCloset {
+        background-color: #64c2eb;
+        width: 150px;
+        border: 0px;
+        border-radius: 5px;
+        padding: 5px;
+        color: white;
+        font-weight: 1.5em;
+        font-size: 0.8em;
+    }
+    
+   
+    
+    /* 오늘의 OOTD  -----------------------------*/
+    
+   .todayPick_title, .todayPick h5{
+    	background-color: #64c2eb;
+    }
+    
+    .todayPick {
+        width: 100%;
+        height: 28%;
+        margin-top: 30px;
+        text-align: center;
+        background-color: #64c2eb;
+    }
+    
+    .todayPick_title {
+    	padding-top: 3px;
+    	color: white;
+    }
+    
+    .top3_ootd {
+    	width: 100%;
+        padding-right: 5px;
+        padding-left: 5px;
+        background-color: #64c2eb;
+    }
+    
+    .top3_ootd_border {
+    	margin: auto;
+    	width: 95px;
+    	height: 110px;
+    	background-color: white;
+    	border-radius: 5px;
+    	padding: 1px;
+    	padding-top: 5px;
+    }
+    
+    .todayPick table {
+    	margin: auto;
+    	vertical-align: center;
+    }
+
+	.top3_ootd td {
+    	background-color: white;
+    }
+    
+    .top3_ootd1 {
+   		background-color: #64c2eb;
+     	float: left;
+ 		width: 33%;
+    }
+
+    .top3_ootd2 {
+    	background-color: #64c2eb;
+        float: left;
+    	width: 33%;
+    }
+    
+    .top3_ootd3 {
+    	background-color: #64c2eb;
+     	float: left;
+    	width: 33%;
+    }
+    
+    .todayPick img {
+    	border-radius: 5px;
+    	/* box-shadow: 2px 2px 2px #ddd; */
+    }
+
+    
+ 

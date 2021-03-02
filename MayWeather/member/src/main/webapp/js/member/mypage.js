@@ -1,9 +1,11 @@
 //AWS 경로
 var awsUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
 
-var localUrl = '';
+var localUrl = 'http://192.168.0.35:8080';
 	
 var rootUrl	= awsUrl;
+
+
 	
 // 모달 닫기
 
@@ -26,8 +28,8 @@ $('#loginModal').modal("show");
 // 마이페이지 출력
 function memberMain(){
 	console.log('마이페이지 출력');
-	console.log(memIdx);
-	console.log(memName);
+
+	
 	
 	var memberMain = '';
 		memberMain +='<div class="container">';
@@ -145,13 +147,13 @@ function memberMain(){
 		memberMain +='<div id="mypageMarket" class="mypage-market">';
 		memberMain +='<div class="mypage-market-div">';
 		memberMain +='<div class="mypage-market-icon-div">';
-		memberMain +='<img class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/saleicon.png">';
+		memberMain +='<img id="mySaleIcon" class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/saleicon.png">';
 		memberMain +='</div>';
 		memberMain +='<div class="mypage-market-icon-div">';
-		memberMain +='<img class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/buyicon.png">';
+		memberMain +='<img id="myBuyIcon" class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/buyicon.png">';
 		memberMain +='</div>';
 		memberMain +='<div class="mypage-market-icon-div">';
-		memberMain +='<img class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/hearticon.png">';
+		memberMain +='<img id="myHeartIcon" class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/hearticon.png">';
 		memberMain +='</div>';
 		memberMain +='</div>';
 		memberMain +='<div class="mypage-market-div2">';
@@ -178,12 +180,15 @@ function memberMain(){
 		memberMain +='<div class="mypage-body-2">';
 		memberMain +='<div class="mem-like">좋아요 한 게시물</div>';
 		memberMain +='<hr class="mypage-hr">';
-		memberMain +='<div class="mem-notice">내 방명록(정은님꺼 연결)</div>';
+		memberMain +='<div class="mem-visited">내 방명록</div>';
 		memberMain +='</div>';
 		memberMain +='<div class="mypage-body-3">';
 		memberMain +='<div class="mem-forgot">아이디/비밀번호 찾기</div>';
 		memberMain +='<hr class="mypage-hr">';
 		memberMain +='<div class="mem-delete" data-toggle="modal" data-target="#mypageModal" data-whatever="회원 탈퇴">회원 탈퇴</div>';
+		memberMain +='</div>';
+		memberMain +='<div>';
+		memberMain +='<img style="width: 100%; height: 35px;" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/background.png">';
 		memberMain +='</div>';
 		memberMain +='</div>';
 		memberMain +='</div>';
@@ -217,6 +222,24 @@ function memberMain(){
 	
 	} 
 }
+
+//수진누나꺼 판매 구매 좋아요 마켓 버튼
+$(document).on("click","#mySaleIcon",function(){
+	fnMyList('mysale');
+});
+
+$(document).on("click","#myBuyIcon",function(){
+	fnMyList('mybuy');
+});
+
+$(document).on("click","#myHeartIcon",function(){
+	fnMyList('mygood');
+});
+
+//정은님꺼 방명록
+$(document).on("click",".mem-visited",function(){
+	getGbookList(memIdx);
+});
 
 //회원가입 완료 버튼 사용시
 function memberRegBtn(){
@@ -456,7 +479,7 @@ function memberLoginBtn(){
 			console.log(loginDone);
 
             jsessionId = loginDone.jsessionId;
-			alert(jsessionId);
+			
 			
 			memIdx = loginDone.memIdx;
 			memName = loginDone.memName;
@@ -478,7 +501,7 @@ function memberLoginBtn(){
 				if(memIdx == '37'){
 					
 					
-					var adminMenu = '<div id="adminLoginMenu" style="background-color: white;">관리자 메뉴</div>' 
+					var adminMenu = '<div id="adminLoginMenu">관리자 메뉴</div>' 
 					
 					closeLoginModal();
 						
@@ -1402,7 +1425,7 @@ function shakeModal(){
 
 $(document).on('click','.mem-like',function(){
 	console.log(memIdx);
-	myLikeList(1);
+	myLikeList(memIdx);
 }); 
 
 //관리자 메뉴 클릭 시
