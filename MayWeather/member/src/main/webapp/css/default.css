@@ -29,13 +29,9 @@
 * {
    padding: 0;
    margin: 0;
-   /* background-color: #f5f5f5; */
+   background-color: #f5f5f5;
    color: #757575;
 }
-
-.bg_color{
-    background-color: #f5f5f5;
-}    
 
 ::-webkit-scrollbar {
    display: none;
@@ -54,7 +50,6 @@ header {
    width: 100%;
    position: fixed;
    top: 0px;
-   z-index: 1000;
 }
 
 footer {
@@ -195,7 +190,7 @@ a1 {
 }
 
 .regFormButton {
-   background-image: url(http://ec2-13-125-232-157.ap-northeast-2.compute.amazonaws.com:8080/ootd/image/icon/write.png);
+   background-image: url(https://mayootd.tk/ootd/image/icon/write.png);
    width: 50px;
    height: 50px;
    background-size: 30px;
@@ -291,7 +286,7 @@ pv2 {
    line-height: normal;
    vertical-align: middle;
    background-image:
-      url(http://ec2-13-125-232-157.ap-northeast-2.compute.amazonaws.com:8080/ootd/image/icon/fileuploadbutton.png);
+      url(https://mayootd.tk/ootd/image/icon/fileuploadbutton.png);
    background-size: 80px;
    cursor: pointer;
    border-radius: .25em;
@@ -411,7 +406,6 @@ pv2 {
    height: 50px;
    border: 1px solid #ddd;
    float: left;
-   margin: 0px;
 }
 
 .ootdcmntsubmit {

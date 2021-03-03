@@ -1,0 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+
+
+.closetList {
+	font-family: 'Nanum Pen Script', cursive;
+}
+
+.likeSpan {
+	font-size: 18px;
+}
+
+
+.bigCategory {
+	margin: 100px 0 0 40px;
+	position: fixed;
+	height: 300px;
+}
+
+#bottom {
+	margin-top: 20px;
+}
+
+#shoes {
+	margin-top: 20px;
+}
+
+
+#codi table {
+	margin: 2px auto;
+	padding: 20px auto;	
+}
+
+#codibg {
+    height:300px;
+   	width: 300px;
+   	margin-left: 30px;
+	position: absolute;
+	top: 330px;
+	overflow: hidden;
+}
+
+#codiback {
+	width: 20px;
+	height: 20px;
+}
+
+#codisave {
+	width: 30px;
+	height: 30px;
+}
+
+#codireset {
+	width: 22px;
+	height: 27px;
+}
+
+#codicon {
+	display: block;
+	top: 300px;
+	position: absolute;
+}
+
+
+#savebtn {
+	display:block;
+	bottom-right: 30px;
+	width: 30px;
+	height: 30px;
+}
+
+#codilist {
+	width: 25px;
+	height: 25px;
+}
+
+.clist {
+	width: 110px;
+	height: 110px;
+	margin-top: 10px;
+	margin-left: 10px;
+	background-color: #EDEDED;
+}
+
+.closetTitle {
+	font-size: 15px;
+}
+
+.clist p {
+	text-align: center;
+	position:relative;
+	top:35px;
+	font-size: 20px;
+	font-weight: 550;
+	background: linear-gradient(to right, #dd5e89, #f7bb97);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Nanum Pen Script', cursive;
+}
+
+.title { 
+	border-bottom: 7px solid #D5E3FF; 
+	padding: 0 0 0 0.5em;
+}
+
+.likeCnt {
+	font-size: 20px;
+}
+
+#emptyheart {
+	width: 15px;
+	height: 15px;
+	margin-left: 10px;
+}
+
+.closetView {
+	width: 300px;
+	height: 300px;
+	margin-left: 30px;
+	margin-right: 30px;
+	padding : 30px auto;
+	background-color: #EDEDED;
+}
+
+#heartview {
+	width: 20px;
+	height: 20px;
+	margin-left: 30px;
+	margin-top: 6px;
+	float: left;
+}
+
+#closetText {
+	width: 300px;
+	height: 100px;
+	margin-top: 10px;
+	margin-right: 30px;
+	padding : 30px auto;
+	border: 1px solid #ddd;
+}
+
+#closetTextView {
+	width: 300px;
+	height: 100px;
+	margin-top: 10px;
+	margin-left: 30px;
+	margin-right: 30px;
+	padding : 30px auto;
+	border-top: 1px solid #ddd;
+}
+
+#del {
+	float: right;
+	margin-right: 45px;
+	font-size: 13px;
+}
+#edit {
+	float: right;
+	font-size: 13px;
+	
+}
+.likecnt {
+	margin-top: 6px;
+}
+
+#closetImg {
+	width: 70px;
+	height: 70px;
+}
+
+#closetWrite {
+	float : right;
+	width: 50px;
+	height: 50px;
+	margin-right: 30px;
+	margin-top: 20px;
+	color: #757575;
+}
+
+#closetRegForm {
+	position: absolute;
+	top: 430px;
+	margin-top: 30px;
+	margin-left: 0px;
+	width: 300px;
+	height: 200px;
+}
+
+
+#writebtn {
+	background-image: url(/closet/image/icon/write.png);
+    width: 50px;
+    height: 50px;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 100px;
+    border: 0px;
+    background-color: #64c2eb;
+    position: fixed;
+    bottom: 80px;
+    right: 15px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.writeTitle {
+	top: 100px;
+	position: absolute;
+	align-content: center;
+	margin-top: 10px;
+	margin-left: 0px;
+	margin-right: 30px;
+}
+
+#viewBack img {
+	width: 11px;
+	height: 11px;
+	float: left;
+	margin-left: 30px;
+	margin-top: 7px;
+}
+
+.viewLike {
+	font-size: 20px;
+}
+
+#editCloset {
+	width: 300px;
+	height: 300px;
+	margin-top: 30px;
+	margin-left: 30px;
+	top: 130px;
+	position: absolute;
+	background-color: #EDEDED;
+	
+}
+
+#closetEditText {
+	margin-top: 30px;
+	width: 300px;
+	height: 100px;
+	margin-left: 30px;
+	position: absolute;
+	top: 350px;
+}
+
+#editView {
+	margin-left: 30px;
+}
+
+.editTitle {
+	top: 100px;
+	position: absolute;
+	align-content: center;
+	margin-top: 10px;
+	margin-left: 0px;
+	margin-right: 30px;
+}
+
+.editbtns {
+	position: absolute;
+	top: 580px;
+}
+
+.editTitle h1 {
+	text-align: center;
+	margin-left: 30px;
+}
+

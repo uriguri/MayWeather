@@ -1,9 +1,10 @@
 //AWS 경로
-var awsUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
+
+var awsUrl = 'Https://weatherwearmember.tk/member';
 
 var localUrl = 'http://192.168.0.35:8080';
 	
-var rootUrl	= awsUrl;
+var rootUrl	= 'Https://weatherwearmember.tk/member';
 
 
 	

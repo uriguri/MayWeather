@@ -7,9 +7,6 @@
 	        
 			clock();
 			
-			// gbList에서만 무한 스크롤이 작동하도록 만드는 변수
-			
-			console.log(nowLoc);
 		}
 		
 		
@@ -40,13 +37,11 @@
 		
 		
 		var myHostUrl = 'http://localhost:8080/main';
-		var awsHostUrl = 'http://ec2-3-36-78-63.ap-northeast-2.compute.amazonaws.com:8080/main';
+		//var awsHostUrl = 'http://ec2-3-36-78-63.ap-northeast-2.compute.amazonaws.com:8080/main';
+		var awsHostUrl = 'https://maymayweather.ml/main';
 		var uploadFileUrl = '/fileupload/guestbook/';
 		
-		var ootdHostUrl = 'http://ec2-13-125-232-157.ap-northeast-2.compute.amazonaws.com:8080/ootd';
-		
-		/* 나중에멤버 현재 로그인된 idx 받을 것! 현재 헤더안에 저장한 test용 값으로 하고 있음*/
-		var gbOwnerIdx = 0;
+		var ootdHostUrl = 'https://www.mayootd.tk/ootd';
 		
 		
 		var file;				// 방명록 첨부 사진 
@@ -67,7 +62,7 @@
 		
 		var wn_data;			// 초단기실황 데이터
 		var wbt_data;			// 동네예보 데이터
-	
+		
 		
 		
 		/* 메인 ---------------------------------------------------------------------------------------------------------------------  */
@@ -133,7 +128,7 @@
 	    		type: 'GET',
 	    		async: false,
 	    		success: function(pickData) {
-	    			alert('ootd 게시물 호출 성공');
+	    			console.log('ootd 게시물 호출 성공');
 	    			console.log(pickData);
 	    			
 	    			for(i=0; i<3; i++){
@@ -154,7 +149,7 @@
 	    			
 	    		}, 
 	    		error: function(){
-	        		alert('주소 호출 실패');
+	    			console.log('주소 호출 실패');
 	        	}
 	    	
 	    	});		 	
@@ -162,6 +157,8 @@
 			
 			mainhtml += 	'</div>'
 						+ '</div>';
+						
+			
 							
 							
 		    $('#mainForm').html(mainhtml);
@@ -175,8 +172,10 @@
 		
 		/* Top3 OOTD ajax로 보여주기 */
 		function moveToOotdTop3(ootdidx) {
+			
+		
 			console.log(ootdidx);
-			alert('ootd 게시물 보여주기');
+			console.log('ootd 게시물 보여주기');
 		}
 		
 		
@@ -217,122 +216,6 @@
 
 		
 		
-		/* 시간대별 날씨  --------------------------------------------------------------------------------------------------------------- */
-		
-		
-		function getWeatherBT() {
-			
-			var wbt_fcstTime = [3,6,9,12,15,18,21,0,3,6,9,12,15,18,21];	// 예보시간
-			var wbt_tmp = [];		// 3시간 기온
-			var wbt_rain = [];		// 3시간 강수확률
-			var wbt_sky = [];		// 하늘상태 
-			
-			var wbtHtml = '<form id="weatherByTimeForm" method="GET" enctype="multipart/form-data">'
-						+ 	'<div class="weatherBT_title"><span class="font5">시간대별 일기 예보</span></div>'
-						+ 	'<div class="weatherBT_content">';
-						+		'<div class="weatherBT_tableWrap">';
-				
-			for(var i=0; i<wbt_data.length; i++){
-				
-				var wbt_category = wbt_data[i].category;
-				var wbt_fcstValue = wbt_data[i].fcstValue;
-				var wbt_fcstDate = wbt_data[i].fcstDate;
-				
-				// 3시간 기온
-				if(wbt_category == 'T3H') {
-					wbt_tmp.push(wbt_fcstValue);
-				}
-				
-				// 3시간 강수확률
-				if(wbt_category == 'POP') {
-					wbt_rain.push(wbt_fcstValue);
-				}
-				
-				// 하늘상태 --------> 이미지 변환 처리 필요 * 
-				if(wbt_category == 'SKY') {
-					wbt_sky.push(wbt_fcstValue);
-				}
-			}	
-				
-			
-			for(var j=0; j<wbt_fcstTime.length; j++){
-				wbtHtml += 	'<div class="weatherBT_table">' // 테이블 삽입 반복 
-					+ 			'<table>'
-					+ 				'<tr style="height:20px;"><td id="weatherTable_time" class="font7">'+ wbt_fcstTime[j] +'시</td></tr>'
-					+ 				'<tr style="height:40px;"><td id="weatherTable_img"><img width="30" src="'+awsHostUrl+'/image/main/weatherTest.png"></td></tr>'
-					+				'<tr style="height:100px;"><td id="weatherTable_tmp" class="font5">'+ wbt_tmp[j] +'°</td></tr>'
-					+ 				'<tr style="height:40px;"><td id="weatherTable_rain" class="font7">'+ wbt_rain[j] +'%</td></tr>'
-					+ 				'<tr style="height:10px;"><td id="weatherTable_rain_percent"><input type="button" id="rainPercentBar"></td></tr>'
-					+ 			'</table>'
-					+ 		'</div>';
-					
-				$('#rainPercentBar').css('width', wbt_rain[j] * 5);
-			}
-				
-				console.log('wbt_tmp: '+ wbt_tmp);
-              	console.log('wbt_rain: '+ wbt_rain);
-              	console.log('wbt_sky: '+ wbt_sky);
-              	console.log('wbt_fcstTime: '+ wbt_fcstTime);
-              	console.log(wbt_tmp.length);
-              	console.log(wbt_rain.length);
-              	console.log(wbt_sky.length);
-              	console.log(wbt_fcstTime.length);
-              	
-              	var rain_now;	// 강수량
-              	var windD_now;	// 풍향
-              	var wind_now;	// 풍속
-              	var humidity_now;	// 습도
-              	
-               	for(var i=0; i< wn_data.length; i++) {
-              		var wn_category = wn_data[i].category;
-        			var wn_obsrValue = wn_data[i].obsrValue;
-            		var wn_baseDate = wn_data[i].baseDate;
-            		var wn_baseTime = wn_data[i].baseTime;
-            		
-            		if(wn_category=='RN1'){	
-	              		rain_now = wn_obsrValue;
-	              	}
-            		
-            		if(wn_category=='VEC'){	
-	              		windD_now = wn_obsrValue;
-	              	}
-            		
-            		if(wn_category=='WSD'){
-	              		wind_now = wn_obsrValue;
-	              	}
-            		
-            		if(wn_category=='WSD'){
-            			humidity_now = wn_obsrValue;
-            		}
-              	} 
-              	
-						
-				wbtHtml += 	'</div>'
-						+	'</div>'
-						+		'<div class="weatherBT_detail">'
-						+			'<table>'
-						+				'<tr><td class="onleft" id="wbt_currenttime">오늘, 오후 00:00</td><td></td></tr>'
-						+				'<tr><td class="onleft">'+ (pty_now == 0? sky_now : pty_now) +'</td>'
-						+					'<td class="onright">체감 온도 0°</td></tr>'
-						+				'<tr><td class="onleft"><img width="15" src="'+awsHostUrl+'/image/main/weatherTest.png">강수량</td>'
-						+					'<td class="onright">'+ rain_now +' % </td></tr>'
-						+				'<tr><td class="onleft"><img width="15" src="'+awsHostUrl+'/image/main/weatherTest.png">비</td>'
-						+					'<td class="onright">'+ rain_now +' mm </td></tr>'
-						+				'<tr><td class="onleft"><img width="15" src="'+awsHostUrl+'/image/main/weatherTest.png">습도</td>'
-						+					'<td class="onright">'+ humidity_now +' %</td></tr>'
-						+				'<tr><td class="onleft"><img width="15" src="'+awsHostUrl+'/image/main/weatherTest.png">바람</td>'
-						+					'<td class="onright">'+ windD_now + wind_now +' m/s</td></tr>'
-						+			'</table>'
-						+		'</div>'
-						+	'</div>'
-						+ '</form>';
-						
-			$('#mainForm').html(wbtHtml);
-			
-			
-
-		}
-
 		
 		
 		
@@ -371,32 +254,25 @@
 				getGbookList($('.gb_btn1').val());
 			})
 			$('.gb_btn2').on('click', function(){
-					gbOwnerIdx = $('.gb_btn2').val();
-					getGbookList();
+				getGbookList($('.gb_btn2').val());
 			})
 			$('.gb_btn3').on('click', function(){
-					gbOwnerIdx = $('.gb_btn3').val();
-					getGbookList();
+				getGbookList($('.gb_btn3').val());
 			})
 			$('.gb_btn4').on('click', function(){
-					gbOwnerIdx = $('.gb_btn4').val();
-					getGbookList();
+				getGbookList($('.gb_btn4').val());
 			})
 			$('.gb_btn5').on('click', function(){
-					gbOwnerIdx = $('.gb_btn5').val();
-					getGbookList();
+				getGbookList($('.gb_btn5').val());
 			})
 			$('.gb_btn6').on('click', function(){
-					gbOwnerIdx = $('.gb_btn6').val();
-					getGbookList();
+				getGbookList($('.gb_btn6').val());
 			})
 			$('.gb_btn7').on('click', function(){
-					gbOwnerIdx = $('.gb_btn7').val();
-					getGbookList();
+				getGbookList($('.gb_btn7').val());
 			})
 			$('.gb_btn8').on('click', function(){
-					gbOwnerIdx = $('.gb_btn8').val();
-					getGbookList();
+				getGbookList($('.gb_btn8').val());
 			})
 		
 		}
@@ -738,7 +614,8 @@
         /* 방명록 등록 */
         function regGuestbook() {
         	
-        	// 로그인 체크 추가 **
+        	// 로그인 체크 추가
+        	fnLoginChk();   
 
         	var form = $('#gbregForm')[0];
         	var formData = new FormData(form);
@@ -771,6 +648,9 @@
             	
            	// gbSecret를 FormData에 추가 
            	formData.append('gbSecret', secret_check);
+           	
+           	// jsessionId를 FormData에 추가 
+           	formData.append('jsessionId', jsessionId);
             	
             	
            	$.ajax({
@@ -794,7 +674,7 @@
    	           	
    	            },
    	            error: function (e) {
-   	                alert('등록 데이터 ajax 에러' + e);
+   	            	console.log('등록 데이터 ajax 에러' + e);
    	            }
           		})
         		
@@ -806,10 +686,6 @@
         
         
  
-
-
-        
-        
         
  		/* 방명록 수정 모달 ----------------------------------------------- */
 		
@@ -867,7 +743,7 @@
 	           		
 	            },
 	            error: function (e) {
-	                alert('수정 데이터 ajax 에러' + e);
+	            	console.log('수정 데이터 ajax 에러' + e);
 	            }
        		})
             
@@ -1007,7 +883,7 @@
 	           	
 	            },
 	            error: function (e) {
-	                alert('수정 데이터 ajax 에러' + e);
+	           		console.log('수정 데이터 ajax 에러' + e);
 	            }
        		})
         	
@@ -1071,7 +947,7 @@
 	           	
 	            },
 	            error: function (e) {
-	                alert('삭제 데이터 ajax 에러' + e);
+	            	console.log('삭제 데이터 ajax 에러' + e);
 	            }
        		})
        	}

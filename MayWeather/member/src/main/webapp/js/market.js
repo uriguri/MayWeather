@@ -1,16 +1,19 @@
 		var page = 1;
 		var totalPage = 1;
 		
-		//var marketUrl = 'http://localhost:8080/market';
-		//var clientUrl = 'http://localhost:8081';
+//		var marketUrl = 'http://localhost:8080/market';
+//		var clientUrl = 'http://localhost:8081';
 		
 		// 로컬에서 레디스 테스트 
 //		var marketUrl = 'http://192.168.0.90:8080/market';
 //		var clientUrl = 'http://192.168.0.35:8080/member';
 				
 		// aws 
-		var marketUrl = 'http://ec2-3-35-27-93.ap-northeast-2.compute.amazonaws.com:8080/mwMarket';
-		var clientUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
+//		var marketUrl = 'http://ec2-3-35-27-93.ap-northeast-2.compute.amazonaws.com:8080/mwMarket';
+//		var clientUrl = 'http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member';
+
+		var marketUrl = 'https://maymarket.tk/mwMarket';
+		var clientUrl = 'Https://weatherwearmember.tk/member';
 		
 		
 		//임의의 file object영역
@@ -369,7 +372,7 @@
 					html += '	<table class="table">';
 					html += '  	<thead>';
 					html += '   	<tr>';
-					html += '      		<th scope="col">' + data.saleMember.saleNic + '</th>';
+					html += '      		<th scope="col"><img class="img-circle" src="' + clientUrl	+ '/fileupload/member/' + data.saleMember.saleIdx + '.png"> ' + data.saleMember.saleNic + '</th>';
 					html += '      		<th scope="col">';
 
 					html += '    		<div class="sale_reg_btn">';
@@ -403,8 +406,7 @@
 					html += '  		</thead>';
 					html += '  		<tbody>';
 					
-					html += '    	<tr>';			
-				
+					
 					// 판매여부(판매중 : I, 예약중 : B, 판매완료 : E)		
 					var selectI = '';
 					var selectB = '';
@@ -416,14 +418,16 @@
 					}else if(data.saleMember.saleDiv == 'E'){
 						selectE = 'selected';
 					}		
-							
-					html += '      		<td>결제 방법 : </td>';
+
 					// 카카오페이 결제 이용
+					var payDivText = '직접 결제';
 					if(data.saleMember.payDiv == 'K'){	
-						html += '      		<td>카카오페이</td>';
-					}else{
-						html += '      		<td>직접 결제</td>';
-					}	
+						payDivText = '카카오페이';
+					}
+					
+					html += '    	<tr>';													
+					html += '      		<td class="text-primary">결제 방법 : ' + payDivText + '</td>';
+					html += '      		<td></td>';							
 					html += '    	</tr>';
 							
 					html += '    	<tr>';		
@@ -467,7 +471,7 @@
 					
 					html += '    	<tr>';
 					html += '      		<td colspan="2">';
-					html += '				<div class="sale_title"><img class="img-circle" src="' + clientUrl	+ '/fileupload/member/' + data.saleMember.saleIdx + '.png"> ' + data.saleMember.saleTitle + '</div><br>';
+					html += '				<div class="sale_title">' + data.saleMember.saleTitle + '</div><br>';
 					html += data.saleMember.saleDate + '<br><br>';
 					html += data.saleMember.saleCmt + '<br><br>';
 					html += '				<div class="sale_amount">' + data.saleMember.saleAmount + '원</div><br><br>';
@@ -585,8 +589,11 @@
 		}
 						
 		function fnKakaoPay(){
+
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 		
 			var data = {
 				saleNo : nowSaleNo,
@@ -619,7 +626,9 @@
 		function fnSaleDivUpd(saleDiv){
 		
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 		
 			var data = {
 				saleNo : nowSaleNo,
@@ -706,8 +715,11 @@
 		
 		// 구매자 선택 
 		function fnSaleDivReg(replyIdx){
+
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 			
 			var data = {
 				saleNo : nowSaleNo,
@@ -922,7 +934,9 @@
 			var saleCmt = $('#saleCmt');
 
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 		
 			if($.trim($('#saleTitle').val()).length < 1) { 
 				alert('제목을 입력해주세요.'); 
@@ -1002,7 +1016,9 @@
 			var saleCmt = $('#saleCmt');
 
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 		
 			if($.trim($('#saleTitle').val()).length < 1) { 
 				alert('제목을 입력해주세요.'); 
@@ -1155,8 +1171,11 @@
 
 		// 조아요 등록
 		function fnGoodProc(goodDiv){
+
 			// 로그인 체크 
-			fnLoginChk();	
+			if(!fnLoginChk()){
+				return false;
+			}
 			
 			var data = {
 					saleNo : nowSaleNo,
@@ -1193,8 +1212,11 @@
 
 		// 조아요 삭제
 		function fnGoodDel(){
+
 			// 로그인 체크 
-			fnLoginChk();	
+			if(!fnLoginChk()){
+				return false;
+			}
 			
 			$.ajax({
 				url : marketUrl + '/sale/gooddel/' + nowSaleNo,
@@ -1224,7 +1246,9 @@
 		function fnSaleDel(saleNo) {
 		
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 
 			$.ajax({
 				url : marketUrl + '/sale/del/' + saleNo,
@@ -1457,7 +1481,9 @@
 		function fnReplyBtnClick(){
 			
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 			
 			if($.trim($('#reply_content').val()).length < 1) { 
 				alert('댓글을 입력해주세요.'); 
@@ -1508,6 +1534,8 @@
 			if(memIdx == null || memIdx == ''){
 				alert('로그인 후 이용해주세요.');
 				return false;
+			} else {
+				return true;
 			}
 		}		
 		
@@ -1536,7 +1564,9 @@
 		function fnReplyUpd(replyNo) {
 		
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 			
 			var replyCnt = $('#reply_content_' + replyNo);
 			
@@ -1582,7 +1612,9 @@
 		function fnReplyDel(replyNo) {
 		
 			// 로그인 체크 
-			fnLoginChk();
+			if(!fnLoginChk()){
+				return false;
+			}
 
 			var data = {
 				saleNo : nowSaleNo,

@@ -75,7 +75,7 @@
 	<!-- Redis -->   <!-- p:hostName="localhost" --> <!-- p:hostName="ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com" -->
 	<beans:bean id="jedisConnFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
 							p:usePool="true"
-							p:hostName="ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com"
+							p:hostName="52.78.37.31"
 							p:port="6379"	
 	/>
 	

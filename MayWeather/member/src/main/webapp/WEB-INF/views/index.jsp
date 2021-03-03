@@ -32,7 +32,8 @@
 <link rel="styleSheet" href="<c:url value="/css/weather.css"/>">
 <link rel="styleSheet" href="<c:url value="/css/guestbook.css"/>">
 
- 
+<!-- 클로젯 CSS --> 
+<link rel="styleSheet" href="<c:url value="/css/closet.css"/>">
 
 <!-- 마이페이지 CSS -->
 <link rel="styleSheet" href="<c:url value="/css/member/login-register.css"/>"/>
@@ -80,8 +81,8 @@ console.log(memEmailchk);
     <div class="memContent">
 
         <div class="content">
-			
-			<!-- 메인 wrap -->
+        
+        	<!-- 메인 wrap -->
 				<div class="content_wrap">
 					
 					<!-- 메인 -->
@@ -100,7 +101,7 @@ console.log(memEmailchk);
 			    			
 			    				<div class="regModal_header">
 		                             <div class="regModal_back">
-		                                 <button type="button" class="reg_modal_close_btn" onclick="closeRegModal()" ><img width="20" src="/image/main/back.png"></button>
+		                                 <button type="button" class="reg_modal_close_btn" onclick="closeRegModal()" ><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>
 		                             </div>
 		                             <div class="regModal_title">방명록 남기기</div>
 		                         </div>
@@ -122,7 +123,7 @@ console.log(memEmailchk);
 			    			
 			    				<div class="regModal_header">
 		                             <div class="regModal_back">
-		                                 <button type="button" class="reg_modal_close_btn" onclick="closeUpdateModal()"><img width="20" src="/image/main/back.png"></button>
+		                                 <button type="button" class="reg_modal_close_btn" onclick="closeUpdateModal()"><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>
 		                             </div>
 		                             <div class="regModal_title">방명록 수정하기</div>
 		                         </div>
@@ -144,7 +145,7 @@ console.log(memEmailchk);
 			    			
 			    				<div class="regModal_header">
 		                             <div class="regModal_back">
-		                                 <button type="button" class="reg_modal_close_btn" onclick="closeDeleteModal()"><img width="20" src="/image/main/back.png"></button>
+		                                 <button type="button" class="reg_modal_close_btn" onclick="closeDeleteModal()"><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>
 		                             </div>
 		                             <div class="regModal_title">방명록 삭제하기</div>
 		                         </div>
@@ -160,7 +161,6 @@ console.log(memEmailchk);
 			    	</form> 
 					
 				</div>
-			
 			
         </div>
     </div>
@@ -189,13 +189,15 @@ console.log(memEmailchk);
 <script src="<c:url value="/js/member/mypage.js"/>"></script>
 <script src="<c:url value="/js/member/bootstrap.js"/>" type="text/javascript"></script>
 
-<!-- MARKET JS파일 -->
+<!-- 마켓 JS파일 -->
 <script src="<c:url value="/js/market.js"/>"></script>
 
 <!-- 메인 JS -->
 <script type="text/javascript" src="<c:url value="/js/location.js"/>" charset="UTF-8"></script> 
 <script type="text/javascript" src="<c:url value="/js/guestbook.js"/>" charset="UTF-8"></script>
 
+<!-- 클로젯 JS -->
+<script src="<c:url value="/js/codiset.js"/>"></script>
 
 <!-- 푸터 -->
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
