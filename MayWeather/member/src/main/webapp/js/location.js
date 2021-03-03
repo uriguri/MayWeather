@@ -243,7 +243,7 @@
 		       		$('.weather_now').html(wnhtml);
 		       		
 		       		
-		       		var iconhtml = '<div class="weather_icon">';
+		       		var iconhtml = '<div class="weather_icon_wrap">';
 					iconhtml += 		'<img width="80" src="'+awsHostUrl+'/image/main/weather/'+ icon_now +'.png">';
 					iconhtml += 	'</div>';
 		       		
@@ -351,7 +351,7 @@
 		
 		function getWeatherBT() {
 			
-			var wbt_fcstTime = [3,6,9,12,15,18,21,0,3,6,9,12,15,18,21];
+			var wbt_fcstTime = [3,6,9,12,15,18,21,24,3,6,9,12,15,18,21];
 			var wbt_fcstDay = ['오늘','오늘','오늘','오늘','오늘','오늘','오늘','오늘','내일','내일','내일','내일','내일','내일','내일']
 			var wbt_tmp = [];		// 3시간 기온
 			var wbt_rain = [];		// 3시간 강수확률
@@ -359,11 +359,23 @@
 			var wbt_pty = [];		// 강수상태
 			var icon_bt;			// 아이콘
 			
-			var wbtHtml = '<form id="weatherByTimeForm" method="GET" enctype="multipart/form-data">'
-						+ 	'<div class="weatherBT_title"><span class="font5"><b>시간대별 일기 예보</b></span></div>'
-						+ 	'<div class="weatherBT_content">'
-						+		'<div class="weatherBT_tableWrap">'
-						+			'<div class="weatherBT_table">';
+			
+			
+						
+						
+						
+			
+			
+			
+			var wbtHtml = '<!-- 메인 wrap -->'
+						+	'<div class="content_wrap">'
+						+		'<!-- 메인 -->'
+						+		'<div class="mainForm" id="mainForm">'
+						+			'<form id="weatherByTimeForm" method="GET" enctype="multipart/form-data">'
+						+ 				'<div class="weatherBT_title"><span class="font5"><b>시간대별 일기 예보</b></span></div>'
+						+ 				'<div class="weatherBT_content">'
+						+					'<div class="weatherBT_tableWrap">'
+						+						'<div class="weatherBT_table">';
 				
 			for(var i=0; i<wbt_data.length; i++){
 				
@@ -458,7 +470,7 @@
 					+ 				'<tr style="height:20px;"><td id="weatherTable_sky" class="font5">' + (wbt_pty[j] == 0? wbt_sky[j] : wbt_pty[j]) + '</td></tr>'
 					+				'<tr style="height:120px;"><td id="weatherTable_tmp" class="font5">'+ wbt_tmp[j] +'°</td></tr>'
 					+ 				'<tr style="height:50px;"><td id="weatherTable_rain" class="font7">'+ wbt_rain[j] +'%</td></tr>'
-					+ 				'<tr style="height:20px;"><td id="weatherTable_rain_percent"><input type="button" id="rainPercentBar"></td></tr>'
+					+ 				'<tr style="height:10px;"><td id="weatherTable_rain_percent"><input type="button" id="rainPercentBar"></td></tr>'
 					+ 		'</table>';
 					
 				$('#rainPercentBar').css('width', wbt_rain[j] * 5);
@@ -525,9 +537,11 @@
 					+					'<td class="onright">'+ windD_now + wind_now +' m/s</td></tr>'
 					+			'</table>' 
 					+	'</div>'
-					+ '</form>';
+					+ '</form>'
+					+ '</div>'
+					+ '</div>';
 						
-			$('#mainForm').html(wbtHtml);
+			$('#content').html(wbtHtml);
 			
 			
 			

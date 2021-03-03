@@ -75,7 +75,7 @@ function memberMain(){
 		memberMain +='<input id="memPwReg" class="form-control" type="password" placeholder="비밀번호(4자 이상 12자 이하)" name="memPwReg">';
 		memberMain +='<input id="pwChk" class="pw-chk" type="checkbox">';
 		memberMain +='<div id="pwChkMsg"></div>';
-		memberMain +='<img id="regLoading" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/ajaxloading.gif">';
+		memberMain +='<img id="regLoading" src="'+rootUrl+'/fileupload/member/ajaxloading.gif">';
 		memberMain +='<input id="memPwRegChk" class="form-control" type="password" placeholder="비밀번호 확인" name="memPwRegChk">';
 		memberMain +='<input id="pwChkChk" class="pw-chk-chk" type="checkbox">';
 		memberMain +='<div id="pwChkChkMsg"></div>';
@@ -135,7 +135,7 @@ function memberMain(){
 		memberMain +='<hr class="login-reg-hr">';
 		memberMain +='<div class="mem-info" id="memInfo">';
 		memberMain +='<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-		memberMain +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/nologin.png">';
+		memberMain +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/nologin.png">';
 		memberMain +='</div>';
 		memberMain +='<div class="mem-info-name" id="memInfoName">마이페이지 입니다. </div>';
 		memberMain +='<div class="mem-info-loc" id="memInfoLoc" style="margin-left: 80px;"> 먼저 <a id="login-href" href="javascript:void(0);" onclick="openLoginModal(); return false;">로그인</a> 해주세요.</div>';
@@ -148,13 +148,13 @@ function memberMain(){
 		memberMain +='<div id="mypageMarket" class="mypage-market">';
 		memberMain +='<div class="mypage-market-div">';
 		memberMain +='<div class="mypage-market-icon-div">';
-		memberMain +='<img id="mySaleIcon" class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/saleicon.png">';
+		memberMain +='<img id="mySaleIcon" class="mypage-market-icon" src="'+rootUrl+'/fileupload/member/saleicon.png">';
 		memberMain +='</div>';
 		memberMain +='<div class="mypage-market-icon-div">';
-		memberMain +='<img id="myBuyIcon" class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/buyicon.png">';
+		memberMain +='<img id="myBuyIcon" class="mypage-market-icon" src="'+rootUrl+'/fileupload/member/buyicon.png">';
 		memberMain +='</div>';
 		memberMain +='<div class="mypage-market-icon-div">';
-		memberMain +='<img id="myHeartIcon" class="mypage-market-icon" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/hearticon.png">';
+		memberMain +='<img id="myHeartIcon" class="mypage-market-icon" src="'+rootUrl+'/fileupload/member/hearticon.png">';
 		memberMain +='</div>';
 		memberMain +='</div>';
 		memberMain +='<div class="mypage-market-div2">';
@@ -189,7 +189,7 @@ function memberMain(){
 		memberMain +='<div class="mem-delete" data-toggle="modal" data-target="#mypageModal" data-whatever="회원 탈퇴">회원 탈퇴</div>';
 		memberMain +='</div>';
 		memberMain +='<div>';
-		memberMain +='<img style="width: 100%; height: 35px;" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/background.png">';
+		memberMain +='<img style="width: 100%; height: 35px;" src="'+rootUrl+'/image/background.png">';
 		memberMain +='</div>';
 		memberMain +='</div>';
 		memberMain +='</div>';
@@ -199,10 +199,10 @@ function memberMain(){
 	// 로그인이 된 상태라면 
 	if(memIdx != 'null' && memIdx != ''){
 		var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-		memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+		memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/'+memPhoto+'">';
 		memInfoLogin +='</div>';	
 		memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-		memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"> <img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
+		memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"> <img class="mem-info-loc-icon" id="memInfoLoc" src="'+rootUrl+'/image/icon/location.png">내위치 : '+nowLoc+'</div>';
 		
 		var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>' 
 	
@@ -512,10 +512,10 @@ function memberLoginBtn(){
 				} else {
 			
 					var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-						memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+						memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/'+memPhoto+'">';
 						memInfoLogin +='</div>';	
 						memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-						memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
+						memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="'+rootUrl+'/image/icon/location.png">내위치 : '+nowLoc+'</div>';
 						
 					var logoutBtn = '<a id="memLogoutBtn" style="float: right; margin: 5px 5px 0px 0px;" class="btn big-register" href="javascript:void(0);" onclick="memberLogoutBtn();">로그아웃</a>' 
 					
@@ -704,7 +704,7 @@ function kakaoLogin(){
 							memPhoto = kLoginDone.memPhoto;
 							
 							var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-							memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+							memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/'+memPhoto+'">';
 							memInfoLogin +='</div>';	
 							memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
 							memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc">카카오 로그인 사용 중 입니다!</div>';
@@ -870,10 +870,10 @@ $(document).on("click",".mem-change",function(){
 	        
 		}).done(function(){
 	    	var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/'+memPhoto+'">';
 			memInfoLogin +='</div>';	
 			memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
+			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="'+rootUrl+'/image/icon/location.png">내위치 : '+nowLoc+'</div>';
 			
 			$('#memInfo').html(memInfoLogin);	
 	    });
@@ -1034,7 +1034,7 @@ $(document).on("click",".mem-delete",function(){
 	memberDeleteHtml += '<div class="delete-id" id="deleteId">';
 	memberDeleteHtml += '<h3 style="margin-left: 15px;">회원 탈퇴</h3>';
 	memberDeleteHtml += '<div style="background-color: white; padding: 10px;" class="delete-info" id="deleteInfo">';
-	memberDeleteHtml += '<img style="margin: 10px 0px 10px 130px; border-radius: 40px;" width="50" height="50" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+	memberDeleteHtml += '<img style="margin: 10px 0px 10px 130px; border-radius: 40px;" width="50" height="50" src="'+rootUrl+'/fileupload/member/'+memPhoto+'">';
 	memberDeleteHtml += '<h2 style="text-align: center; background-color: white;">'+memName+'님</h2>';
 	memberDeleteHtml += '정말로 탈퇴하시겠어요?<br>탈퇴 후 기존 아이디로 재가입이 제한됩니다.';
 	memberDeleteHtml += '</div>';
@@ -1097,10 +1097,10 @@ $(document).on("click",".mem-photochange",function(){
 	memberPhotoHtml += '<div class="basic-photo" id="basicPhoto">';
 	memberPhotoHtml += '<table class="basic-photo-table" id="basicPhotoTable">';
 	memberPhotoHtml += '<tr class="photo-tr">';
-	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/1.png"></th>';
-	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/2.png"></th>';
-	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/3.png"></th>';
-	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/4.png"></th>';
+	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="'+rootUrl+'/fileupload/member/1.png"></th>';
+	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="'+rootUrl+'/fileupload/member/2.png"></th>';
+	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="'+rootUrl+'/fileupload/member/3.png"></th>';
+	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="'+rootUrl+'/fileupload/member/4.png"></th>';
 	memberPhotoHtml += '</tr>';
 	memberPhotoHtml += '<tr class="photo-tr">';
 	memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="1.png"></th>';
@@ -1109,10 +1109,10 @@ $(document).on("click",".mem-photochange",function(){
 	memberPhotoHtml += '<th class="photo-th"><input type="radio" name="defaultPhoto" value="4.png"></th>';
 	memberPhotoHtml += '</tr>';
 	memberPhotoHtml += '<tr class="photo-tr">';
-	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/5.png"></th>';
-	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/6.png"></th>';
-	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/7.png"></th>';
-	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/8.png"></th>';
+	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="'+rootUrl+'/fileupload/member/5.png"></th>';
+	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="'+rootUrl+'/fileupload/member/6.png"></th>';
+	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="'+rootUrl+'/fileupload/member/7.png"></th>';
+	memberPhotoHtml += '<th class="photo-th"><img class="default-change-photo" width="81" height="90" src="'+rootUrl+'/fileupload/member/8.png"></th>';
 	memberPhotoHtml += '</tr>';
 	memberPhotoHtml += '<tr class="photo-tr">';
 	memberPhotoHtml += '<td class="photo-td"><input type="radio" name="defaultPhoto" value="5.png"></td>';
@@ -1124,7 +1124,7 @@ $(document).on("click",".mem-photochange",function(){
 	memberPhotoHtml += '</div>';
 	memberPhotoHtml += '<input style="margin: 10px 0px 0px 90px;" id=uploadBtnBasic class="btn btn-info" type="button" value="선택하여 내사진 변경!"><br>';
 	memberPhotoHtml += '<hr class="mypage-hr">';
-	memberPhotoHtml += '<img class="mem-now-photo" width="50" height="50" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+memPhoto+'">';
+	memberPhotoHtml += '<img class="mem-now-photo" width="50" height="50" src="'+rootUrl+'/fileupload/member/'+memPhoto+'">';
 	memberPhotoHtml += '<div style="margin: 3px 0px 3px 115px; background-color: white;">현재 프로필 사진</div>'
 	
 	//(사진)업로드 폼
@@ -1185,10 +1185,10 @@ $(document).on("click",".mem-photochange",function(){
 		}).done(function(){
 		
 			var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+uploadPhotoName+'">';
+			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/'+uploadPhotoName+'">';
 			memInfoLogin +='</div>';	
 			memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
+			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="'+rootUrl+'/image/icon/location.png">내위치 : '+nowLoc+'</div>';
 			
 			$('#memInfo').html(memInfoLogin);
 		});
@@ -1234,10 +1234,10 @@ $(document).on("click",".mem-photochange",function(){
 		}).done (function(){
 			
 			var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/'+uploadPhoto+'">';
+			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/'+uploadPhoto+'">';
 			memInfoLogin +='</div>';	
 			memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
-			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/image/icon/location.png">내위치 : '+memLoc+'</div>';
+			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="'+rootUrl+'/image/icon/location.png">내위치 : '+nowLoc+'</div>';
 			
 			$('#memInfo').html(memInfoLogin);	
 			});
@@ -1349,7 +1349,7 @@ $(document).on('click','#memPwFindBtn',function(){
 			}
 		},
 		beforeSend: function(){
-			var rePwBeforeSend = '<img width="50" height="50" src="http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/fileupload/member/ajaxloading.gif">';
+			var rePwBeforeSend = '<img width="50" height="50" src="'+rootUrl+'/fileupload/member/ajaxloading.gif">';
 			
 			$('#pwFindResult').html(rePwBeforeSend);
 		}

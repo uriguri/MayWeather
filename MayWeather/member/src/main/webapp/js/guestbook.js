@@ -12,26 +12,7 @@
 		
 		
 		
-		var gbListScroll = false;
-
-		$(document).ready(function() {
-
-			// 무한스크롤 
-			$(document).scroll(function() {
-				var maxHeight = $(document).height();
-				var currentScroll = $(window).scrollTop() + $(window).height();
-				
-				//console.log(gbListScroll);
-				if(maxHeight <= currentScroll && gbListScroll) {
-					setTimeout(function() {
-						pageView(pageNum);
-					}, 200)
-				}
-				
-			})
-			
 		
-		})
 		
 		
 		
@@ -70,12 +51,13 @@
 		/* 메인 페이지 구성 */  
 		function setMainPage() {
 			
-			hideGbookList();
-			hideMoveToGb();
-			showMainForm();
-			
-			
-			var mainhtml = '<div class="header_time"></div>'
+			var mainhtml = '<!-- 메인 wrap -->'
+						+	'<div class="content_wrap">'
+						+	'<!-- 메인 -->'
+						+	'<div class="mainForm" id="mainForm">'
+				
+					
+						+ '<div class="header_time"></div>'
 							+ '<div class="weather">'
 							+ 		'<div class="weatherBT_btn"><input type="button" class="font6" value="시간대별" id="weatherBt_btn" onclick="getWeatherBT()"></div>'
 							+ 		'<div class="weather_icon">'
@@ -121,6 +103,9 @@
 							+ 		'<div class="todayPick_title"><h5>Todays PICK</h5></div>'
 							+ 			'<div class="top3_ootd">';
 						
+					
+						
+						
 							
 			// 좋아요 순으로 OOTD 게시물 Top3 가져오기
 		 	$.ajax({
@@ -156,12 +141,16 @@
 					
 			
 			mainhtml += 	'</div>'
+						+ '</div>'
+						+ '</div>'
 						+ '</div>';
 						
 			
 							
-							
-		    $('#mainForm').html(mainhtml);
+		    $('#content').html(mainhtml);
+		    
+		    var content = document.querySelector('.content');
+            contentTemp = content.innerHTML;
 		    
 		 	// GPS 위도/경도 요청 -> 기상청 x,y좌표로 변환 -> 서버에 전송
 			getLocation();
@@ -173,7 +162,27 @@
 		/* Top3 OOTD ajax로 보여주기 */
 		function moveToOotdTop3(ootdidx) {
 			
-		
+			var content = document.querySelector('.content');
+            contentTemp = content.innerHTML;
+            
+            // 특정 OOTD 상세페이지 보여주기
+    /*       	$.ajax({
+	    		url: ootdHostUrl + '~~',
+	    		type: 'GET',
+	    		async: false,
+	    		success: function(data) {
+	    			console.log('Top3 상세페이지 호출 성공');
+	    			
+	    			viewPost(data);
+	    			
+	    		}, 
+	    		error: function(){
+	    			console.log('Top3 상세페이지 호출 실패');
+	        	}
+	    	
+	    	});		 	
+	  */
+			
 			console.log(ootdidx);
 			console.log('ootd 게시물 보여주기');
 		}
@@ -222,73 +231,41 @@
 		
 		/* 방명록 ------------------------------------------------------------------------------------------------------------------------------  */
 		
-		// 무한 스크롤 
+		var gbOwnerId;	// 방명록 주인 ID
 		
 		
 		/* test용 방명록 버튼 출력 ----------------------------------------- */
 		function getMoveToGb() {
-		
-			hideMainForm();
-			showMoveToGb();
 			
-			var html = '<button class="gb_btn1" value="10">10</button>';
-			html +=	'<button class="gb_btn2" value="20">20</button>';
-			html +=	'<button class="gb_btn3" value="30">30</button>';
-			html +=	'<button class="gb_btn4" value="40">40</button>';
-			html +=	'<button class="gb_btn5" value="50">50</button>';
-			html +=	'<button class="gb_btn6" value="60">60</button>';
-			html +=	'<button class="gb_btn7" value="70">70</button>';
-			html +=	'<button class="gb_btn8" value="80">80</button>';
+			
+			var html = '<!-- 방명록 버튼 -->';
+			html +=	'<div class="moveToGb" id="moveToGb">';
+			html += 	'<button class="gb_btn1" onclick="getGbookList(10)">10</button>';
+			html +=		'<button class="gb_btn2" onclick="getGbookList(20)">20</button>';
+			html +=		'<button class="gb_btn3" onclick="getGbookList(30)">30</button>';
+			html +=		'<button class="gb_btn4" onclick="getGbookList(40)">40</button>';
+			html +=		'<button class="gb_btn5" onclick="getGbookList(50)">50</button>';
+			html +=		'<button class="gb_btn6" onclick="getGbookList(60)">60</button>';
+			html +=		'<button class="gb_btn7" onclick="getGbookList(70)">70</button>';
+			html +=		'<button class="gb_btn8" onclick="getGbookList(80)">80</button>';
+			html +=	'</div>';
 			    
-        	$('#moveToGb').html(html);
+        	$('#content').html(html);
         	
-        	getOwnerIdx();
-		
+        	contentTemp = html;
+        	
 		}
+				    
 		
-
-		
-		function getOwnerIdx() {
-			
-			$('.gb_btn1').on('click', function(){
-				getGbookList($('.gb_btn1').val());
-			})
-			$('.gb_btn2').on('click', function(){
-				getGbookList($('.gb_btn2').val());
-			})
-			$('.gb_btn3').on('click', function(){
-				getGbookList($('.gb_btn3').val());
-			})
-			$('.gb_btn4').on('click', function(){
-				getGbookList($('.gb_btn4').val());
-			})
-			$('.gb_btn5').on('click', function(){
-				getGbookList($('.gb_btn5').val());
-			})
-			$('.gb_btn6').on('click', function(){
-				getGbookList($('.gb_btn6').val());
-			})
-			$('.gb_btn7').on('click', function(){
-				getGbookList($('.gb_btn7').val());
-			})
-			$('.gb_btn8').on('click', function(){
-				getGbookList($('.gb_btn8').val());
-			})
-		
-		}
-		
-		    
 		
 		
 		/* 회원 A 방명록의 리스트 출력 --------------------------------------- */
 		
 		function getGbookList(gbOwnerIdx) {
 		
+			gbOwnerId = gbOwnerIdx;
+			console.log('방명록주인:'+gbOwnerId);
 			console.log('방명록주인:'+gbOwnerIdx);
-			//hideMainForm();
-			
-			hideMoveToGb();
-			showGbookList();
 			
 			
 			$.ajax({
@@ -300,7 +277,17 @@
  					var secretNum = 0;
  					
  					// 방명록 목록
- 					var listhtml = '<div class="gblist_title">';
+ 					
+ 					
+ 					
+ 					var listhtml = '<!-- 메인 wrap -->';
+ 					listhtml += 	'<div class="content_wrap">';
+ 					listhtml += 		'<!-- 방명록 리스트 -->';
+ 					listhtml += 		'<div class="gblistForm" id="gblistForm">';
+ 					
+
+ 					
+ 					listhtml +=		'<div class="gblist_title">';
  					listhtml += 		'<button type="button" onclick="backToPreview()" class="gb_back_btn"><img width="15" src="'+awsHostUrl+'/image/main/back.png"></button>';
  					listhtml += 		'<span>'+ gbOwnerIdx +'님의 GuestBook('+ data.totalGuestbookCount +')</span>';
  					listhtml += 		'<button type="button" onclick="openRegModal()" class="reg_modal_open_btn"><img width="30" src="'+awsHostUrl+'/image/icon/write2.png"></button>';
@@ -436,6 +423,65 @@
  					listhtml +=		'</div>';
  					
  					
+ 					listhtml += 	'<!-- 방명록 등록 (모달 창) -->';
+ 					listhtml += 	'<form id="gbregForm">';
+ 					listhtml += 		'<div class="regModal_wrapper" style="display: none;">';
+ 					listhtml += 			'<div class="regModal">';
+ 					listhtml += 				'<div class="regModal_header">';
+ 					listhtml += 					'<div class="regModal_back">';
+ 					listhtml += 						'<button type="button" class="reg_modal_close_btn" onclick="closeRegModal()" ><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>';
+ 					listhtml += 					' </div>';
+ 					listhtml += 					'<div class="regModal_title">방명록 남기기</div>';
+ 					listhtml += 				'</div>';
+ 					listhtml += 				'<div class="regModal_body"></div>';
+ 					listhtml += 				'<div class="regModal_footer">';
+ 					listhtml += 					'<button type="button" id="reg_submit_btn" onclick="regGuestbook()">보내기</button>';
+ 					listhtml += 				'</div>';
+ 					listhtml += 			'</div>';
+		            listhtml += 		'</div>';         
+		            listhtml +=		'</form> '; 
+		            
+		            listhtml += '<!-- 방명록 수정 (모달 창) -->';    
+		            listhtml += '<form id="gbUpdateForm">'; 
+		            listhtml += 	'<div class="updateModal_wrapper" style="display: none;">'; 
+		            listhtml += 		'<div class="updateModal">'; 
+		            listhtml += 			'<div class="regModal_header">'; 
+		            listhtml += 				'<div class="regModal_back">';
+		            listhtml += 					'<button type="button" class="reg_modal_close_btn" onclick="closeUpdateModal()"><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>';
+		            listhtml += 				'</div>';
+		            listhtml += 				'<div class="regModal_title">방명록 수정하기</div>';      
+		            listhtml += 			'</div>'; 
+		            listhtml += 			'<div class="updateModal_body"></div>';
+		            listhtml += 			'<div class="regModal_footer">';
+		            listhtml += 				'<button type="button" id="reg_submit_btn" onclick="updateGuestbook()">수정하기</button>';
+		            listhtml += 			'</div>';     
+		            listhtml += 		'</div>'; 
+		            listhtml += 	'</div>';
+		            listhtml += '</form>';
+		            
+		            
+		            listhtml += '<!-- 방명록 삭제 (모달 창) -->';
+		            listhtml += '<form id="gbDeleteForm">';
+		            listhtml += 	'<div class="deleteModal_wrapper" style="display: none;">';
+		            listhtml += 		'<div class="deleteModal">';
+		            listhtml += 			'<div class="regModal_header">';
+		            listhtml += 				'<div class="regModal_back">';
+		            listhtml += 					'<button type="button" class="reg_modal_close_btn" onclick="closeDeleteModal()"><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>';
+		            listhtml += 				'</div>';
+		            listhtml += 				'<div class="regModal_title">방명록 삭제하기</div>';
+		            listhtml += 			'</div>';
+		            listhtml += 			'<div class="deleteModal_body"></div>';
+		            listhtml += 			'<div class="regModal_footer">';
+		            listhtml += 				'<button type="button" id="reg_submit_btn" onclick="deleteGuestbook()">삭제하기</button>';
+		            listhtml += 			'</div>';
+		            listhtml += 		'</div>';
+		            listhtml += 	'</div>';
+		            listhtml += '</form>';
+		            
+		            listhtml += '</div>';
+		            
+			    				
+ 					
  					// 데이터가 없으면 출력
  					if(data.guestbookList.length == 0) {
  						$('.gblist').css('min-height','500px');
@@ -443,8 +489,9 @@
  					}
  					
  					
- 					$('#gblistForm').html(listhtml);
+ 					$('#content').html(listhtml);
  					
+ 					contentTemp = listhtml;
  					
  					
  					// 방명록 주인인 경우, 등록 버튼 비활성화
@@ -487,7 +534,7 @@
 	    
 	    /* 이미지 팝업 */
         function gbPopImage(url){
-	        $('.gbOriginalImage').css('display', 'flex');
+	        $('.gbOriginalImage').css('display', '');
 	        
 	        $('.gbBigImg').html('<img src="'+url+'">').animate({width: 'max', height:'max'}, 1000);
 	        $('.gbBigImg img').css('width', '300');
@@ -521,9 +568,9 @@
 		/* 등록 모달 창 만들기 */
         function setRegModal() {
             
-        	var reghtml = '<table class="regModal_table"><input type="hidden" id="gbOwnerNo" name="gbOwnerNo" value="'+gbOwnerIdx+'">'
+        	var reghtml = '<table class="regModal_table"><input type="hidden" id="gbOwnerNo" name="gbOwnerNo" value="'+gbOwnerId+'">'
 						+	'<tr class="gbGreetArea" height="100">'
-						+		'<td class="gbTableExp" colspan="2"><span class="font3">잘 보셨나요?</span><br><span class="font5">'+gbOwnerIdx+'님에게 인사를 남겨보세요:)</span></td>'
+						+		'<td class="gbTableExp" colspan="2"><span class="font3">잘 보셨나요?</span><br><span class="font5">'+gbOwnerId+'님에게 인사를 남겨보세요:)</span></td>'
 						+		'<td class="gbTableImg"><img width="65" src="'+awsHostUrl+'/image/main/guestbook.png"></td>'
 						+	'</tr>'
 						+	'<tr class="gbInsertArea1" height="90">'
@@ -536,7 +583,7 @@
 						+	'</tr>'
 						+	'<tr class="gbInsertArea2" height="210">'
 						+		'<td class="gbInsertText" colspan="3">'
-						+			'<textarea id="gbContent" name="gbContent" cols="204" wrap="hard" placeholder="'+gbOwnerIdx+'님의 스타일은 어떤가요? &#13;&#10;하고 싶은 말을 여기에 적어보세요."></textarea></td>'
+						+			'<textarea id="gbContent" name="gbContent" cols="204" wrap="hard" placeholder="'+gbOwnerId+'님의 스타일은 어떤가요? &#13;&#10;하고 싶은 말을 여기에 적어보세요."></textarea></td>'
 						+	'</tr>'
 						+	'<tr class="gbSecretArea" height="50">'
 						+		'<td colspan="3">비밀글 <input type="checkbox" id="gbcheck" name="gbcheck"></td>'
@@ -668,7 +715,7 @@
    	           		console.log(data);
    	           		
    	           		// 리스트 출력  
-   	           		getGbookList();
+   	           		getGbookList(gbOwnerId);
    	           		// 모달창 닫기
    	           		closeRegModal();
    	           	
@@ -705,9 +752,9 @@
 	           		console.log('수정할 게시판 데이터 ajax로 받기 성공');
 	           		console.log(gbInfo);
 	           		
-	           		var uformhtml = '<table class="regModal_table"><input type="hidden" id="gbOwnerNo" name="gbOwnerNo" value="'+gbOwnerIdx+'"><input type="hidden" id="gbNo" name="gbNo" value="'+gbNo+'">'
+	           		var uformhtml = '<table class="regModal_table"><input type="hidden" id="gbOwnerNo" name="gbOwnerNo" value="'+gbOwnerId+'"><input type="hidden" id="gbNo" name="gbNo" value="'+gbNo+'">'
 								+		'<tr class="gbGreetArea" height="100">'
-								+			'<td class="gbTableExp" colspan="2"><span class="font3">잘 보셨나요?</span><br><span class="font5">'+gbOwnerIdx+'님에게 인사를 남겨보세요 :)</span></td>'
+								+			'<td class="gbTableExp" colspan="2"><span class="font3">잘 보셨나요?</span><br><span class="font5">'+gbOwnerId+'님에게 인사를 남겨보세요 :)</span></td>'
 								+			'<td class="gbTableImg"><img width="65" src="'+awsHostUrl+'/image/main/guestbook.png"></td>'
 								+		'</tr>'
 								+		'<tr class="gbInsertArea1" height="90">'
@@ -877,7 +924,7 @@
 	           		console.log(data);
 	           		
 	           		// 리스트 출력  
-	           		getGbookList();
+	           		getGbookList(gbOwnerId);
 	           		// 모달창 닫기
 	           		closeUpdateModal();
 	           	
@@ -899,7 +946,7 @@
             
 			console.log(gbNo);
 			
-        	var reghtml = '<table class="regModal_table"><input type="hidden" id="gbOwnerNo" name="gbOwnerNo" value="'+gbOwnerIdx+'">'
+        	var reghtml = '<table class="regModal_table"><input type="hidden" id="gbOwnerNo" name="gbOwnerNo" value="'+gbOwnerId+'">'
         				+ 	'<input type="hidden" id="gbNo" name="gbNo" value="'+gbNo+'">'
 						+	'<tr class="greetArea" height="100">'
 						+		'<td class="gbDelChk"><span class="font3">정말 삭제하시겠어요?</span></td>'
@@ -941,7 +988,7 @@
 	           		console.log(gbNo);
 	           		
 	           		// 리스트 출력  
-	           		getGbookList();
+	           		getGbookList(gbOwnerId);
 	           		// 모달창 닫기
 	           		closeDeleteModal();
 	           	
@@ -951,41 +998,6 @@
 	            }
        		})
        	}
-        
-        
-        
-        
-        
-		/* 메인 폼 */
-		function showMainForm() {
-			$('#mainForm').css('display', '');
-		}
-		
-		function hideMainForm() {
-			$('#mainForm').css('display', 'none');
-		}
-		
-		/* moveToGb */
-		function showMoveToGb() {
-			$('#moveToGb').css('display', '');
-		}
-		
-		function hideMoveToGb() {
-			$('#moveToGb').css('display', 'none');
-		}
-		
-		/* 게스트북 리스트 */
-		function showGbookList() {
-			$('#gblistForm').css('display','');
-		}
-		
-		function hideGbookList() {
-			$('#gblistForm').css('display','none');
-		}
-        
-        
-        
-        
         
         
         

@@ -80,87 +80,13 @@ console.log(memEmailchk);
 
     <div class="memContent">
 
-        <div class="content">
+        <div class="content" id="content" name="content">
         
         	<!-- 메인 wrap -->
-				<div class="content_wrap">
-					
-					<!-- 메인 -->
-					<div class="mainForm" id="mainForm"></div>
-					
-					<!-- 방명록 버튼 -->
-					<div class="moveToGb" id="moveToGb" style="display: none;"></div>
-					
-					<!-- 방명록 리스트 -->
-		    		<div class="gblistForm" id="gblistForm" style="display: none;"></div>
-	
-					<!-- 방명록 등록 (모달 창) -->
-			    	<form id="gbregForm">	
-			    		<div class="regModal_wrapper" style="display: none;">
-			    			<div class="regModal">
-			    			
-			    				<div class="regModal_header">
-		                             <div class="regModal_back">
-		                                 <button type="button" class="reg_modal_close_btn" onclick="closeRegModal()" ><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>
-		                             </div>
-		                             <div class="regModal_title">방명록 남기기</div>
-		                         </div>
-			    					
-			    				<div class="regModal_body"></div>
-			    				
-			    				<div class="regModal_footer">
-		                           <button type="button" id="reg_submit_btn" onclick="regGuestbook()">보내기</button>
-		                       </div>
-		                       
-			    			</div>
-			    		</div>
-			    	</form>  
-			    	
-			    	<!-- 방명록 수정 (모달 창) -->
-			    	<form id="gbUpdateForm">	
-			    		<div class="updateModal_wrapper" style="display: none;">
-			    			<div class="updateModal">
-			    			
-			    				<div class="regModal_header">
-		                             <div class="regModal_back">
-		                                 <button type="button" class="reg_modal_close_btn" onclick="closeUpdateModal()"><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>
-		                             </div>
-		                             <div class="regModal_title">방명록 수정하기</div>
-		                         </div>
-			    					
-			    				<div class="updateModal_body"></div>
-			    				
-			    				<div class="regModal_footer">
-		                           <button type="button" id="reg_submit_btn" onclick="updateGuestbook()">수정하기</button>
-		                       </div>
-		                       
-			    			</div>
-			    		</div>
-			    	</form>  
-			    	
-			    	<!-- 방명록 삭제 (모달 창) -->
-			    	<form id="gbDeleteForm">	
-			    		<div class="deleteModal_wrapper" style="display: none;">
-			    			<div class="deleteModal">
-			    			
-			    				<div class="regModal_header">
-		                             <div class="regModal_back">
-		                                 <button type="button" class="reg_modal_close_btn" onclick="closeDeleteModal()"><img width="20" src="https://maymayweather.ml/main/image/main/back.png"></button>
-		                             </div>
-		                             <div class="regModal_title">방명록 삭제하기</div>
-		                         </div>
-			    					
-			    				<div class="deleteModal_body"></div>
-			    				
-			    				<div class="regModal_footer">
-		                           <button type="button" id="reg_submit_btn" onclick="deleteGuestbook()">삭제하기</button>
-		                       </div>
-		                       
-			    			</div>
-			    		</div>
-			    	</form> 
-					
-				</div>
+			<div class="content_wrap">
+				<!-- 메인 -->
+				<div class="mainForm" id="mainForm"></div>
+	    	 </div>
 			
         </div>
     </div>
