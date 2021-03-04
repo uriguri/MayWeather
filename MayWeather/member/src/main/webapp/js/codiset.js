@@ -11,13 +11,7 @@ var viewlist;
 
  var totalPage = 1;
 
-
- // div 생성
-function closetDiv(){
-    var listhtml = '<div class="closet" id="closet"></div>';
-    $('.content').append(listhtml);
-}
-
+ var closetPageLoc;
 
 
 // $(document).ready(function () {
@@ -25,7 +19,7 @@ function closetDiv(){
 // })
 
 window.onscroll = function (e) {
-        if (page <= totalPage) {
+        if (closetPageLoc == 'closetNow' && page <= totalPage) {
             //window height + window scrollY 값이 document height보다 클 경우,
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                 page++;
@@ -39,6 +33,8 @@ window.onscroll = function (e) {
 function list(page) {
     
     $('.content').empty();
+
+    closetPageLoc = 'closetNow';
 
     $.ajax({
         url: myUrl+'/closet/list/' + page,
@@ -87,14 +83,15 @@ function viewclick(cIdx) {
     // 리스트 페이지 비우기
     $('.content').empty();
 
-    closetDiv();
+    closetPageLoc = 'noList';
 
     // 세부페이지 호출하기
     $.ajax({
-        url: myUrl+'/closet/list/view/' + cIdx+'/'+jsessionId,
+        url: myUrl+'/closet/list/view/' + cIdx+'/'+originJsessionId,
         type: 'GET',
         success: function (viewData) {
-            var viewhtml = '<div id="viewBack"><img src="'+myUrl+'/closet/image/icon/back.png" onclick="redirect()">';
+            var viewhtml = '<div class="closetPage" "id="closetPage">'; 
+            viewhtml += '<div id="viewBack"><img src="'+myUrl+'/closet/image/icon/back.png" onclick="redirect()">';
             viewhtml += '       <span class="closetTitle" onclick="getGbookList('+viewData.memIdx+')">' + viewData.name + '님의 옷장</span></div>';
             viewhtml += '           <div class="closetView" id="closetView">';
             console.log('viewData'+viewData);
@@ -134,6 +131,8 @@ function viewclick(cIdx) {
             // 삭제, 편집 페이지 종료
             viewhtml += '</div>';
             viewhtml += '<div class="closetTextView" id="closetTextView"> <h2>' + viewData.ctext + '</h2> </div>';
+            // 최종 페이지 종료
+            viewhtml += '</div>';
             $('.content').append(viewhtml);
         },
         error: function (e) {
@@ -147,8 +146,11 @@ function viewclick(cIdx) {
 
 // 좋아요 늘려주는 카운트(likeChk=1:등록, 2:삭제)
 function clickLike(cIdx, likeChk) {
+
+    closetPageLoc = 'noList';
+
     var like = {
-        jsessionId: jsessionId,
+        jsessionId: originJsessionId,
         cIdx: cIdx,
         likeChk: likeChk
     };
@@ -170,12 +172,12 @@ function clickLike(cIdx, likeChk) {
 function edit(cIdx) {
     $('.closet').empty();
 
-    closetDiv();
+    closetPageLoc = 'noList';
 
     console.log(cIdx);
     // 수정 폼 만들어주기 -> ajax로 불러오기
     $.ajax({
-        url: myUrl+'/closet/list/view/' + cIdx,
+        url: myUrl+'/closet/edit/' + cIdx,
         type: 'GET',
         success: function (data) {
             var dataPhoto = JSON.parse(data.cphoto);
@@ -204,7 +206,9 @@ function edit(cIdx) {
 
 // 수정 ajax 호출
 function editCall(cIdx) {
+    closetPageLoc = 'noList';
     console.log('게시물번호:' + cIdx);
+
     var edit = {
         cIdx: cIdx,
         ctext: $('#closetEditText').val()
@@ -229,12 +233,18 @@ function editCall(cIdx) {
 
 // 페이지 뒤로 가기
 function redirect() {
+    
+    closetPageLoc = 'noList';
+
     $('.content').empty();
     list(page);
 }
 
 // // 삭제하기
 function del(cIdx) {
+
+    closetPageLoc = 'noList';
+
     var delConfirm = confirm('정말로 삭제하시겠습니까?');
     if (delConfirm) {
         $.ajax({
@@ -256,7 +266,7 @@ function del(cIdx) {
 function bigCategory() {
     $('.content').empty();
 
-    closetDiv();
+    closetPageLoc = 'noList';
 
     $.ajax({
         url: myUrl+'/closet/codi',
@@ -361,6 +371,7 @@ function backDrag() {
 // 버튼 누르면 배열에 드래그 정보를 저장하는 이벤트:이미지경로, xy좌표, z-index
 function saveDrag() {
 
+
     $('#codibg img').each(function (index, item) {
             var dragsrc = $(item).attr('src');
             var dragoffleft = $(item).offset().left;
@@ -388,6 +399,7 @@ function saveDrag() {
     $('.content').css('margin-top', '100px');
     $('.content').css('margin-left', '30px');
     $('.content').css('margin-right', '30px');
+    $('.content').prepend('<div class="writeDiv" id="writeDiv">');
     $('.content').prepend('<div class="writeTitle"><h2>글쓰기</h2></div>')
     $('#codibg').css('top', '150px');
     $('#codibg').css('margin-left', '0');
@@ -402,14 +414,14 @@ function saveDrag() {
     cHtml += '<button type="button" class="btn btn-light" id="savebuttn">SAVE</button>';
     cHtml += '<button type="button" class="btn btn-light" id="cancelbuttn" onclick="redirect()">CANCEL</button>';
     cHtml += '</div>';
+    cHtml += '</div>';
     $('.content').append(cHtml);
 
     // 이미지 리스트 넘겨주는 ajax
     $('#savebuttn').on('click', function () {
         // db로 보내주기 위한 객체
         var img = {
-            memIdx: sessionId,
-            name: cName,
+            jsessionId: originJsessionId,
             cphoto: dragList,
             ctext: $('#closetText').val()
         };
@@ -427,9 +439,9 @@ function saveDrag() {
             success: function (data) {
                 // 보낸 후 리스트로 돌아가기
                 $('.content').empty();
-                $('.closet').css('margin-top', '0');
-                $('.closet').css('margin-left', '0');
-                $('.closet').css('margin-right', '0');
+                $('.closetList').css('margin-top', '100');
+                $('.closetList').css('margin-left', '0');
+                $('.closetList').css('margin-right', '0');
                 list(page);
                 dragList=[];
             },

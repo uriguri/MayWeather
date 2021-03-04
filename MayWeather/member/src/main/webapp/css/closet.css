@@ -3,12 +3,22 @@
 
 .closetList {
 	font-family: 'Nanum Pen Script', cursive;
+	margin: 0 auto;
 }
 
 .likeSpan {
 	font-size: 18px;
 }
 
+.closetPage {
+	margin: 0 auto;
+	margin-top: 100px;
+}
+
+.writeDiv {
+	margin: 0 auto;
+	margin-top: 100px;
+}
 
 .bigCategory {
 	margin: 100px 0 0 40px;
@@ -266,4 +276,3 @@
 	text-align: center;
 	margin-left: 30px;
 }
-

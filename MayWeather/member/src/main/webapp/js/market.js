@@ -89,15 +89,21 @@
 			nowPageLoc = "mylist";
 									
 			// 페이지 테그 삭제
-			$('#market *').remove();
+			//$('#market *').remove();
+			$('.content *').remove();
             
+			var html = '';
+			html = '<div id="market" name="market"></div>';
+			
+			$('.content').append(html);
+			            
 			$.ajax({
 				url : marketUrl + '/sale/' + paramDiv + '/' + jsessionId,
 				type : 'GET',
 				success : function(data){
 
 					// 글쓰기
-					var html = '';
+					html = '';
 
 					// 리스트
 					for(var i = 0 ; i < data.length; i++) {
@@ -372,7 +378,7 @@
 					html += '	<table class="table">';
 					html += '  	<thead>';
 					html += '   	<tr>';
-					html += '      		<th scope="col"><img class="img-circle" src="' + clientUrl	+ '/fileupload/member/' + data.saleMember.saleIdx + '.png"> ' + data.saleMember.saleNic + '</th>';
+					html += '      		<th scope="col"><img class="img-circle market_profile" src="' + clientUrl	+ '/fileupload/member/' + data.saleMember.saleIdx + '.png"> ' + data.saleMember.saleNic + '</th>';
 					html += '      		<th scope="col">';
 
 					html += '    		<div class="sale_reg_btn">';
@@ -555,8 +561,8 @@
 						// 내 댓글인 경우에만 수정, 삭제 허용 END
 						
 						html += '			<div class="row">';
-						html += '				<div class="col-2 col-sm-2">';
-						html += '					<img class="img-circle" src="' + clientUrl	+ '/fileupload/member/' + data[i].replyIdx + '.png" width="100px" alt="...">';
+						html += '				<div class="col-2 col-sm-2 align_left">';
+						html += '					<img class="img-circle market_profile" src="' + clientUrl	+ '/fileupload/member/' + data[i].replyIdx + '.png">';
 						html += '				</div>';
 						html += '				<div id="reply_view_div_' + data[i].replyNo + '" class="col-10 col-sm-10">';
 						html += '        			<h5 class="card-title">' + data[i].replyNic + '</h5>';
@@ -869,8 +875,8 @@
 						previewIndex = data.imageList.length;
 						
 						for(var i = 0 ; i < data.imageList.length ; i++) {
-							html += '<div class="preview_box" value="' + i  +'">';
-	                        html += '	<a class="img_delete" href="#" value="' + i  +'" onclick="deletePreview(this, ' + data.imageList[i].fileNo + ')"><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>';
+							html += '<div class="preview_box" value="' + i  +'" onclick="deletePreview(' + i  +', ' + data.imageList[i].fileNo + ')">';
+	                        html += '	<a class="img_delete" value="' + i  +'" href="#"><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>';
 	                        html += '	<img class="thumbnail rounded" src="' + data.imageList[i].fileNameAll + '">';                         
 	                        html += '</div>';
 						}
@@ -987,21 +993,18 @@
 						// 상세보기 페이지 이동 
 						fnViewInfo(result);
 					}else {
-		                //-1 = 잘못된 확장자 업로드, -2 = 용량초과, 그외 = 성공(1)
-		                if (result === -1) {
-		                    alert('jpg, gif, png, bmp 확장자만 업로드 가능합니다.');
-		                   
-		                } else if (result === -2) {
-		                    alert('파일이 10MB를 초과하였습니다.');
-		                } else if (result === -3) {
-		                    alert('상품 등록에 실패하였습니다.');
-		                } else if (result === -4) {
-		                    alert('상품 이미지 등록에 실패하였습니다.');
-		                  		                  		                  
-		                } else {
-		                    alert('에러');
-		                    
-		                }
+					  	//-2 = 잘못된 확장자 업로드, -3 = 용량초과, 그외 = 성공(1)
+					  	if (result === -2) {
+					      	alert('jpg, gif, png, bmp 확장자만 업로드 가능합니다.');                         
+					  	} else if (result === -3) {
+					      	alert('파일이 10MB를 초과하였습니다.');
+					  	} else if (result === -4) {
+					      	alert('상품 등록에 실패하였습니다.');
+					  	} else if (result === -5) {
+					  	    alert('상품 이미지 등록에 실패하였습니다.');                                                                        
+					  	} else {
+					      	alert('에러');                          
+					  	}
 					}	
 	            }
 	            //전송실패에대한 핸들링은 고려하지 않음
@@ -1047,6 +1050,7 @@
 	        formData.append('saleCmt', $('#saleCmt').val());
 	        formData.append('payDiv', $("input:radio[id=payDiv]:checked").val());
 	        formData.append('delImage', orgDelImage.trim());
+	        formData.append('jsessionId', jsessionId);    
 	        
 	        /* 	
 			var data = {
@@ -1083,17 +1087,18 @@
 						// 상세보기 페이지 이동 
 						fnViewInfo(saleNo);
 					}else {
-		                //-1 = 잘못된 확장자 업로드, -2 = 용량초과, 그외 = 성공(1)
-		                if (result === -1) {
-		                    alert('jpg, gif, png, bmp 확장자만 업로드 가능합니다.');
-		                   
-		                } else if (result === -2) {
-		                    alert('파일이 10MB를 초과하였습니다.');
-		                  
-		                } else {
-		                    alert('에러');
-		                    
-		                }
+					  	//-2 = 잘못된 확장자 업로드, -3 = 용량초과, 그외 = 성공(1)
+					  	if (result === -2) {
+					      	alert('jpg, gif, png, bmp 확장자만 업로드 가능합니다.');                         
+					  	} else if (result === -3) {
+					      	alert('파일이 10MB를 초과하였습니다.');
+					  	} else if (result === -4) {
+					      	alert('상품 등록에 실패하였습니다.');
+					  	} else if (result === -5) {
+					  	    alert('상품 이미지 등록에 실패하였습니다.');                                                                        
+					  	} else {
+					      	alert('에러');                          
+					  	}
 					}	
 	            }
 	            //전송실패에대한 핸들링은 고려하지 않음
@@ -1103,6 +1108,7 @@
         // image preview 기능 구현
         // input = file object[]
         function addPreview(input) {
+
             if (input[0].files) {
                 //파일 선택이 여러개였을 시의 대응
                 for (var fileIndex = 0; fileIndex < input[0].files.length; fileIndex++) {
@@ -1119,8 +1125,8 @@
                         var imgNum = previewIndex++;
                                               
                         $("#preview").append(
-                                        '<div class="preview_box" value="' + imgNum  +'">'
-                                                + '<a class="img_delete" href="#" value="' + imgNum  +'" onclick="deletePreview(this, ' + imgNum  +')"><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>'
+                                        '<div class="preview_box" value="' + imgNum  +'" onclick="deletePreview(' + imgNum  +', ' + imgNum +')">'
+                                                + '<a class="img_delete" value="' + imgNum  +'" href="#" ><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>'
                                                 + '<img class="thumbnail rounded" src="' + img.target.result + '">'
                                                 + '</div>');
 
@@ -1137,10 +1143,11 @@
         
         
         //preview 영역에서 삭제 버튼 클릭시 해당 미리보기이미지 영역 삭제
-        function deletePreview(obj, fileNo) {
+        function deletePreview(imgNum, fileNo) {
+        alert("deletePreview")
 
-            var imgNum = obj.attributes['value'].value;
-        	
+            //var imgNum = obj.attributes['value'].value;
+        	      	
             delete fileObject[imgNum];
             $("#preview .preview_box[value=" + imgNum + "]").remove();
             
@@ -1242,7 +1249,7 @@
 			});
 			
 		}		
-		// 댓글 삭제 처리
+		// 상품 삭제 처리
 		function fnSaleDel(saleNo) {
 		
 			// 로그인 체크 
@@ -1260,7 +1267,7 @@
 
 					if(msg == 'Y'){
 						// 판매 목록 호출 
-						fnSaleList(page);
+						fnSaleList(1);
 
 					}else {
 						alert('상품 삭제에 실패했습니다.' + msg);

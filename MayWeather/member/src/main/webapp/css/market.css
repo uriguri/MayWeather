@@ -150,12 +150,16 @@
     top: 0px;
     left: 0px;
     cursor: pointer;
-    z-index: 1000;	
+    z-index: 999;	
 }
 
 
 .align_right{
 	text-align: right;
+}
+
+.align_left{
+	text-align: left;
 }
 
 .dropdown_div {
@@ -197,4 +201,9 @@
 #reply_reg_div{
 	padding: 0 5px 0 5px;
 	margin: 0 5px 0 5px;	
+}
+
+.market_profile {
+   width: 50px;
+   height: 50px;	
 }
