@@ -38,11 +38,13 @@
 	}
 	
 	.gblist_title span {
-		padding: 0px 65px;
+		padding-left: 65px;
+		font-size: 1.1em;
 	}
 		
 	.gb_back_btn {
 		border: 0px;
+		margin: 0 10px;
 	}
 	
 	.reg_modal_open_btn {
@@ -280,16 +282,16 @@
         position: relative;
         width: 400px;
         height: 570px;
-        background-color: white;
+        background-color: #f5f5f5;
         margin: 20px;
         padding: 10px;
         border-radius: 10px;
     }
     
     .regModal_back {
-    	border-radius: 10px 0 0 0;
-        float: left;
+    	border-radius: 10px 10px 0 0;
     }
+    
     
     /* 방명록 등록 모달창 헤더 */
     .regModal_header {
@@ -299,14 +301,20 @@
     .reg_modal_close_btn {
     	border: 0px;
     	padding: 10px;
+    	background-color: #f5f5f5;
     }
     
     .regModal_title {
+    	width: 86%;
         text-align: center;
-        padding: 10px;
-        padding-right: 5px;
+        padding: 15px;
+        padding-left: 60px;
         border-radius: 10px 10px 0 0;
+        float: left;
+        font-size: 1.2em;
+        font-weight: bold;
     }
+    
     
     /* 방명록 등록 모달창 내용 */
     .regModal_body {
@@ -335,7 +343,7 @@
     
     .gbTableExp {
         width: 180px;
-        padding-left: 15px;
+        padding-left: 20px;
         padding-bottom: 10px;
     }
     
@@ -343,35 +351,34 @@
         width: 110px;
         text-align: center;
         padding-bottom: 10px;
+        padding-left: 10px;
     }
     
     .gbInsertArea1 {
-   		height: 80px;
    		background-color: white;
     }
     
     .gbInsertArea2 {
-    	height: 220px;
     	background-color: white;
     }
     
     .gbInsertPhoto {
-    	width: 80px;
-        padding: 25px;
+    	width: 90px;
+        padding: 30px;
     }
     
     .gbInsertText {
     	width: 215px;
     	margin: 0 auto;
+    	padding: 10px;
     }
     
     textarea[name=gbContent] {
-        width: 95%;
+        width: 100%;
         height: 95%;
         border: 0px;
         border-radius: 10px;
         padding: 20px;
-        padding-top: 25px;
         background-color: white;
         font-size: 0.9em;
     }
@@ -391,10 +398,8 @@
     	right: 0;
     	width: auto;
     	height: auto;
-    	background-color: white;
-    	padding: 5px;
+    	padding-right: 10px;
     	text-align: right;
-    	float: left;
     }
     
     .deletePreviewImg img:nth-child(2) {
@@ -404,7 +409,8 @@
     }
    
    #deletePreview_btn {
-   		
+   		margin-left: 3px;
+   		margin-bottom: 40px;
    }
     
     .gbSecretArea {
@@ -419,7 +425,7 @@
     
     .regModal_footer {
     	background-color: white;
-    	border-radius: 0px 10px;
+    	border-radius: 20px;
     }
     
     #reg_submit_btn {
@@ -438,7 +444,7 @@
         position: relative;
         width: 400px;
         height: 570px;
-        background-color: white;
+        background-color: #f5f5f5;
         margin: 20px;
         padding: 10px;
         border-radius: 10px;
@@ -454,8 +460,8 @@
     .deleteModal {
     	position: relative;
     	width: 350px;
-    	height: 200px;
-    	background-color: white;
+    	height: 210px;
+    	background-color: #f5f5f5;
     	margin: 20px;
     	padding: 15px;
     	border-radius:10px;
@@ -464,6 +470,18 @@
     .deleteModal table  {
     	width: 100%;
     	height: 95%;
+    }
+    
+    #delete_submit_btn {
+    	width: 100%;
+        height: 35px;
+        background-color: #ee7f7b;
+        color: white;
+        border: 0px;
+        border-radius: 0 0 20px 20px;
+       	font-size: 1.1em;
+       	font-weight: bold;
+    
     }
     
   	.gbDelChk {

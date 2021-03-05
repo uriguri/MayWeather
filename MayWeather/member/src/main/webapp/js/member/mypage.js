@@ -6,7 +6,7 @@ var localUrl = 'http://192.168.0.35:8080';
 	
 var rootUrl	= 'Https://weatherwearmember.tk/member';
 
-
+var idxName = '';
 	
 // 모달 닫기
 
@@ -39,7 +39,7 @@ function memberMain(){
 		memberMain +='<div class="modal-content">';
 		memberMain +='<div class="modal-header">';
 		memberMain +='<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-		memberMain +='<h4 class="modal-title">Weather Were Login</h4>';
+		memberMain +='<h4 class="modal-title">Weather Wear Login</h4>';
 		memberMain +='</div>';
 		memberMain +='<div class="modal-body">';
 		memberMain +='<div class="box">';
@@ -82,11 +82,17 @@ function memberMain(){
 		memberMain +='<input id="nickName" class="form-control" type="text" placeholder="이름(닉네임)" name="nickName">';
 		memberMain +='<input id="nameChk" class="name-chk" type="checkbox">';
 		memberMain +='<div id="nameChkMsg"></div>';
-		memberMain +='<select id="genderSelect" class="form-control-select" name="memGender">';
+		memberMain +='<select id="genderSelect" class="form-control-select" name="memGender" style="margin: 0px 0px 6px 0px;">';
 		memberMain +='<option value="" disabled="disabled">성별</option>';
 		memberMain +='<option value="F">여성</option>';
 		memberMain +='<option value="M">남성</option>';
 		memberMain +='<option value="N">선택하지 않음</option>';
+		memberMain +='</select>';
+		memberMain +='<select id="ageSelect" class="form-control-select" name="memAge">';
+		memberMain +='<option value="" disabled="disabled">연령대</option>';
+		memberMain +='<option value="20">20대</option>';
+		memberMain +='<option value="10">10대</option>';
+		memberMain +='<option value="30">30대</option>';
 		memberMain +='</select>';
 		memberMain +='<input class="btn btn-default btn-register" type="button" value="가입 하기" onclick="memberRegBtn();" name="commit" id="commit">';
 		memberMain +='</form>';
@@ -114,7 +120,7 @@ function memberMain(){
 		memberMain +='<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
 		memberMain +='<span aria-hidden="true">&times;</span>';
 		memberMain +='</button>';
-		memberMain +='<h4 class="modal-title" id="mypageModalLabel">Weather Were 로그인</h4>';
+		memberMain +='<h4 class="modal-title" id="mypageModalLabel">Weather Wear 로그인</h4>';
 		memberMain +='</div>';
 		memberMain +='<div class="modal-body-mypage"></div>';
 		memberMain +='<div class="nologin-msg"><a id="login-href" href="javascript: hreflogin();">로그인</a>이 필요한 화면입니다. </div>';
@@ -249,12 +255,14 @@ function memberRegBtn(){
 	var memPw = $('#memPwReg').val();
 	var memName = $('#nickName').val();
 	var memGender = $('#genderSelect option:selected').val();
+	var memAge = $('#ageSelect option:selected').val();
 	
 	var member = {
 			memId : memId,
 			memPw : memPw,
 			memName : memName,
-			memGender : memGender
+			memGender : memGender,
+			memAge : memAge
 		};
 
 	
@@ -488,6 +496,7 @@ function memberLoginBtn(){
 			memLoc = loginDone.memLoc;
 			memEmailchk = loginDone.memEmailchk;
 			memId = loginDone.memId;
+			memAge = loginDone.memAge;
 			
 			
 			
@@ -526,10 +535,12 @@ function memberLoginBtn(){
 					if(memEmailchk != '' && memEmailchk == 'N') {
 						$('#memMailState').css('display','block');
 						$('#memMailState').text('미 인증 회원입니다 이메일 인증을 해주세요.');
+						new swal("이메일 인증 필요!", "이메일 인증을 하셔야 로그인 할 수 있습니다.", "error");
 					}	
 					
 					// 로그인 후 자동 닫기
 					closeLoginModal();
+					setTimeout("location.reload()", 2000);
 				
 				}
 			}
@@ -539,6 +550,7 @@ function memberLoginBtn(){
 				  "message:" + request.responseText	+ "\n" + 
 				  "error:" + error);
 		}
+		
 
 	});	
 }
@@ -1185,7 +1197,7 @@ $(document).on("click",".mem-photochange",function(){
 		}).done(function(){
 		
 			var memInfoLogin = '<div class="mem-info-photo-div" style="background-color: white; float: left;">';
-			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/'+uploadPhotoName+'">';
+			memInfoLogin +='<img class="mem-info-photo" id="memInfoPhoto" src="'+rootUrl+'/fileupload/member/'+memIdx+'.png">';
 			memInfoLogin +='</div>';	
 			memInfoLogin +='<div class="mem-info-name" id="memInfoName">'+memName+' 님 환영합니다!</div>';
 			memInfoLogin +='<div class="mem-info-loc" id="memInfoLoc"><img class="mem-info-loc-icon" id="memInfoLoc" src="'+rootUrl+'/image/icon/location.png">내위치 : '+nowLoc+'</div>';
@@ -1380,7 +1392,7 @@ function showRegisterForm(){
         $('.login-footer').fadeOut('fast',function(){
             $('.register-footer').fadeIn('fast');
         });
-        $('.modal-title').html('Weather Were 회원가입');
+        $('.modal-title').html('Weather Wear 회원가입');
     }); 
     $('.error').removeClass('alert alert-danger').html('');
        
@@ -1393,7 +1405,7 @@ function showLoginForm(){
             $('.login-footer').fadeIn('fast');    
         });
         
-        $('.modal-title').html('Weather Were 로그인');
+        $('.modal-title').html('Weather Wear 로그인');
     });       
      $('.error').removeClass('alert alert-danger').html(''); 
 }
@@ -1431,6 +1443,7 @@ $(document).on('click','.mem-like',function(){
 
 //관리자 메뉴 클릭 시
 $(document).on("click","#adminLoginMenu",function(){
+
 var adminLogin = '<table id="userTable"></table>';
 	
 	$('.content').html(adminLogin);
@@ -1500,4 +1513,6 @@ $(document).on("click","#memDeleteBtn",function(){
 		
 	});
 });
+	
+	
 	

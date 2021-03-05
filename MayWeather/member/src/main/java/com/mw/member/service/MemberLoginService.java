@@ -66,6 +66,9 @@ public class MemberLoginService {
 				session.setAttribute("memPhoto", member.getMemPhoto());
 				session.setAttribute("memEmailchk", member.getMemEmailchk());
 				
+				//21 03 05 나이 저장 추가
+				session.setAttribute("memAge", member.getMemAge());
+				
 				
 				// 레디스 세션 저장 방식
 				redisService.setMemInformation(member.toLoginInfo(), jSessionId, session);

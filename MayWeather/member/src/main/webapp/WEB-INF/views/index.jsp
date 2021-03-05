@@ -14,6 +14,10 @@
 <!-- 부트스트랩 & 제이쿼리 -->
 <%@ include file="/WEB-INF/views/include/basicset.jsp"%>
 
+ <!-- 클로젯 드래거블 추가 -->
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script src="<c:url value="/js/jquery.ui.touch-punch.min.js"/>"></script>
+
 <!-- 카카오로그인  -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
@@ -84,8 +88,10 @@ console.log(memEmailchk);
         
         	<!-- 메인 wrap -->
 			<div class="content_wrap">
+			
 				<!-- 메인 -->
 				<div class="mainForm" id="mainForm"></div>
+				
 	    	 </div>
 			
         </div>
@@ -105,7 +111,6 @@ console.log(memEmailchk);
 	});
 	</script>
 	</c:if>
-
 
 
 

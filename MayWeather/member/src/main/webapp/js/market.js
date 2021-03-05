@@ -28,25 +28,27 @@
         
         // 최종 현재 페이지
         var nowPageLoc = "";
-	    
+    
+		// mysale : 내 판매 목록 fnMyList('mysale')
+		// mybuy : 내 구매 목록, fnMyList('mybuy')
+		// mygood : 내 관심 목록 fnMyList('mygood')	    
+		
+/*      정은이 js로 옮김
 		$(document).ready(function(){
-
+	
 			var paramDiv = getParameter("div");
-			
-			// 카카오페이 결제인 경우		
+			 
+			// 카카오페이 결제인 경우      
 			var kSaleNo = getParameter("saleNo");
-
-			// mysale : 내 판매 목록 fnMyList('mysale')
-			// mybuy : 내 구매 목록, fnMyList('mybuy')
-			// mygood : 내 관심 목록 fnMyList('mygood')
-
+			 
 			// http://localhost:8081/?div=ksuccess&saleNo=80
-			// ksuccess : 카카오페이 결제 성공 , kfail : 카카오페이 결제 실패, kcancel : 카카오페이 결제 취소				
-			if(paramDiv == "ksuccess" || paramDiv == "kfail" || paramDiv == "kcancel"){								
+			// ksuccess : 카카오페이 결제 성공 , kfail : 카카오페이 결제 실패, kcancel : 카카오페이 결제 취소            
+			if(paramDiv == "ksuccess" || paramDiv == "kfail" || paramDiv == "kcancel"){                        
 				fnKakaoPayResult(paramDiv, kSaleNo);
 			}
-		});
-		
+	  });		
+*/
+
 		// 검색버튼 클릭
 		$(document).on("click","#search_btn",function(){
 			fnSaleList(1);
@@ -106,49 +108,52 @@
 					html = '';
 
 					// 리스트
-					for(var i = 0 ; i < data.length; i++) {
-						mainFileName = data[i].fileName;
+					if (data.length == 0){
+						html = '<div class="container border text-center">상품 목록이 존재하지 않습니다.</div>';												
+						$('#market').append(html);
+					}else{ 
+						for(var i = 0 ; i < data.length; i++) {
+							mainFileName = data[i].fileName;
+		
+							if(mainFileName == '' || mainFileName == null){
+								mainFileName = '' + clientUrl + '/image/icon/default.png';
+							}
+							html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
+							html += '<div class="container border">';
+							
+							html += '  <div class="row g-2">';
+							html += '    <div class="w-25" >';
+							html += '      <div class="mw-100"><img class="list_image" src="' + mainFileName + '"></div>';
+							html += '    </div>';
+							html += '    <div class="w-75">';
+							html += '      <div class="p-3 div-margin">';
+							
+							// 판매여부(판매중 : i, 예약중 : B, 판매완료 : E)
+							var addDiv = '';
+							
+							if(data[i].saleDiv == 'B'){
+								addDiv = '<span class="badge badge-success">예약중</span>&nbsp;';
+							}else if(data[i].saleDiv == 'E'){
+								addDiv = '<span class="badge badge-dark">거래완료</span>&nbsp;';
+							}
+							
+							html += '        <h5 class="card-title">' + data[i].saleTitle + '</h5>';
+							html += '        <p class="card-text sale_amount_list">' + addDiv + data[i].saleAmount + '원</p>';
+							html += '        <p class="card-text">' + data[i].saleDate + '</p>';
+							
+							html += '		 <p class="card-text align_right"><img src="' + clientUrl + '/image/icon/comment.png" width="15px"> ' + data[i].replyCnt + ' <img src="' + clientUrl + '/image/icon/heart.png" width="15px"> ' + data[i].goodCnt + '</p>';
+							
+							html += '      </div>';
+							html += '    </div>';
+							html += '  </div>';						
+							
+							html += '</div>';
+					    	html += '</a>';
 	
-						if(mainFileName == '' || mainFileName == null){
-							mainFileName = '' + clientUrl + '/image/icon/default.png';
-						}
-						html = '<a href="javascript:fnViewInfo(' + data[i].saleNo + ')">';
-						html += '<div class="container border">';
-						
-						html += '  <div class="row g-2">';
-						html += '    <div class="w-25" >';
-						html += '      <div class="mw-100"><img class="list_image" src="' + mainFileName + '"></div>';
-						html += '    </div>';
-						html += '    <div class="w-75">';
-						html += '      <div class="p-3">';
-						
-						// 판매여부(판매중 : i, 예약중 : B, 판매완료 : E)
-						var addDiv = '';
-						
-						if(data[i].saleDiv == 'B'){
-							addDiv = '<span class="badge badge-success">예약중</span>&nbsp;';
-						}else if(data[i].saleDiv == 'E'){
-							addDiv = '<span class="badge badge-dark">거래완료</span>&nbsp;';
-						}
-						
-						html += '        <h5 class="card-title">' + data[i].saleTitle + '</h5>';
-						html += '        <p class="card-text sale_amount_list">' + addDiv + data[i].saleAmount + '원</p>';
-						html += '        <p class="card-text">' + data[i].saleDate + '</p>';
-						
-						
-						html += '		 <p class="card-text align_right"><img src="' + clientUrl + '/image/icon/comment.png" width="15px"> ' + data[i].replyCnt + ' <img src="' + clientUrl + '/image/icon/heart.png" width="15px"> ' + data[i].goodCnt + '</p>';
-						
-						html += '      </div>';
-						html += '    </div>';
-						html += '  </div>';						
-						
-
-						html += '</div>';
-				    	html += '</a>';
-
-						
-				    	$('#market').append(html);
-					} 	
+							
+					    	$('#market').append(html);
+						} 
+					}	
 
 				},
 				error : function(e){
@@ -180,8 +185,7 @@
 			}
 									
             if (pagenum == 1){
-				// 페이지 테그 삭제
-				
+				// 페이지 테그 삭제				
 				$('.content *').remove();
 				//$('#market *').remove();
             }
@@ -262,7 +266,6 @@
 						html += '        <h5 class="card-title">' + data.saleList[i].saleTitle + '</h5>';
 						html += '        <p class="card-text sale_amount_list">' + addDiv + data.saleList[i].saleAmount + '원</p>';
 						html += '        <p class="card-text">' + data.saleList[i].saleDate + '</p>';
-						
 						
 						html += '		 <p class="card-text align_right"><img src="' + clientUrl + '/image/icon/comment.png" width="15px"> ' + data.saleList[i].replyCnt + ' <img src="' + clientUrl + '/image/icon/heart.png" width="15px"> ' + data.saleList[i].goodCnt + '</p>';
 						
@@ -378,7 +381,7 @@
 					html += '	<table class="table">';
 					html += '  	<thead>';
 					html += '   	<tr>';
-					html += '      		<th scope="col"><img class="img-circle market_profile" src="' + clientUrl	+ '/fileupload/member/' + data.saleMember.saleIdx + '.png"> ' + data.saleMember.saleNic + '</th>';
+					html += '      		<th scope="col"><a href="javascript:getGbookList(' + data.saleMember.saleIdx + ')"><img class="img-circle market_profile" src="' + clientUrl	+ '/fileupload/member/' + data.saleMember.saleIdx + '.png"> ' + data.saleMember.saleNic + '</a></th>';
 					html += '      		<th scope="col">';
 
 					html += '    		<div class="sale_reg_btn">';
@@ -479,7 +482,7 @@
 					html += '      		<td colspan="2">';
 					html += '				<div class="sale_title">' + data.saleMember.saleTitle + '</div><br>';
 					html += data.saleMember.saleDate + '<br><br>';
-					html += data.saleMember.saleCmt + '<br><br>';
+					html += '					<pre>' + data.saleMember.saleCmt + '</pre><br><br>';
 					html += '				<div class="sale_amount">' + data.saleMember.saleAmount + '원</div><br><br>';
 					
 					html += '댓글 <span id="reply_span">' + data.saleMember.replyCnt + '</span>개 ＊ 조아요 <span id="good_span">' + data.saleMember.goodCnt + '</span> ＊ 조회 ' + data.saleMember.readCnt + '<br>';
@@ -561,8 +564,9 @@
 						// 내 댓글인 경우에만 수정, 삭제 허용 END
 						
 						html += '			<div class="row">';
-						html += '				<div class="col-2 col-sm-2 align_left">';
-						html += '					<img class="img-circle market_profile" src="' + clientUrl	+ '/fileupload/member/' + data[i].replyIdx + '.png">';
+						//html += '				<div class="col-2 col-sm-2 align_left">';
+						html += '				<div>';
+						html += '					<a href="javascript:getGbookList(' + data[i].replyIdx + ')"><img class="img-circle market_profile" src="' + clientUrl	+ '/fileupload/member/' + data[i].replyIdx + '.png"></a>';
 						html += '				</div>';
 						html += '				<div id="reply_view_div_' + data[i].replyNo + '" class="col-10 col-sm-10">';
 						html += '        			<h5 class="card-title">' + data[i].replyNic + '</h5>';
@@ -875,8 +879,8 @@
 						previewIndex = data.imageList.length;
 						
 						for(var i = 0 ; i < data.imageList.length ; i++) {
-							html += '<div class="preview_box" value="' + i  +'" onclick="deletePreview(' + i  +', ' + data.imageList[i].fileNo + ')">';
-	                        html += '	<a class="img_delete" value="' + i  +'" href="#"><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>';
+							html += '<div class="preview_box" value="' + i  +'">';
+	                        html += '	<a class="img_delete" value="' + i  +'" href="javascript:fnImageDel(' + i  +', ' + data.imageList[i].fileNo + ')"><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>';
 	                        html += '	<img class="thumbnail rounded" src="' + data.imageList[i].fileNameAll + '">';                         
 	                        html += '</div>';
 						}
@@ -1105,46 +1109,9 @@
 	        });
 
 		}
-        // image preview 기능 구현
-        // input = file object[]
-        function addPreview(input) {
-
-            if (input[0].files) {
-                //파일 선택이 여러개였을 시의 대응
-                for (var fileIndex = 0; fileIndex < input[0].files.length; fileIndex++) {
-                    var file = input[0].files[fileIndex];
-                    fileObject[fileIndex] = file;  
-                    
-                    if (validation(file.name))
-                        continue;
- 
-                    var reader = new FileReader();
-                    reader.onload = function(img) {
-                        //div id="preview" 내에 동적코드추가.
-                        //이 부분을 수정해서 이미지 링크 외 파일명, 사이즈 등의 부가설명을 할 수 있을 것이다.
-                        var imgNum = previewIndex++;
-                                              
-                        $("#preview").append(
-                                        '<div class="preview_box" value="' + imgNum  +'" onclick="deletePreview(' + imgNum  +', ' + imgNum +')">'
-                                                + '<a class="img_delete" value="' + imgNum  +'" href="#" ><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>'
-                                                + '<img class="thumbnail rounded" src="' + img.target.result + '">'
-                                                + '</div>');
-
-                    };
-                    reader.readAsDataURL(file);
-                }
-            } 
-        }	
-        
-	    // 문자 치환
-        function replaceAll(str, searchStr, replaceStr) {
-        	return str.split(searchStr).join(replaceStr);
-        }      
-        
-        
+		
         //preview 영역에서 삭제 버튼 클릭시 해당 미리보기이미지 영역 삭제
-        function deletePreview(imgNum, fileNo) {
-        alert("deletePreview")
+        function fnImageDel(imgNum, fileNo) {
 
             //var imgNum = obj.attributes['value'].value;
         	      	
@@ -1156,8 +1123,42 @@
             	orgDelImage = orgDelImage + fileNo + ','; 
             	//alert(orgDelImage)
             }
-            resizeHeight();
+
         }
+        		
+        // image preview 기능 구현
+        // input = file object[]
+        function addPreview(input) {
+            if (input[0].files) {
+                //파일 선택이 여러개였을 시의 대응
+                for (var fileIndex = 0; fileIndex < input[0].files.length; fileIndex++) {
+                    var file = input[0].files[fileIndex];
+                    fileObject[fileIndex] = file;  
+                    
+                    if (validation(file.name)) {
+                        continue;
+ 					}
+ 					
+                    var reader = new FileReader();
+                    reader.onload = function(img) {
+                        //div id="preview" 내에 동적코드추가.
+                        var imgNum = previewIndex++;
+                                              
+                        $("#preview").append(
+                                        '<div class="preview_box" value="' + imgNum  +'">'
+                                                + '<a class="img_delete" value="' + imgNum  +'" href="javascript:fnImageDel(' + imgNum  +', ' + imgNum +')"><img class="x-btn" src="' + clientUrl + '/image/icon/x.png"></a>'
+                                                + '<img class="thumbnail rounded" src="' + img.target.result + '">'
+                                                + '</div>');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } 
+        }	
+        
+	    // 문자 치환
+        function replaceAll(str, searchStr, replaceStr) {
+        	return str.split(searchStr).join(replaceStr);
+        }      
  
         //client-side validation
         //always server-side validation required

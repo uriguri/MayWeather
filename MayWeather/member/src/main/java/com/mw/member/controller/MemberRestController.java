@@ -1,7 +1,9 @@
 package com.mw.member.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.mail.Message;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,6 +43,7 @@ import com.mw.member.service.MemberIdCheckService;
 import com.mw.member.service.MemberIdFindService;
 import com.mw.member.service.MemberKakaoLoginService;
 import com.mw.member.service.MemberLoginService;
+import com.mw.member.service.MemberNameFindService;
 import com.mw.member.service.MemberPhotoEditService;
 import com.mw.member.service.MemberPhotoSaveService;
 import com.mw.member.service.MemberPhotoUploadService;
@@ -50,6 +53,7 @@ import com.mw.member.service.MemberRegService;
 import com.mw.member.service.NaverRegService;
 import com.mw.member.util.NaverLoginUtil;
 import com.mw.member.util.RedisService;
+import com.sun.mail.handlers.message_rfc822;
 
 @RestController
 @CrossOrigin
@@ -113,6 +117,8 @@ public class MemberRestController {
 	@Autowired
 	private AdminService adminService;
 	
+	@Autowired
+	private MemberNameFindService nameFindService;
 	
 	
 	@PostMapping // 회원가입
@@ -192,9 +198,9 @@ public class MemberRestController {
 	
 
 	@PutMapping("/edit/photo") // default 사진으로 수정
-	public int photoUpload(@RequestBody MemberPhotoEditRequest photoEditRequest) {
+	public int photoUpload(@RequestBody MemberPhotoEditRequest photoEditRequest, HttpServletRequest request) throws IOException {
 
-		return photoEditService.editPhotoMember(photoEditRequest);
+		return photoEditService.editPhotoMember(photoEditRequest, request);
 	}
 
 	@PostMapping("/upload/{memIdx}") // 사진 파일 업로드 & 유저 정보변경
@@ -233,7 +239,7 @@ public class MemberRestController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		mav.setViewName("redirect:http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/");
+		mav.setViewName("redirect:https://weatherwearmember.tk/member/");
 		
 		naverRegService.naverMemberReg(request, response, code, state, session, jSessionId);
 		
@@ -257,6 +263,13 @@ public class MemberRestController {
 	public List<Member> memberList(){
 		
 		return adminService.getAllMember();
+	}
+	
+	@GetMapping(value = "/{gbOwnerId}", produces = "text/html; charset=UTF-8")
+	public String nameByIdx(@PathVariable("gbOwnerId") int memIdx, HttpServletResponse response) {
+		/* response.setContentType("text/html; charset=UTF-8"); */
+		String returnName = nameFindService.getMemName(memIdx);
+		return returnName;
 	}
 	
 }

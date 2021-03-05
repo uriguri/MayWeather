@@ -3,15 +3,16 @@ var listItem;
 var cIdx;
 var img_zidx = 0;
 var dragList = [];
-var page = 1;
+var cPage = 1;
 var viewlist;
 // var myUrl = 'http://localhost:8080';
 // var myUrl = 'http://ec2-54-180-82-31.ap-northeast-2.compute.amazonaws.com:8080';
  var myUrl = 'https://maycloset.tk';
 
- var totalPage = 1;
+ var totalClosetPage = 1;
 
  var closetPageLoc;
+
 
 
 // $(document).ready(function () {
@@ -19,45 +20,45 @@ var viewlist;
 // })
 
 window.onscroll = function (e) {
-        if (closetPageLoc == 'closetNow' && page <= totalPage) {
+        if (closetPageLoc == 'closetNow' && cPage <= totalClosetPage) {
             //window height + window scrollY 값이 document height보다 클 경우,
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-                page++;
-                list(page);
-            }
+                cPage++;
+                listView(cPage);
+            } 
         }
     }
 
 
-// 리스트 부르는 함수
-function list(page) {
-    
-    $('.content').empty();
+
+
+
+function listView(cPage){
 
     closetPageLoc = 'closetNow';
 
     $.ajax({
-        url: myUrl+'/closet/list/' + page,
+        url: myUrl+'/closet/list/' + cPage,
         type: 'GET',
         success: function (listData) {
             // 데이터가 들어왔을 때
             // 총 페이지 개수 불러오기
-            totalPage = listData.totalPageCnt;
+            totalClosetPage = listData.totalPageCnt;
             console.log(listData.closetList.length);
             if (listData.closetList.length > 0) {
                 
                 var listhtml = '<table class="closetList" id="closetList">';
                  for (var i = 0; i < listData.closetList.length; i++) {
                     if ((i == 0) || (i % 3 == 0)) {
-                        listhtml += '<tr>';
+                       listhtml += '<tr>';
                     }
-                    listhtml += '<td> <div class="clist" id="clist' + i + '"onclick="viewclick(' + listData.closetList[i].cidx + ')"><p><span class="title">#' + listData.closetList[i].ctext + '</span></p></div>';
+                    listhtml += '<td> <div class="clist" id="clist' + i + '" onclick="viewChk('+listData.closetList[i].cidx+')"><p><span class="title">#' + listData.closetList[i].ctext + '</span></p></div>';
                     // 좋아요 클릭 여부에 따른 하트 변화 = 내 좋아요 카운트 기준
                     if (listData.closetList[i].myLikeCnt == 0) {
-                        listhtml += '<img src="'+myUrl+'/closet/image/icon/heart.png" onclick="clickLike(' + listData.closetList[i].cidx + ',' + 1 + ')" id="emptyheart"><span class="likeSpan">' + listData.closetList[i].clikecnt+'</span>';
+                        listhtml += '<img src="'+myUrl+'/closet/image/icon/heart.png" id="emptyheart"><span class="likeSpan">' + listData.closetList[i].clikecnt+'</span>';
                         listhtml +=  '</td>';
                     } else {
-                        listhtml += '<img src="'+myUrl+'/closet/image/icon/heart.png" onclick="clickLike(' + listData.closetList[i].cidx + ',' + 2 + ')" id="emptyheart"><span class="likeSpan">' + listData.closetList[i].clikecnt+'</span>';
+                        listhtml += '<img src="'+myUrl+'/closet/image/icon/heart.png" id="emptyheart"><span class="likeSpan">' + listData.closetList[i].clikecnt+'</span>';
                         listhtml += '</td>';
                     }
                     if ((i == 2) || (i % 3 == 2)) {
@@ -65,7 +66,7 @@ function list(page) {
                     }
                 }
                 listhtml += '</table>';
-                listhtml += '<div class="writebtn" id="writebtn" onclick="bigCategory()"></div>';
+                listhtml += '<div class="writebtn" id="writebtn" onclick="writeCall()"></div>';
 
             }
             $('.content').append(listhtml);
@@ -74,12 +75,39 @@ function list(page) {
             console.log("에러 발생 : " + e);
         }
     })
+
+
+
 }
 
+
+// 리스트 부르는 함수
+function list() {
+
+    $('.content').empty();
+    
+    listView(1);
+    
+}
+
+// 로그인 감지 
+function viewChk(cIdx){
+    if(memIdx==null || memIdx==''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '로그인이 안되셨네요!',
+            footer: '<a href="javascript:memberMain()">로그인 페이지로 이동</a>'
+          })
+    } else {
+        viewclick(cIdx);
+    }
+}
 
 // 게시물 세부 페이지
 function viewclick(cIdx) {
     console.log('게시물번호:' + cIdx);
+
     // 리스트 페이지 비우기
     $('.content').empty();
 
@@ -103,7 +131,7 @@ function viewclick(cIdx) {
                 console.log('내용확인:'+viewPhoto[i].src);
                 viewhtml += '<img src="';
                 viewhtml += viewPhoto[i].src;
-                viewhtml += '" style="z-index:' + viewPhoto[i].z + '; position:absolute; left:' + (viewPhoto[i].x+20) + 'px; top:' + (viewPhoto[i].y-100) + 'px;" width=100 height=100 >';
+                viewhtml += '" style="z-index:' + viewPhoto[i].z + '; position:absolute; left:' + (viewPhoto[i].x+20) + 'px; top:' + (viewPhoto[i].y-350) + 'px;" width=150 height=150 >';
             }
             // 이미지 for문 종료
             viewhtml += '  </div>';
@@ -114,14 +142,14 @@ function viewclick(cIdx) {
             // 좋아요 하트 체크(1:등록, 2:삭제)
             var likeChk = 1;
             var heartImg = "heart.png"
-
-            if (viewData.myLikeCnt == 0) {
-                heartImg = "emptyheart.png"
-                viewhtml += '<img src="'+myUrl+'/closet/image/icon/' + heartImg + '" id="heartview" onclick="clickLike(' + cIdx + ',' + likeChk + ')" ><span class="viewLike">' + viewData.clikecnt+'</span>';
-            } else {
-                likeChk = 2;
-                viewhtml += '<img src="'+myUrl+'/closet/image/icon/' + heartImg + '" id="heartview" onclick="clickLike(' + cIdx + ',' + likeChk + ')" ><span class="viewLike">' + viewData.clikecnt+'</span>';
-            }
+                if (viewData.myLikeCnt == 0) {
+                    heartImg = "emptyheart.png"
+                    viewhtml += '<img src="'+myUrl+'/closet/image/icon/' + heartImg + '" id="heartview" onclick="clickLike(' + cIdx + ',' + likeChk + ')" ><span class="viewLike">' + viewData.clikecnt+'</span>';
+                } else {
+                    likeChk = 2;
+                    viewhtml += '<img src="'+myUrl+'/closet/image/icon/' + heartImg + '" id="heartview" onclick="clickLike(' + cIdx + ',' + likeChk + ')" ><span class="viewLike">' + viewData.clikecnt+'</span>';
+                }
+            
 
             // memIdx가 현재 로그인한 사람과 같을 경우 삭제,편집 페이지 보여주기
             if (viewData.memIdx == memIdx) {
@@ -130,7 +158,7 @@ function viewclick(cIdx) {
             }
             // 삭제, 편집 페이지 종료
             viewhtml += '</div>';
-            viewhtml += '<div class="closetTextView" id="closetTextView"> <h2>' + viewData.ctext + '</h2> </div>';
+            viewhtml += '<div class="closetTextView" id="closetTextView"> <span>' + viewData.ctext + '</span> </div>';
             // 최종 페이지 종료
             viewhtml += '</div>';
             $('.content').append(viewhtml);
@@ -146,8 +174,6 @@ function viewclick(cIdx) {
 
 // 좋아요 늘려주는 카운트(likeChk=1:등록, 2:삭제)
 function clickLike(cIdx, likeChk) {
-
-    closetPageLoc = 'noList';
 
     var like = {
         jsessionId: originJsessionId,
@@ -170,7 +196,7 @@ function clickLike(cIdx, likeChk) {
 
 //  수정하기
 function edit(cIdx) {
-    $('.closet').empty();
+    $('.content').empty();
 
     closetPageLoc = 'noList';
 
@@ -182,12 +208,12 @@ function edit(cIdx) {
         success: function (data) {
             var dataPhoto = JSON.parse(data.cphoto);
 
-            var edithtml = '<div class="editTitle" id="editTitle"><h1>수정하기</h1></div>';
+            var edithtml = '<div class="editTitle" id="editTitle"><span>수정하기</span></div>';
             edithtml += '<div class="editCloset" id="editCloset">' 
             for(var i=0; i<dataPhoto.length; i++){
                 edithtml += '<img src="';
                 edithtml += dataPhoto[i].src;
-                edithtml += '" style="z-index:' + dataPhoto[i].z + '; position:absolute; left:' + (dataPhoto[i].x-30) + 'px; top:' + (dataPhoto[i].y-250) + 'px;" width=100 height=100 >';
+                edithtml += '" style="z-index:' + dataPhoto[i].z + '; position:absolute; left:' + (dataPhoto[i].x-30) + 'px; top:' + (dataPhoto[i].y-350) + 'px;" width=150 height=150 >';
             }
             edithtml += '</div>';
             edithtml += '<div class="form-floating" id="editText">';
@@ -222,7 +248,12 @@ function editCall(cIdx) {
         contentType: 'application/json; charset=utf-8',
         success: function (editData) {
             console.log('수정데이터:' + editData);
-            alert('수정완료');
+            Swal.fire({
+                icon: 'success',
+                title: '수정이 완료되었습니다!',
+                showConfirmButton: false,
+                timer: 1500
+              })
             redirect();
         },
         error: function (e) {
@@ -237,7 +268,10 @@ function redirect() {
     closetPageLoc = 'noList';
 
     $('.content').empty();
-    list(page);
+    $('.content').css('margin-left', '0');
+    $('.content').css('margin-right', '0');
+    listView(1);
+
 }
 
 // // 삭제하기
@@ -245,25 +279,73 @@ function del(cIdx) {
 
     closetPageLoc = 'noList';
 
-    var delConfirm = confirm('정말로 삭제하시겠습니까?');
-    if (delConfirm) {
-        $.ajax({
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+      })
+      
+      swalWithBootstrapButtons.fire({
+        title: '정말로 삭제하시겠어요?',
+        text: "삭제하면 리스트로 되돌아갑니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: '네,삭제할래요!',
+        cancelButtonText: '아니요, 삭제하지 않을래요.',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            '삭제 완료!',
+            '작성한 게시물이 없어졌습니다.',
+            'success'
+          )
+
+          $.ajax({
             url: myUrl+'/closet/delete/' + cIdx,
             type: 'GET',
             success: function (delData) {
-                alert('삭제되었습니다.');
                 $('.content').empty();
-                list(page);
+                listView(1);
             }, error: function (e) {
                 console.log("에러 발생" + e);
             }
         })
-    }
+
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            '삭제 취소',
+            '게시물이 살아남았습니다 :)',
+            'error'
+          )
+        }
+      })
+       
 }
 
 
+// 글쓰기 부르는 펑션
+function writeCall(){
+    if(memIdx==null || memIdx==''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '로그인이 안되셨네요!',
+            footer: '<a href="javascript:memberMain()">로그인 페이지로 이동</a>'
+          })
+    } else {
+        bigCategory();
+    }
+}
+
 // 대분류 호출하는 펑션
 function bigCategory() {
+
     $('.content').empty();
 
     closetPageLoc = 'noList';
@@ -275,17 +357,20 @@ function bigCategory() {
         success: function (data) {
             console.log('데이터확인:'+data[1].codiPho);
             console.log('데이터확인:'+data[3].codiPho);
-            var html = '<div class="bigCategory">';
-            html += '       <div class="row" id="bigCategoryMenu">';
-            html += '           <div class="col-6 col-sm-3" onclick="codiView(\'top\')" id="top">' + data[3].codiList + '<br>' + data[3].codiPho + '</td>' + '</div>';
-            html += '           <div class="col-6 col-sm-3" onclick="codiView(\'outer\')" id="outer" >' + data[1].codiList + '<br>' + data[1].codiPho + '</td>' + '</div>';
-            html += '       <div class="w-100"></div>';
-            html += '   <tr>';
-            html += '       <div class="col-6 col-sm-3" onclick="codiView(\'bottom\')" id="bottom" >' + data[0].codiList + '<br>' + data[0].codiPho + '</td>' + '</div>';
-            html += '       <div class="col-6 col-sm-3" onclick="codiView(\'shoes\')" id="shoes">' + data[2].codiList + '<br>' + data[2].codiPho + '</td>' + '</div>';
-            html += '   </tr>';
+            var html = '<div class="writeWrap">';
+            html += '       <div class="bigCategory">';
+            html += '           <div class="row" id="bigCategoryMenu" style="margin-left: 20px; margin-top: 15px;">';
+            html += '               <div class="col-6 col-sm-3" onclick="codiView(\'top\')" id="top">' + data[3].codiList + '<br>' + data[3].codiPho + '</td>' + '</div>';
+            html += '               <div class="col-6 col-sm-3" onclick="codiView(\'outer\')" id="outer" >' + data[1].codiList + '<br>' + data[1].codiPho + '</td>' + '</div>';
+            html += '           <div class="w-100"></div>';
+            html += '               <tr>';
+            html += '           <div class="col-6 col-sm-3" onclick="codiView(\'bottom\')" id="bottom" >' + data[0].codiList + '<br>' + data[0].codiPho + '</td>' + '</div>';
+            html += '           <div class="col-6 col-sm-3" onclick="codiView(\'shoes\')" id="shoes">' + data[2].codiList + '<br>' + data[2].codiPho + '</td>' + '</div>';
+            html += '              </tr>';
             html += '       </div>';
+            html += '   </div>';
             html += '</div>';
+
             $('.content').append(html);
         },
         error: function (e) {
@@ -293,6 +378,9 @@ function bigCategory() {
         }
     })
 }
+
+
+
 
 // 코디 세부 리스트 출력
 function codiView(value) {
@@ -307,12 +395,12 @@ function codiView(value) {
     html += '<table width="80%">';
     html += '<tr>';
     for (i = 1; i < 4; i++) {
-        html += '<td class=' + i + '>' + '<div class="dragev" id="dragev' + listItem + i + '">' + '<img src="'+myUrl+'/closet/image/codi/' + value + '/' + i + '.png" width="100" height="100" id="codiInfo' + listItem + i + '">' + '</div> </td>';
+        html += '<td class=' + i + '>' + '<div class="dragev" id="dragev' + listItem + i + '">' + '<img src="'+myUrl+'/closet/image/codi/' + value + '/' + i + '.png" width="120" height="120" id="codiInfo' + listItem + i + '">' + '</div> </td>';
     }
     html += '</tr>';
     html += '<tr>';
     for (i = 4; i < 7; i++) {
-        html += '<td class=' + i + '>' + '<div class="dragev" id="dragev' + listItem + i + '">' + '<img src="'+myUrl+'/closet/image/codi/' + value + '/' + i + '.png" width="100" height="100" id="codiInfo' + listItem + i + '" >' + '</div> </td>';
+        html += '<td class=' + i + '>' + '<div class="dragev" id="dragev' + listItem + i + '">' + '<img src="'+myUrl+'/closet/image/codi/' + value + '/' + i + '.png" width="120" height="120" id="codiInfo' + listItem + i + '" >' + '</div> </td>';
     }
     html += '</tr>';
     html += '</table>';
@@ -326,7 +414,7 @@ function codiView(value) {
     if ($('#codibg').length == 0) {
         html += '<div class="codibg" id="codibg" name="codibg"></div>';
     }
-    $('.content').append(html);
+    $('.writeWrap').append(html);
 
     // 이미지 드래그해서 끌어다놓고, x, y좌표 얻기
     $('#codi').on('mouseenter', 'img', function () {
@@ -399,23 +487,23 @@ function saveDrag() {
     $('.content').css('margin-top', '100px');
     $('.content').css('margin-left', '30px');
     $('.content').css('margin-right', '30px');
-    $('.content').prepend('<div class="writeDiv" id="writeDiv">');
-    $('.content').prepend('<div class="writeTitle"><h2>글쓰기</h2></div>')
-    $('#codibg').css('top', '150px');
+    // $('.content').prepend('<div class="writeTitle"><span>글쓰기</span></div>');
+    // $('.content').prepend('<div class="writeWrap">');
+    $('#codibg').css('top', '180px');
     $('#codibg').css('margin-left', '0');
     $('#codibg').css('background-color', '#EDEDED');
 
     // 텍스트에리어 만들어주기
-    var cHtml = '<form action="POST" id="closetRegForm">';
-    cHtml += '<div class="form-floating">';
-    cHtml += '  <textarea class="form-control" id="closetText"></textarea>';
-    cHtml += '  <label for="floatingTextarea2"></label>';
+    var cHtml = '      <div class="writeTitle"><span>글쓰기</span></div>';
+    cHtml += '          <form action="POST" id="closetRegForm">';
+    cHtml += '          <div class="form-floating">';
+    cHtml += '            <textarea class="form-control" id="closetText"></textarea>';
+    cHtml += '          </div>';
+    cHtml += '              <button type="button" class="btn btn-light" id="savebuttn">SAVE</button>';
+    cHtml += '              <button type="button" class="btn btn-light" id="cancelbuttn" onclick="redirect()">CANCEL</button>';
     cHtml += '</div>';
-    cHtml += '<button type="button" class="btn btn-light" id="savebuttn">SAVE</button>';
-    cHtml += '<button type="button" class="btn btn-light" id="cancelbuttn" onclick="redirect()">CANCEL</button>';
-    cHtml += '</div>';
-    cHtml += '</div>';
-    $('.content').append(cHtml);
+    
+    $('.writeWrap').append(cHtml);
 
     // 이미지 리스트 넘겨주는 ajax
     $('#savebuttn').on('click', function () {
@@ -439,10 +527,9 @@ function saveDrag() {
             success: function (data) {
                 // 보낸 후 리스트로 돌아가기
                 $('.content').empty();
-                $('.closetList').css('margin-top', '100');
-                $('.closetList').css('margin-left', '0');
-                $('.closetList').css('margin-right', '0');
-                list(page);
+                $('.content').css('margin-left', '0');
+                $('.content').css('margin-right', '0');
+                listView(cPage);
                 dragList=[];
             },
             error: function (e) {

@@ -15,8 +15,14 @@ public class LoginInfo implements Serializable{
 			private String memEmailchk;
 			private String memSocial;
 			private String jsessionId;
+			private String memAge;
 			
-			public LoginInfo(String memIdx, String memId, String memName, String memGender, String memPhoto, String memLoc, String memEmailchk, String memSocial, String jsessionId) {
+			public LoginInfo(String memIdx, String memId, 
+							 String memName, String memGender, 
+							 String memPhoto, String memLoc, 
+							 String memEmailchk, String memSocial, 
+							 String jsessionId, String memAge) {
+				
 				this.memIdx = memIdx;
 				this.memId = memId;
 				this.memName = memName;
@@ -26,6 +32,7 @@ public class LoginInfo implements Serializable{
 				this.memEmailchk = memEmailchk;
 				this.memSocial = memSocial;
 				this.jsessionId = jsessionId;
+				this.memAge = memAge;
 			}
 			
 			

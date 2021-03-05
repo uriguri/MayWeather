@@ -57,6 +57,9 @@ public interface MemberDao {
 	//모든 멤버 조회
 	List<Member> selectAllMemberList();
 	
+	// 방명록 유저 조회(idx로 멤버네임 반환)
+	String getMemNameByIdx(int memIdx);
+	
 
 	
 }

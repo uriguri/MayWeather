@@ -56,6 +56,7 @@ public class RedisService {
 		  session.setAttribute("memLoc", loginInfo.getMemLoc());
 		  session.setAttribute("memGender", loginInfo.getMemGender());
 		  session.setAttribute("memEmailchk", loginInfo.getMemEmailchk());
+		  session.setAttribute("memAge", loginInfo.getMemAge());
 		 
 
 	}
@@ -73,7 +74,8 @@ public class RedisService {
 				(String) redisTemplate.opsForHash().get(key, "memGender"),
 				(String) redisTemplate.opsForHash().get(key, "memEmailchk"),
 				(String) redisTemplate.opsForHash().get(key, "memSocial"),
-				(String) redisTemplate.opsForHash().get(key, "jsessionId"));
+				(String) redisTemplate.opsForHash().get(key, "jsessionId"),
+				(String) redisTemplate.opsForHash().get(key, "memAge"));
 
 		return result;
 	}

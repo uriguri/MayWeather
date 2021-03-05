@@ -11,6 +11,7 @@ public class MemberRegRequest {
 	private String memGender;
 	private String memPhoto;
 	private int memSocial;
+	private int memAge;
 	
 	public Member memberRegRequest() {
 		Member member = new Member();
@@ -18,6 +19,8 @@ public class MemberRegRequest {
 		member.setMemPw(memPw);
 		member.setMemName(memName);
 		member.setMemGender(memGender);
+		member.setMemAge(memAge);
+		
 		member.setMemPhoto("default.png");
 		
 		//소셜 0 = 일반가입자

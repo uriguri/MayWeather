@@ -9,14 +9,12 @@
   		<input type="hidden" value="${sessionScope.memIdx}" name="memidxsession" id="memidxsession">
     	<input type="hidden" value="${sessionScope.memName}" name="memnicsession" id="memnicsession">
     	
-		<div class="header_loc" id="header_loc" onclick="btnLoc_click()">
-			<%-- <img height="26" src="<c:url value="/image/icon/location.png"/>"> --%>
-    		<button id="btnLocc" class="font2">서울</button>
+		<div class="header_loc" id="header_loc">
+			<img height="20" src="https://maymayweather.ml/main/image/icon/location.png">
+    		<button id="btnLocc" class="font4">서울</button>
     	</div>
-    	
-    	<!-- TEST -->
-    	<input type="button" class="font6" value="방명록" id="gblist_btn" onclick="getMoveToGb()">
-		
+    	<!-- 위치 설정 모달 -->
+    	<div class="locationModal_wrapper" style="display: none;"></div>
 		
 	</header>
 	

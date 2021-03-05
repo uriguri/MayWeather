@@ -30,8 +30,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		parameterType="com.mw.member.domain.Member" useGeneratedKeys="true"
 		keyProperty="memIdx">
 		INSERT INTO mem (memId, memPw, memName, memGender,
-		memEmailCode, memPhoto, memSocial) VALUES
-		(#{memId},#{memPw},#{memName},#{memGender},#{memEmailCode},#{memPhoto},#{memSocial})
+		memEmailCode, memPhoto, memSocial, memAge) VALUES
+		(#{memId},#{memPw},#{memName},#{memGender},#{memEmailCode},#{memPhoto},#{memSocial},#{memAge})
 	</insert>
 
 	<!-- 회원 이메일 인증상태 memIdx로 조회 -->
@@ -107,6 +107,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 관리자 페이지 모든 회원 조회 -->
 	<select id="selectAllMemberList" resultMap="memberListResult">
 		SELECT * FROM mem
+	</select>
+	
+	<select id="getMemNameByIdx" resultType="String">
+		SELECT memName FROM mem WHERE memIdx=#{memIdx}
 	</select>
 	
 </mapper>

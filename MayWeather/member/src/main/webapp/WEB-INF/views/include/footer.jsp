@@ -14,7 +14,7 @@
             <td><img src="image/icon/ootd.png" width="30" class="menuicons" onclick="ootdMain()">
             </td>
             
-            <td><img src="image/icon/closet.png" width="23" class="menuicons" onclick="list(page)">
+            <td><img src="image/icon/closet.png" width="23" class="menuicons" onclick="list(cPage)">
             </td>
             
             <td><img src="image/icon/market.png" width="30" class="menuicons" onclick="fnSaleList(1)">

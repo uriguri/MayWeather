@@ -12,12 +12,14 @@
 	}
 
 	.content_wrap {
+		background-color: #f5f5f5;
         max-width: 500px;
         min-height: 650px;
         max-height: 650px;
 		margin: auto;
 		overflow-y:auto; 
 		overflow-x:hidden;
+		
 	}
 
     .mainForm {
@@ -46,12 +48,10 @@
    	
    	.font4 {
    		font-size: 1.1em;
-   		font-weight: 900;
    	}
    	
    	.font5 {
    		font-size: 0.9em;
-   		font-weight: bold;
    	}
 
 	.font6 {
@@ -74,17 +74,66 @@
 	/* 헤더 ---------------------------- */
 	
 	.header_loc {
-    	position: absolute;
-    	top: 40px;
-    	left: 145px;
+		position: relative;
+	    top: -25px;
+	    left: 165px;
+	    width: auto;
+	    background-color: #64c2eb;
+    }
+    
+    .header_loc img {
+    	background-color: #64c2eb;
+    	padding-right: 5px;
+	}
+    
+    .locationModal_wrapper {
+    	position: fixed;
+    	top: 0px;
+    	left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
     }
     
     #btnLocc {
-  		width: 100px;
+  		width: auto;
     	background-color: #64c2eb;
-    	color: black;
+    	color: #424242;
     	border: 0px;
-    	text-align: center;
+    	text-align: left;
+    }
+    
+    .locationModal_body {
+    	width: 100%;
+    	height: 82%;
+    	padding: 5px;
+    	padding-top: 30px;
+    	background-color: white;
+    	margin-top: 20px;
+    }
+    
+    .labelforLoc {
+    	width: 43%;
+        height: 10%;
+        margin: 10px;
+        line-height: 41px;
+        text-align: center;
+        float: left;
+       	border-radius: 10px;
+       	box-shadow: 2px 2px 8px #ccc;
+    }
+    
+    input[type=radio]{
+    	display: none;
+    }
+    
+    .locationModal_body img {
+    	margin: 60px;
+        display: inline-block;
     }
     
     .header_time {
@@ -116,12 +165,13 @@
     }
     
     #weatherBt_btn {
+    	width: 70px;
     	position: absolute;
-    	top: 110px;
-    	right: 10px;
+    	top: 120px;
+    	right: 0;
         background-color: #ffd74e;
         padding: 5px;
-        border-radius: 10px;
+        border-radius: 10px 0 0 10px;
         border: 0px;
         color: black;
     }
@@ -279,9 +329,9 @@
         border: 0px;
         border-radius: 5px;
         padding: 5px;
-        color: white;
-        font-weight: 1.5em;
-        font-size: 0.8em;
+        color: white;    
+        font-weight: 500;
+    	font-size: 0.9em;
     }
     
    
@@ -315,7 +365,7 @@
     .top3_ootd_border {
     	margin: auto;
     	width: 95px;
-    	height: 110px;
+    	height: 125px;
     	background-color: white;
     	border-radius: 5px;
     	padding: 1px;
@@ -330,6 +380,17 @@
 	.top3_ootd td {
     	background-color: white;
     }
+    
+    .pick_onleft {
+		text-align: left;
+		font-size: 0.7em;
+		overflow: hidden;
+	}
+	
+	.pick_onright {
+		text-align: right;
+		font-size: 0.7em;
+	}
     
     .top3_ootd1 {
    		background-color: #64c2eb;
@@ -349,10 +410,13 @@
     	width: 33%;
     }
     
+    .img_paddingB {
+    	padding-bottom: 5px;
+	}
+    
     .todayPick img {
     	border-radius: 5px;
     	/* box-shadow: 2px 2px 2px #ddd; */
     }
-
     
  

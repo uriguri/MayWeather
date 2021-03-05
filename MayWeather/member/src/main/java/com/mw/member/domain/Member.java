@@ -16,7 +16,7 @@ public class Member {
 	private String memLoc;
 	private String memLev;
 	private String memLike;
-	private String memBookmark;
+	private int memAge;
 	private String memGender;
 	private String memEmailCode;
 	private char memEmailchk;
@@ -50,7 +50,7 @@ public class Member {
 	
 	
 	public LoginInfo toLoginInfo() {
-		return new LoginInfo(String.valueOf(memIdx), memId, memName, memGender, memPhoto, memLoc, String.valueOf(memEmailchk), String.valueOf(memSocial), jsessionId);
+		return new LoginInfo(String.valueOf(memIdx), memId, memName, memGender, memPhoto, memLoc, String.valueOf(memEmailchk), String.valueOf(memSocial), jsessionId, String.valueOf(memAge));
 	}
 	
 	

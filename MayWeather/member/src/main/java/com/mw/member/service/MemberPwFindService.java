@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.mw.member.dao.MemberDao;
 import com.mw.member.domain.Member;
+import com.mw.member.util.Sha256;
 
 @Service
 public class MemberPwFindService {
@@ -26,6 +27,9 @@ public class MemberPwFindService {
 	
 	@Autowired 
 	private JavaMailSender sender;
+
+	@Autowired
+	private Sha256 sha256;
 	
 	private String newPw;
 	
@@ -92,8 +96,11 @@ public class MemberPwFindService {
 				// 메일 발송
 				sender.send(message);
 				
+				//sha256방식으로 비밀번호 변경
+				String encryptPw = sha256.encrypt(newPw);
+				
 				//멤버의 비밀번호 변경
-				dao.updateMemberPw(newPw, memId);
+				dao.updateMemberPw(encryptPw, memId);
 				
 				
 			} catch (MessagingException e) {

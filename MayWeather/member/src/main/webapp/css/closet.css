@@ -11,8 +11,12 @@
 }
 
 .closetPage {
-	margin: 0 auto;
-	margin-top: 100px;
+position: absolute;
+    margin-top: 30px;
+    margin-left: 18px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .writeDiv {
@@ -24,6 +28,11 @@
 	margin: 100px 0 0 40px;
 	position: fixed;
 	height: 300px;
+	top: 150px;
+	background-color: white;
+	border-radius: 20px;
+	margin-right: 20px;
+	margin-left: 15px;
 }
 
 #bottom {
@@ -45,28 +54,28 @@
    	width: 300px;
    	margin-left: 30px;
 	position: absolute;
-	top: 330px;
+	top: 400px;
 	overflow: hidden;
 }
 
 #codiback {
-	width: 20px;
-	height: 20px;
-}
-
-#codisave {
 	width: 30px;
 	height: 30px;
 }
 
+#codisave {
+	width: 40px;
+	height: 40px;
+}
+
 #codireset {
-	width: 22px;
-	height: 27px;
+	width: 30px;
+	height: 36px;
 }
 
 #codicon {
 	display: block;
-	top: 300px;
+	top: 350px;
 	position: absolute;
 }
 
@@ -79,20 +88,22 @@
 }
 
 #codilist {
-	width: 25px;
-	height: 25px;
+	width: 30px;
+	height: 30px;
 }
 
 .clist {
 	width: 110px;
 	height: 110px;
-	margin-top: 10px;
-	margin-left: 10px;
+	margin: 10px 6px 0 6px;
 	background-color: #EDEDED;
 }
 
 .closetTitle {
-	font-size: 15px;
+	font-size: 18px;
+	border-radius: 15px 15px 0 0;
+	position: absolute;
+	color: #6297bdba;
 }
 
 .clist p {
@@ -125,16 +136,13 @@
 .closetView {
 	width: 300px;
 	height: 300px;
-	margin-left: 30px;
-	margin-right: 30px;
-	padding : 30px auto;
 	background-color: #EDEDED;
+	margin: 0 auto;
 }
 
 #heartview {
 	width: 20px;
 	height: 20px;
-	margin-left: 30px;
 	margin-top: 6px;
 	float: left;
 }
@@ -142,7 +150,6 @@
 #closetText {
 	width: 300px;
 	height: 100px;
-	margin-top: 10px;
 	margin-right: 30px;
 	padding : 30px auto;
 	border: 1px solid #ddd;
@@ -151,16 +158,20 @@
 #closetTextView {
 	width: 300px;
 	height: 100px;
-	margin-top: 10px;
-	margin-left: 30px;
-	margin-right: 30px;
-	padding : 30px auto;
+	margin-top: 13px;
 	border-top: 1px solid #ddd;
 }
 
+#closetTextView span {
+	font-size: 36px;
+	position: absolute;
+    top: 400px;
+    font-family: 'Nanum Pen Script';
+}
+
+
 #del {
 	float: right;
-	margin-right: 45px;
 	font-size: 13px;
 }
 #edit {
@@ -188,7 +199,7 @@
 
 #closetRegForm {
 	position: absolute;
-	top: 430px;
+	top: 458px;
 	margin-top: 30px;
 	margin-left: 0px;
 	width: 300px;
@@ -197,7 +208,7 @@
 
 
 #writebtn {
-	background-image: url(/closet/image/icon/write.png);
+	background-image: url(https://weatherwearmember.tk/member/image/icon/write.png);
     width: 50px;
     height: 50px;
     background-size: 30px;
@@ -214,20 +225,28 @@
 }
 
 .writeTitle {
-	top: 100px;
-	position: absolute;
-	align-content: center;
-	margin-top: 10px;
-	margin-left: 0px;
-	margin-right: 30px;
+	top: 128px;
+    position: absolute;
+    margin-top: 15px;
+}
+
+.writeTitle span {
+	font-size: 20px;
+	border-radius: 15px 15px 0 0;
+    border-bottom: 2px solid #B2E0F7;
+    padding: 0.5em;
+    background: #D8EFFB;
+}
+
+#viewBack {
+	margin-bottom: 30px;
 }
 
 #viewBack img {
-	width: 11px;
-	height: 11px;
+	width: 15px;
+	height: 15px;
 	float: left;
-	margin-left: 30px;
-	margin-top: 7px;
+	margin-top: 5px;
 }
 
 .viewLike {
@@ -235,44 +254,36 @@
 }
 
 #editCloset {
-	width: 300px;
-	height: 300px;
-	margin-top: 30px;
-	margin-left: 30px;
-	top: 130px;
+	width: 380px;
+	height: 380px;
+	top: 180px;
 	position: absolute;
 	background-color: #EDEDED;
-	
+	border-radius: 5px 5px 5px 5px;	
 }
 
 #closetEditText {
-	margin-top: 30px;
-	width: 300px;
-	height: 100px;
-	margin-left: 30px;
+	width: 380px;
 	position: absolute;
-	top: 350px;
+	top: 570px;
 }
 
-#editView {
-	margin-left: 30px;
-}
 
 .editTitle {
-	top: 100px;
+	top: 122px;
 	position: absolute;
-	align-content: center;
 	margin-top: 10px;
-	margin-left: 0px;
-	margin-right: 30px;
+}
+
+.editTitle span {
+	font-size: 20px;
+    border-radius: 15px 15px 0 0;
+    border-bottom: 2px solid #B2E0F7;
+    padding: 0.5em;
+    background: #D8EFFB;
 }
 
 .editbtns {
 	position: absolute;
-	top: 580px;
-}
-
-.editTitle h1 {
-	text-align: center;
-	margin-left: 30px;
+	top: 670px;
 }
