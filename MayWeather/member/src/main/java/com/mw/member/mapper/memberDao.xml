@@ -47,11 +47,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		memEmailCode=#{param2}
 	</update>
 	
-	<!-- 로그인 -->
+	<!-- 로그인 기존-->
 	<select id="selectLogin" resultMap="memberResult">
 		SELECT * FROM mem WHERE
 		memId=#{param1} and memPw=#{param2}
 	</select>
+
 
 	<select id="selectKakaoLogin" resultMap="memberResult">
 		SELECT * FROM mem WHERE

@@ -112,7 +112,6 @@
     	height: 82%;
     	padding: 5px;
     	padding-top: 30px;
-    	background-color: white;
     	margin-top: 20px;
     }
     
@@ -125,10 +124,16 @@
         float: left;
        	border-radius: 10px;
        	box-shadow: 2px 2px 8px #ccc;
+       	background-color: white;
     }
     
-    input[type=radio]{
+    .locationModal_body input[type=radio]{
     	display: none;
+    }
+    
+    .locationModal_body input:checked + label{
+    	background-color: #424242;
+    	color: white;
     }
     
     .locationModal_body img {
@@ -142,6 +147,7 @@
     	background-color: #f5f5f5;
     	color: grey;
     	text-align: center;
+    	padding-left: 10px;
     }
     
 
@@ -213,10 +219,7 @@
     	padding-left: 5px;
     }
     
-    #rainPercentBar {
-    	border-radius: 10px;
-    	width: 10px;
-    }
+    
     
     /* 오늘의 코디 추천 ----------------------------- */
     

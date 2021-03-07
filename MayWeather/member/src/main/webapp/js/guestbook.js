@@ -1,6 +1,7 @@
 
 
-       
+        
+             
        	window.onload = function() {
             
          hashtagList();   
@@ -15,7 +16,7 @@
          if(paramDiv == "ksuccess" || paramDiv == "kfail" || paramDiv == "kcancel"){                        
             fnKakaoPayResult(paramDiv, kSaleNo);
          }else{
-         	  setMainPageWithLoc();
+         	  setMainPage();
            
             clock();      
          }
@@ -27,7 +28,9 @@
 		
 		
 		
-
+		
+		
+		
 		
 		
 		
@@ -36,6 +39,7 @@
 		var awsHostUrl = 'https://maymayweather.ml/main';
 		var uploadFileUrl = '/fileupload/guestbook/';
 		
+		var memberHostUrl = 'https://weatherwearmember.tk/member';
 		var ootdHostUrl = 'https://www.mayootd.tk/ootd';
 		
 		
@@ -48,7 +52,7 @@
 		/* 메인 ---------------------------------------------------------------------------------------------------------------------  */
 		
 		/* 메인 페이지 구성 : 위치 호출 후 데이터 받아오기 */  
-		function setMainPageWithLoc() {
+		function setMainPage() {
 			
 			var mainhtml = '<!-- 메인 wrap -->'
 						+	'<div class="content_wrap">'
@@ -177,154 +181,14 @@
 		    $('#content').html(mainhtml);
 		    
 		    
+		    // 위치 호출 여부 분기
+		    if(nowLoc == null || nowLoc == '') {
+		    	getLocAndWeather();
+		    	
+		    } else {
+		    	getWeather();
+		    }
 		    
-		    
-		 	// GPS 위도/경도 요청 -> 기상청 x,y좌표로 변환 -> 서버에 전송
-			getLocAndWeather();
-			
-			
-			
-		}
-		
-		
-		
-		
-		
-		/* 메인 페이지 구성 : *위치 호출 없이* 데이터 받아오기 ----------------------- */  
-		function setMainPage() {
-			
-			var mainhtml = '<!-- 메인 wrap -->'
-						+	'<div class="content_wrap">'
-						+	'<!-- 메인 -->'
-						+	'<div class="mainForm" id="mainForm">'
-				
-					
-						+ '<div class="header_time"></div>'
-							+ '<div class="weather">'
-							+ 		'<div class="weatherBT_btn"><input type="button" class="font5" value="시간대별" id="weatherBt_btn" onclick="getWeatherBT()"></div>'
-							+ 		'<div class="weather_icon">'
-							+ 			'<img width="80" src="'+awsHostUrl+'/image/main/weatherTest.png">'
-							+ 		'</div>'
-							+ 		'<div class="weather_now">'
-							+ 			'<table>'
-							+ 				'<tr><td colspan="2" class="font4" id="sky_now">약한 비</td></tr>	'
-							+ 				'<tr><td colspan="2" class="font0" id="tmp_now">0°</td></tr>	'
-							+ 				'<tr><td class="font5" id="tmp_max">0° /</td><td class="font5" id="tmp_min"> -0°</td></tr>'
-							+			'</table>'
-							+ 		'</div>'
-							+ '</div>'
-							
-							+ '<div class="todayCodi">'
-							+ 		'<div class="todayCodi_ootd">'
-							+ 			'<div class="todayCodi_ootd_border">'
-							+ 				'<table>'
-							+ 					'<tr><td><img height="90" src="'+awsHostUrl+'/image/main/ootdTest.jpg"></td></tr>'
-							+ 					'<tr><td class="font5">뫄뫄님의 LOOK</td></tr>'
-							+ 				'</table>'
-							+ 			'</div>'
-							+ 		'</div>'
-							+ 		'<div class="todayCodi_recomm">'
-							+ 			'<div class="todayCodi_item">'
-							+ 				'<table>'
-							+ 					'<tr><td class="font4"> -- 오늘의 코디 추천 -- </td></tr>'
-							+ 					'<tr><td class="font_left">00님 <br>오늘 000과 0000 어때요? :)</td></tr>'
-							+ 				'</table>'
-							+ 			'</div>'
-							+ 			'<div class="todayCodi_item_img">';
-							
-				for(i=0; i<3; i++){
-					mainhtml +=				'<div class="todayCodi_item_img1"><img width="45" src="'+awsHostUrl+'/image/main/codiRecTest.png"></div>';
-				}
-							
-				mainhtml 	+= 			'</div>'
-							+ 		'</div>'
-							+ 		'<div class="todayCodi_btn" onclick="list(page)"><input type="button" value="코디할래요  >" id="btnToCloset"></div>'
-							+ '</div>'
-							
-							+ '<div class="todayPick">'
-							+ 		'<div class="todayPick_title"><h5>Todays PICK</h5></div>'
-							+ 			'<div class="top3_ootd">';
-						
-					
-						
-						
-							
-			// 좋아요 순으로 OOTD 게시물 Top3 가져오기
-		 	$.ajax({
-	    		url: ootdHostUrl + '/req/liketopthree',
-	    		type: 'GET',
-	    		async: false,
-	    		success: function(pickData) {
-	    			console.log('ootd 게시물 호출 성공');
-	    			console.log(pickData);
-	    			
-	    				// 총 게시물 수가 3개보다 적을때 분기
-	    			if(pickData.length < 3){
-	    			
-	    				for(i=0; i<pickData.length; i++){
-	    					mainhtml += 	'<div class="top3_ootd'+(i+1)+'" onclick="moveToOotdTop3('+pickData[i].ootdidx+')">'
-		    						+		'<input type="hidden" id="top3_ootdIdx" value="'+pickData[i].ootdidx+'">'
-		    						+ 			'<div class="top3_ootd_border">'
-		    						+ 				'<table>'
-		    						+ 					'<tr><td colspan="2"><img width="85" class="img_paddingB" src="'+ ootdHostUrl + '/fileupload/ootdimage/THUMB_' + pickData[i].ootdphotoname +'"></td></tr>'
-		    						+ 					'<tr>'
-		    						+						'<td colspan="2" class="pick_onleft">'+ pickData[i].ootdnic +' 님</td>'
-		    						+ 					'</tr>'
-		    						+ 					'<tr>'
-		    						+ 						'<td class="pick_onleft">'+ pickData[i].ootdloc +'</td>'
-		    						+ 						'<td class="pick_onright"><img width="10" src="'+awsHostUrl+'/image/icon/heart.png"> '+ pickData[i].ootdlikecnt +'</td>'
-		    						+ 					'</tr>'
-		    						+ 				'</table>'
-		    						+ 			'</div>'
-		    						+ 		'</div>';
-	    				}
-	    			
-	    			
-	    			} else {
-	    			
-	    				for(i=0; i<3; i++){
-		    				mainhtml += 	'<div class="top3_ootd'+(i+1)+'" onclick="moveToOotdTop3('+pickData[i].ootdidx+')">'
-		    						+		'<input type="hidden" id="top3_ootdIdx" value="'+pickData[i].ootdidx+'">'
-		    						+ 			'<div class="top3_ootd_border">'
-		    						+ 				'<table>'
-		    						+ 					'<tr><td colspan="2"><img width="85" class="img_paddingB" src="'+ ootdHostUrl + '/fileupload/ootdimage/THUMB_' + pickData[i].ootdphotoname +'"></td></tr>'
-		    						+ 					'<tr>'
-		    						+						'<td colspan="2" class="pick_onleft">'+ pickData[i].ootdnic +' 님</td>'
-		    						+ 					'</tr>'
-		    						+ 					'<tr>'
-		    						+ 						'<td class="pick_onleft">'+ pickData[i].ootdloc +'</td>'
-		    						+ 						'<td class="pick_onright"><img width="10" src="'+awsHostUrl+'/image/icon/heart.png"> '+ pickData[i].ootdlikecnt +'</td>'
-		    						+ 					'</tr>'
-		    						+ 				'</table>'
-		    						+ 			'</div>'
-		    						+ 		'</div>';
-		    			}
-	    			
-	    			}
-	    			
-	    			
-	    			
-	    		}, 
-	    		error: function(){
-	    			console.log('주소 호출 실패');
-	        	}
-	    	
-	    	});		 	
-					
-			
-			mainhtml += 	'</div>'
-						+ '</div>'
-						+ '</div>'
-						+ '</div>';
-						
-			
-							
-		    $('#content').html(mainhtml);
-		    
-		    
-		 	// GPS 위도/경도 요청 -> 기상청 x,y좌표로 변환 -> 서버에 전송
-			getWeather();
-			
 			
 		}
 		
@@ -387,8 +251,8 @@
        			Swal.fire({
 				  icon: 'error',
 				  title: 'GPS Error',
-				  text: 'GPS 정보가 없어요. 위치를 허락해주세요!',
-				  footer: '<a href>Why do I have this issue?</a>'
+				  text: '위치 정보 접근을 허용해주세요!',
+				  footer: '<a href="https://support.google.com/chrome/answer/142065?co=GENIE.Platform%3DAndroid&hl=ko">How do I solve this issue?</a>'
 				})
        		
        		} else {
@@ -409,12 +273,8 @@
 					lochtml += 		'<div class="locationModal_body">';
 					
 					for(i=0; i<addressApiData.length; i++) {
-	
-						lochtml +=		'<label for="possibleLocBtn" class="labelforLoc">'+ addressApiData[i].city + ' ' + addressApiData[i].gu;
-						lochtml += 			'<input type="radio" name="possibleLocBtn" class="possibleLocBtn" value="'+addressApiData[i].city + ' ' + addressApiData[i].gu+'">';
-						lochtml +=		'</label>';
-						
-						console.log(addressApiData[i]);
+						lochtml += '<input type="radio" name="LocOptions" id="possibleLocBtn'+i+'" value="'+addressApiData[i].city + ' ' + addressApiData[i].gu+'" style="display:none;">';
+						lochtml += '<label for="possibleLocBtn'+i+'" class="labelforLoc">'+ addressApiData[i].city + ' ' + addressApiData[i].gu + '</label>';
 					}
 					
 					lochtml +=			'<img width="200" src="'+awsHostUrl+'/image/main/map.png">';
@@ -430,9 +290,9 @@
 	 				
 	 			$('.locationModal_wrapper').html(lochtml);
 	 			
-	 			$('.possibleLocBtn:checked').css('background-color','#424242');
+	 			//$('.possibleLocBtn:checked').css('background-color','#424242');
 	 		
-	 			$('.possibleLocBtn:checked').css('color','white');
+	 			//$('.possibleLocBtn:checked').css('color','white');
        		
        		
        		}
@@ -458,11 +318,8 @@
 				
 				for(i=0; i<addressApiData.length; i++) {
 
-					lochtml +=		'<label for="possibleLocBtn" class="labelforLoc">'+ addressApiData[i].city + ' ' + addressApiData[i].gu;
-					lochtml += 			'<input type="radio" name="possibleLocBtn" class="possibleLocBtn" value="'+addressApiData[i].city + ' ' + addressApiData[i].gu+'">';
-					lochtml +=		'</label>';
-					
-					console.log(addressApiData[i]);
+					lochtml += '<input type="radio" name="LocOptions" id="possibleLocBtn'+i+'" value="'+addressApiData[i].city + ' ' + addressApiData[i].gu+'" style="display:none;">';
+					lochtml += '<label for="possibleLocBtn'+i+'" class="labelforLoc">'+ addressApiData[i].city + ' ' + addressApiData[i].gu + '</label>';
 				}
 				
 				lochtml +=			'<img width="200" src="'+awsHostUrl+'/image/main/map.png">';
@@ -483,11 +340,12 @@
  			//$('.possibleLocBtn:checked').css('color','white');
  			
  			
-			// 동네 이름 클릭 이벤트
+		/*	// 동네 이름 클릭 이벤트
 			$('.labelforLoc').click(function () {
 				$(this).css('background-color','#424242');
 				$(this).css('color','white');
 			});
+		*/
  			
  			
        	}
@@ -498,15 +356,10 @@
        	/* 동네 설정 */
        	function changeLoc() {
        		
-			var checkValue = $('input:radio[name="possibleLocBtn"]:checked');
-       		console.log(checkValue);
-       		console.log(checkValue.val());
-       		
+			var checkValue = $('.locationModal_body input:checked');
        		const str = checkValue.val();
-       		console.log(str);
        		
        		nowLoc = str;
-       		console.log(nowLoc);
        		
        		const arr = str.split(' ');
        		console.log(arr);
@@ -515,15 +368,13 @@
        		
        		nowGu = arr[1];
        		console.log(nowGu);
-       		
+       	
        		
        		$('.locationModal_wrapper').css('display','none');
        		$('#btnLocc').html(nowGu);
        		
        		console.log(location);
        		
-       		
-       		//setMainPage();
        	
        	}
 		
@@ -620,7 +471,7 @@
  					
  					listhtml +=		'<div class="gblist_title">';
  					listhtml += 		'<button type="button" onclick="backToPreview()" class="gb_back_btn"><img width="17" src="'+awsHostUrl+'/image/main/back.png"></button>';
- 					listhtml += 		'<span>'+ gbOwnerName + ' 님의 GuestBook('+ data.totalGuestbookCount +')</span>';
+ 					listhtml += 		'<span>'+ gbOwnerName + ' 님의 GuestBook</span>';
  					listhtml +=			'<div class="writebtn" id="writebtn" onclick="openRegModal()"></div>';
  					listhtml += 	'</div>';	
  					listhtml += 	'<div class="gblist">';
@@ -642,9 +493,9 @@
 	 						
 		 					listhtml += 				'<tr class="gblist_width">';
 		 					listhtml += 					'<td rowspan="2" class="gblist_memImgR">';
-		 					listhtml += 						'<img width="30" class="gblist_memImg" src="'+awsHostUrl+'/image/main/blue.jpg">';
+		 					listhtml += 						'<img width="35" class="gblist_memImg" src="'+memberHostUrl+'/fileupload/member/' + data.guestbookList[i].writerPhoto + '">';
 		 					listhtml += 					'</td>';
-		 					listhtml += 					'<td class="gblist_name">'+ data.guestbookList[i].writerName +'('+ data.guestbookList[i].writerNo +')'+ data.guestbookList[i].secret +'</td>';
+		 					listhtml += 					'<td class="gblist_name">'+ data.guestbookList[i].writerName +'</td>';
 		 					listhtml +=						'<td class="gblist_btns">';
 		 					
 		 					
@@ -674,9 +525,9 @@
 							// 첨부 사진 없는 경우, 이미지 출력 X
 		 					if(data.guestbookList[i].contentPhoto != null) {
 		 						listhtml +=					'<tr class="gblist_info">';
-								listhtml +=						'<td class="font7">'+ data.guestbookList[i].writerLoc +'  ' + data.guestbookList[i].regDate +'</td>';			
+								listhtml +=						'<td class="font7"><img height="10" class="locIcon" src="'+awsHostUrl+'/image/icon/location.png">'+ data.guestbookList[i].writerLoc +'<br>' + data.guestbookList[i].regDate +'</td>';			
 								listhtml +=						'<td rowspan="2" class="gblist_uploadPhoto">';
-								listhtml +=							'<div width="70" height="70"><img id="gblist_Photo" src="' + awsHostUrl + uploadFileUrl + data.guestbookList[i].contentPhoto +'" onclick="gbPopImage(this.src)" ></div><div class="gbOriginalImage" onclick="closeGbPopup()"><div class="gbBigImg" id="gbBigImg"></div></div>';
+								listhtml +=							'<div width="70" height="70"><img id="gblist_Photo" src="' + awsHostUrl + uploadFileUrl + data.guestbookList[i].contentPhoto +'" onclick="gbPopImage(this.src)" ></div><div class="gbOriginalImage" onclick="closeGbPopup()" style="display:none;"><div class="gbBigImg" id="gbBigImg"></div></div>';
 								listhtml +=						'</td>';
 								listhtml +=					'</tr>';
 								listhtml +=					'<tr class="gblist_con">';
@@ -686,7 +537,7 @@
 								listhtml +=				'</tbody>';
 							} else {
 								listhtml +=					'<tr class="gblist_info">';
-								listhtml +=						'<td class="font7">'+ data.guestbookList[i].writerLoc +'  ' + data.guestbookList[i].regDate +'</td>';			
+								listhtml +=						'<td class="font7"><img height="10" class="locIcon" src="'+awsHostUrl+'/image/icon/location.png">'+ data.guestbookList[i].writerLoc +'<br>' + data.guestbookList[i].regDate +'</td>';			
 								listhtml +=					'</tr>';
 								listhtml +=					'<tr class="gblist_con">';
 								listhtml +=						'<td colspan="3" class="gblist_content">'+ data.guestbookList[i].content.replace(/(?:\r\n|\r|\n)/g,'<br/>') +'</td>';
@@ -704,9 +555,9 @@
 								listhtml +=				'<tbody id="'+data.guestbookList[i].gbookNo+'">'
 			 					listhtml += 				'<tr class="gblist_width">';
 			 					listhtml += 					'<td rowspan="2" class="gblist_memImgR">';
-			 					listhtml += 						'<img width="30" class="gblist_memImg" src="'+awsHostUrl+'/image/main/blue.jpg">';
+			 					listhtml += 						'<img width="35" class="gblist_memImg" src="'+memberHostUrl+'/fileupload/member/' + data.guestbookList[i].writerPhoto + '">';
 			 					listhtml += 					'</td>';
-			 					listhtml += 					'<td class="gblist_name">'+ data.guestbookList[i].writerName +'('+ data.guestbookList[i].writerNo +')'+ data.guestbookList[i].secret +'</td>';
+			 					listhtml += 					'<td class="gblist_name">'+ data.guestbookList[i].writerName +'</td>';
 			 					listhtml +=						'<td class="gblist_btns">';	 					
 			 					listhtml +=						'<input type="hidden" name="gbookNo" id="'+ data.guestbookList[i].gbookNo +'" value="'+ data.guestbookList[i].gbookNo +'">';
 			 					listhtml +=					'</tr>';
@@ -715,9 +566,9 @@
 								// 첨부 사진 없는 경우, 이미지 출력 X
 			 					if(data.guestbookList[i].contentPhoto != null) {
 			 						listhtml +=					'<tr class="gblist_info">';
-									listhtml +=						'<td class="font7">'+ data.guestbookList[i].writerLoc +'  ' + data.guestbookList[i].regDate +'</td>';			
+									listhtml +=						'<td class="font7"><img height="10" class="locIcon" src="'+awsHostUrl+'/image/icon/location.png">'+ data.guestbookList[i].writerLoc +'<br>' + data.guestbookList[i].regDate +'</td>';			
 									listhtml +=						'<td rowspan="2" class="gblist_uploadPhoto">';
-									listhtml +=							'<div width="70" height="70"><img src="' + awsHostUrl + uploadFileUrl + data.guestbookList[i].contentPhoto +'" onclick="gbPopImage(this.src)"></div><div class="gbOriginalImage" onclick="closeGbPopup()"><div class="gbBigImg" id="gbBigImg"></div></div>';
+									listhtml +=							'<div width="70" height="70"><img src="' + awsHostUrl + uploadFileUrl + data.guestbookList[i].contentPhoto +'" onclick="gbPopImage(this.src)"></div><div class="gbOriginalImage" onclick="closeGbPopup()" style="display:none;"><div class="gbBigImg" id="gbBigImg"></div></div>';
 									listhtml +=						'</td>';
 									listhtml +=					'</tr>';
 									listhtml +=					'<tr class="gblist_con">';
@@ -728,7 +579,7 @@
 			 					
 								} else {
 									listhtml +=					'<tr class="gblist_info">';
-									listhtml +=						'<td colspan="2" class="font7">'+ data.guestbookList[i].writerLoc +'  ' + data.guestbookList[i].regDate +'</td>';			
+									listhtml +=						'<td colspan="2" class="font7"><img height="10" class="locIcon" src="'+awsHostUrl+'/image/icon/location.png">'+ data.guestbookList[i].writerLoc +'<br>' + data.guestbookList[i].regDate +'</td>';			
 									listhtml +=					'</tr>';
 									listhtml +=					'<tr class="gblist_con">';
 									listhtml +=						'<td colspan="3" class="gblist_content">'+ data.guestbookList[i].content.replace(/(?:\r\n|\r|\n)/g,'<br/>') +'</td>';

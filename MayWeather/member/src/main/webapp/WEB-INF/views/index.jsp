@@ -47,6 +47,8 @@
 <!-- alert 창 변경 sweetalert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+
+
 <!-- redis loginInfo -->
 <script type="text/javascript">
 
@@ -60,6 +62,7 @@ var memLoc = '${sessionScope.memLoc}';
 var memGender = '${sessionScope.memGender}';
 var memPhoto = '${sessionScope.memPhoto}';
 var memEmailchk = '${sessionScope.memEmailchk}';
+var naverLoginchk = '${sessionScope.naverResult}';
 
 console.log(originJsessionId);
 console.log(jsessionId);
@@ -70,6 +73,7 @@ console.log(memLoc);
 console.log(memGender);
 console.log(memPhoto);
 console.log(memEmailchk);
+console.log(naverLoginchk);
 
 </script>
 
@@ -89,19 +93,21 @@ console.log(memEmailchk);
         	<!-- 메인 wrap -->
 			<div class="content_wrap">
 			
+			
 				<!-- 메인 -->
 				<div class="mainForm" id="mainForm"></div>
 				
+				
+				
 	    	 </div>
+	    	 
+	    	 
 			
         </div>
     </div>
 </div>
 
-
-
-
-
+			
 
 	<!-- 로그인 체크가 없을경우 로그인 모달 팝업 -->
 	<c:if test="${not loginCheck}">
@@ -111,9 +117,7 @@ console.log(memEmailchk);
 	});
 	</script>
 	</c:if>
-
-
-
+	
 
 
 <!-- 마이페이지 JS -->

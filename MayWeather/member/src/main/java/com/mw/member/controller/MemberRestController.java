@@ -1,9 +1,9 @@
 package com.mw.member.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import javax.mail.Message;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,11 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mw.member.domain.LoginInfo;
 import com.mw.member.domain.Member;
-import com.mw.member.domain.MemberEditRequest;
 import com.mw.member.domain.MemberKakaoRequest;
 import com.mw.member.domain.MemberLoginRequest;
 import com.mw.member.domain.MemberNameEditRequest;
@@ -53,7 +51,6 @@ import com.mw.member.service.MemberRegService;
 import com.mw.member.service.NaverRegService;
 import com.mw.member.util.NaverLoginUtil;
 import com.mw.member.util.RedisService;
-import com.sun.mail.handlers.message_rfc822;
 
 @RestController
 @CrossOrigin
@@ -119,6 +116,7 @@ public class MemberRestController {
 	
 	@Autowired
 	private MemberNameFindService nameFindService;
+	
 	
 	
 	@PostMapping // 회원가입
@@ -239,17 +237,20 @@ public class MemberRestController {
 		
 		ModelAndView mav = new ModelAndView();
 		
+		int naverResult = naverRegService.naverMemberReg(request, response, code, state, session, jSessionId);
+		
 		mav.setViewName("redirect:https://weatherwearmember.tk/member/");
 		
-		naverRegService.naverMemberReg(request, response, code, state, session, jSessionId);
+		session.setAttribute("naverResult", naverResult);
 		
 		return mav;
 	
 	}
 	
 	@GetMapping("/idfind")
-	public String findMemId(@RequestParam("memName") String memName) {
-		
+	public String findMemId(@RequestParam("memName") String memName) throws UnsupportedEncodingException {
+		memName = new String(memName.getBytes("8859_1"), "UTF-8");
+		System.out.println(memName);
 		return idFindService.findIdByName(memName);
 	}
 	
@@ -271,6 +272,7 @@ public class MemberRestController {
 		String returnName = nameFindService.getMemName(memIdx);
 		return returnName;
 	}
+	
 	
 }
 

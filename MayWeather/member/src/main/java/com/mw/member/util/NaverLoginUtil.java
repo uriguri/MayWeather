@@ -20,7 +20,7 @@ public class NaverLoginUtil {
 	
 	private final static String CLIENT_ID = "MdczNclpufLIZAvryTGf";
 	private final static String CLIENT_SECRET = "9kQfOSZtfz";
-	private final static String REDIRECT_URI = "http://ec2-52-78-37-31.ap-northeast-2.compute.amazonaws.com:8080/member/members/naver/oauthNaver";
+	private final static String REDIRECT_URI = "https://weatherwearmember.tk/member/members/naver/oauthNaver";
 	private final static String SESSION_STATE = "oauth_state";
 	
 	/* 프로필 조회 API URL */

@@ -17,6 +17,7 @@ position: absolute;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 3px 4px 50px 3px;
 }
 
 .writeDiv {
@@ -33,6 +34,7 @@ position: absolute;
 	border-radius: 20px;
 	margin-right: 20px;
 	margin-left: 15px;
+	box-shadow: 2px 10px 60px 5px;
 }
 
 #bottom {
@@ -50,12 +52,12 @@ position: absolute;
 }
 
 #codibg {
-    height:300px;
-   	width: 300px;
-   	margin-left: 30px;
+    height:330px;
+   	width: 330px;
 	position: absolute;
 	top: 400px;
 	overflow: hidden;
+	margin-left: 30px;
 }
 
 #codiback {
@@ -138,6 +140,7 @@ position: absolute;
 	height: 300px;
 	background-color: #EDEDED;
 	margin: 0 auto;
+	border: 1px solid #ddd;
 }
 
 #heartview {
@@ -148,10 +151,9 @@ position: absolute;
 }
 
 #closetText {
-	width: 300px;
+	width: 330px;
 	height: 100px;
-	margin-right: 30px;
-	padding : 30px auto;
+	margin-right:30px;
 	border: 1px solid #ddd;
 }
 
@@ -167,6 +169,7 @@ position: absolute;
 	position: absolute;
     top: 400px;
     font-family: 'Nanum Pen Script';
+    color: black;
 }
 
 
@@ -199,11 +202,10 @@ position: absolute;
 
 #closetRegForm {
 	position: absolute;
-	top: 458px;
+	top: 485px;
 	margin-top: 30px;
 	margin-left: 0px;
-	width: 300px;
-	height: 200px;
+	width: 350px;
 }
 
 
@@ -225,17 +227,17 @@ position: absolute;
 }
 
 .writeTitle {
-	top: 128px;
+	top: 110px;
     position: absolute;
     margin-top: 15px;
 }
 
 .writeTitle span {
-	font-size: 20px;
-	border-radius: 15px 15px 0 0;
-    border-bottom: 2px solid #B2E0F7;
-    padding: 0.5em;
+	font-size: 40px;
     background: #D8EFFB;
+    font-family: 'Nanum Pen Script', cursive;
+    color: black;
+    margin-left: 130px;
 }
 
 #viewBack {
@@ -254,36 +256,60 @@ position: absolute;
 }
 
 #editCloset {
-	width: 380px;
-	height: 380px;
-	top: 180px;
+	width: 330px;
+	height: 330px;
+	top: 70px;
 	position: absolute;
 	background-color: #EDEDED;
-	border-radius: 5px 5px 5px 5px;	
+	margin-left: 10px;
+	border: 1px solid #ddd;
+	
 }
 
 #closetEditText {
-	width: 380px;
+	width: 330px;
 	position: absolute;
-	top: 570px;
+	top: 405px;
+	margin-left: 10px;
 }
 
 
 .editTitle {
-	top: 122px;
 	position: absolute;
 	margin-top: 10px;
+	margin-left: 120px;
 }
 
 .editTitle span {
-	font-size: 20px;
-    border-radius: 15px 15px 0 0;
-    border-bottom: 2px solid #B2E0F7;
-    padding: 0.5em;
+	font-size: 40px;
     background: #D8EFFB;
+    font-family: 'Nanum Pen Script';
+    color: black;
 }
 
 .editbtns {
 	position: absolute;
-	top: 670px;
+	top: 508px;
+	margin-left: 125px;
+}
+
+#savebuttn {
+	margin-left: 90px;
+}
+
+.editWrap {
+	width: 360px;
+    height: 550px;
+    background: white;
+    padding: 3px;
+    position: absolute;
+    margin-top: 40px;
+    margin-left: 6px;
+    box-shadow: 5px 3px 500px 2px;
+}
+
+.regDate {
+	margin-left: 7px;
+	font-size: 17px;
+	
 }

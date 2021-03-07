@@ -15,7 +15,7 @@ public interface MemberDao {
 	//멤버 로그인
 	Member selectLogin(String memId, String memPw);
 
-	//카카오 멤버 로그인 (비밀번호 찾기 겸용사용 = 아이디로 멤버객체 반환)
+	//카카오 멤버 로그인 (비밀번호 찾기, 로그인 실패 시 사용 = 아이디로 멤버객체 반환)
 	Member selectKakaoLogin (String memId);
 	
 	//멤버 메일 인증

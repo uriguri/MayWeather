@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
     <header>
-		<img src="<c:url value="/image/logo/mwlogo.png"/>" width="119px" class="logoimage">
+		<img src="<c:url value="/image/logo/mwlogo.png"/>" width="119px" class="logoimage" onclick="setMainPage()">
 		
 		<!-- 효선누나꺼 -->
   		<input type="hidden" value="${sessionScope.memIdx}" name="memidxsession" id="memidxsession">

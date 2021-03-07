@@ -83,7 +83,10 @@ public class MemberLoginService {
 			}
 			
 		} else {
-			member = dao.selectLogin("admin@gmail.com", "1111");
+			/* member = dao.selectLogin("admin@gmail.com", "1111"); */
+			
+			member = dao.selectKakaoLogin("admin@gmail.com");
+			
 		}
 
 		return member.toLoginInfo();
