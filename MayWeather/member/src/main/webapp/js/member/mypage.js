@@ -249,7 +249,7 @@ function memberMain() {
     memberMain += '<div class="mypage-body-1">';
     memberMain += '<div class="mem-change" data-toggle="modal" data-target="#mypageModal" data-whatever="내 정보 변경">내 정보 변경</div>';
     memberMain += '<hr class="mypage-hr">';
-    memberMain += '<div class="mem-locchange" data-toggle="modal" data-target="#mypageModal" data-whatever="내 위치 변경">내 위치 변경</div>';
+    memberMain += '<div class="mem-locchange">내 위치 변경</div>';
     memberMain += '<hr class="mypage-hr">';
     memberMain += '<div class="mem-photochange" data-toggle="modal" data-target="#mypageModal" data-whatever="프로필 사진 변경">프로필 사진 변경</div>';
     memberMain += '</div>';
@@ -1485,8 +1485,42 @@ $(document).on("click", "#adminLoginMenu", function () {
     $('.content').html(adminLogin);
 
     memList();
+    
+    memListCount();
 
 });
+
+
+//관리자 회원 페이징 생성
+function memListCount() {
+		$.ajax({
+		type: 'GET',
+		url: rootUrl + '/members/allmember',
+	    contentType: 'application/json',
+		success: function (memCount) {
+		
+		//총 회원
+		var memTotalCnt = memCount.length;
+		
+		// 한 페이지 보여줄 인원
+		var onePageMem = 5;
+		
+		//  memTotalCnt / onePageMem  = pageCnt 페이지 수 나타냄.
+		var pageCnt = Math.floor((memTotalCnt/onePageMem))+1;
+		
+		for(var i = 0; i == pageCnt; i++) {
+			var cntRow = '<input id="memDeleteBtn" class="btn btn-info" type="button" value="'+i+'">';
+			
+			$('#userTable').append(cntRow);
+		}
+		
+		
+		
+		}
+	
+	});
+	
+}
 
 //관리자 메뉴 회원 리스트 출력
 function memList() {
@@ -1513,7 +1547,10 @@ function memList() {
                 row += '<td>' + memberList[i].memIdx + '</td>';
                 row += '<td>' + memberList[i].memId + '</td>';
                 row += '<td>' + memberList[i].memName + '</td>';
-                row += '<td>' + memberList[i].memPhoto + '</td>';
+                
+                //row += '<td>' + memberList[i].memPhoto + '</td>';
+                
+                row += '<td><img id="adminUserPhoto" src="'+ rootUrl +'/fileupload/member/'+ memberList[i].memPhoto +'"></td>';
                 row += '<td>' + memberList[i].memSocial + '</td>';
                 row += '<td><input id="memDeleteBtn" class="btn btn-info" type="button" value="유저 삭제"></td>';
                 row += '</tr>';
@@ -1562,4 +1599,10 @@ $(document).ready(function () {
         new swal("네이버로그인 등록 완료!", "다시 네이버로 로그인해주세요.", "success");
         naverLoginchk = 3;
     }
+});
+
+// 내 위치 설정하기 
+$(document).on('click', '.mem-locchange', function(){
+
+	openLocModal();
 });

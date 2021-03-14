@@ -411,6 +411,7 @@ pv2 {
    height: 50px;
    border: 1px solid #ddd;
    float: left;
+   margin: 0px;
 }
 
 .ootdcmntsubmit {

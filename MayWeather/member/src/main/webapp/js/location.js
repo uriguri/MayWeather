@@ -293,6 +293,40 @@
 		       		
 		       		console.log(nowWth);
 		       		
+		       		
+		       		
+		       		$.ajax({
+			        	url: awsHostUrl + '/todaycodi/' +tmp_max + '/' +tmp_min,
+			        	type: 'GET',
+			        	async: false,
+			        	success: function(data){
+			        		console.log('코디아이템 호출 성공');
+			        		console.log(data);
+			        		
+			        		html = '<div class="todayCodi_ootd">';
+			        		html +=		'<table>';
+			        		html +=			'<tr>';
+							html +=				'<td width="33%"><img height="90" src="'+awsHostUrl+'/image/main/clothes/'+ data[0].item +'1.png"></td>';
+							html +=				'<td width="33%"><img height="90" src="'+awsHostUrl+'/image/main/clothes/'+ data[1].item +'1.png"></td>';
+							html +=				'<td width="33%"><img height="90" src="'+awsHostUrl+'/image/main/clothes/'+ data[2].item +'1.png"></td>';
+							html +=			'</tr>';
+							html +=			'<tr><td colspan="3" height="50px">오늘 '+ data[0].name +', '+ data[1].name +', '+ data[2].name +' 어때요? :)</td></tr>';
+							html +=		'</table>';
+							html +=	'</div>';
+							
+							$('.todayCodi').html(html);
+			        		
+			        		
+			        	},
+			        	error: function(){
+						    console.log('코디아이템 호출 실패');
+			        	}
+		       		
+		       		});
+		       		
+		       		
+		       		
+		       		
 				
 			  	}, function(error) {
 							console.error(error);
@@ -523,6 +557,36 @@
 		       		};
 		       		
 		       		console.log(nowWth);
+		       		
+		       		
+		       		$.ajax({
+			        	url: awsHostUrl + '/todaycodi/' +tmp_max + '/' +tmp_min,
+			        	type: 'GET',
+			        	async: false,
+			        	success: function(data){
+			        		console.log('코디아이템 호출 성공');
+			        		console.log(data);
+			        		
+			        		html = '<div class="todayCodi_ootd">';
+			        		html +=		'<table>';
+			        		html +=			'<tr>';
+							html +=				'<td width="33%"><img height="90" src="'+awsHostUrl+'/image/main/clothes/'+ data[0].item +'1.png"></td>';
+							html +=				'<td width="33%"><img height="90" src="'+awsHostUrl+'/image/main/clothes/'+ data[1].item +'1.png"></td>';
+							html +=				'<td width="33%"><img height="90" src="'+awsHostUrl+'/image/main/clothes/'+ data[2].item +'1.png"></td>';
+							html +=			'</tr>';
+							html +=			'<tr><td colspan="3" height="50px">오늘 '+ data[0].name +', '+ data[1].name +', '+ data[2].name +' 어때요? :)</td></tr>';
+							html +=		'</table>';
+							html +=	'</div>';
+							
+							$('.todayCodi').html(html);
+			        		
+			        		
+			        	},
+			        	error: function(){
+						    console.log('코디아이템 호출 실패');
+			        	}
+		       		
+		       		});
 		
 		
 		}

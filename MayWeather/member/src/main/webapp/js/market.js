@@ -609,7 +609,7 @@
 				saleNo : nowSaleNo,
 				jsessionId : jsessionId
 			};
-		
+
 			$.ajax({
 				url : marketUrl + '/sale/pay/',
 				type : 'POST',
@@ -1114,7 +1114,7 @@
         function fnImageDel(imgNum, fileNo) {
 
             //var imgNum = obj.attributes['value'].value;
-        	      	
+                            	      	
             delete fileObject[imgNum];
             $("#preview .preview_box[value=" + imgNum + "]").remove();
             
@@ -1424,6 +1424,10 @@
 		// 구매 등록폼
 		function fnSaleWriteForm(){
 			nowPageLoc = "reg";
+			
+			// 이미지 목록  reload 
+			fileObject = {};
+			               	      	
 			
 			// 페이지 테그 삭제
 			$('#market *').remove();

@@ -31,12 +31,10 @@
 		
 		
 		
-		
-		
-		
 		var myHostUrl = 'http://localhost:8080/main';
 		//var awsHostUrl = 'http://ec2-3-36-78-63.ap-northeast-2.compute.amazonaws.com:8080/main';
 		var awsHostUrl = 'https://maymayweather.ml/main';
+		//var awsHostUrl = 'http://localhost:8080/main';
 		var uploadFileUrl = '/fileupload/guestbook/';
 		
 		var memberHostUrl = 'https://weatherwearmember.tk/member';
@@ -75,40 +73,26 @@
 							+ 		'</div>'
 							+ '</div>'
 							
-							+ '<div class="todayCodi">'
+							
+							+ 	'<div class="todayCodi">'
 							+ 		'<div class="todayCodi_ootd">'
-							+ 			'<div class="todayCodi_ootd_border">'
 							+ 				'<table>'
-							+ 					'<tr><td><img height="90" src="'+awsHostUrl+'/image/main/ootdTest.jpg"></td></tr>'
-							+ 					'<tr><td class="font5">뫄뫄님의 LOOK</td></tr>'
+							+ 					'<tr>'
+							+						'<td><img height="90" src="'+awsHostUrl+'/image/main/clothes/trenchcoat1.png"></td>'
+							+						'<td><img height="90" src="'+awsHostUrl+'/image/main/clothes/mtm1.png"></td>'
+							+						'<td><img height="90" src="'+awsHostUrl+'/image/main/clothes/skirt1.png"></td>'
+							+					'</tr>'
+							+ 					'<tr><td colspan="3" height="50px">오늘 트렌치코트, 맨투맨, 청치마 어때요? :)</td></tr>'
 							+ 				'</table>'
-							+ 			'</div>'
 							+ 		'</div>'
-							+ 		'<div class="todayCodi_recomm">'
-							+ 			'<div class="todayCodi_item">'
-							+ 				'<table>'
-							+ 					'<tr><td class="font4"> -- 오늘의 코디 추천 -- </td></tr>'
-							+ 					'<tr><td class="font_left">00님 <br>오늘 000과 0000 어때요? :)</td></tr>'
-							+ 				'</table>'
-							+ 			'</div>'
-							+ 			'<div class="todayCodi_item_img">';
+							+ 	'</div>'
+							+ 	'<div class="todayCodi_btn" onclick="list(page)"><input type="button" value="코디할래요  >" id="btnToCloset"></div>'
 							
-				for(i=0; i<3; i++){
-					mainhtml +=				'<div class="todayCodi_item_img1"><img width="45" src="'+awsHostUrl+'/image/main/codiRecTest.png"></div>';
-				}
-							
-				mainhtml 	+= 			'</div>'
-							+ 		'</div>'
-							+ 		'<div class="todayCodi_btn" onclick="list(page)"><input type="button" value="코디할래요  >" id="btnToCloset"></div>'
-							+ '</div>'
 							
 							+ '<div class="todayPick">'
 							+ 		'<div class="todayPick_title"><h5>Todays PICK</h5></div>'
 							+ 			'<div class="top3_ootd">';
-						
-					
-						
-						
+			
 							
 			// 좋아요 순으로 OOTD 게시물 Top3 가져오기
 		 	$.ajax({

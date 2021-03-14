@@ -1248,7 +1248,7 @@ function viewCommentList(ootdidx, num) {
                 console.log("댓리스트출력실행")
 
                 cmtlisthtml += '<div class="ootdcomment"><table class="ootdcmttable"><tr><td rowspan="2" valign="top" lass="ootdcmtimage">';
-                cmtlisthtml += '<img src="https://bitterbetter.kr/web/product/big/201902/2e83f4014460bab0a9cf24404440231d.jpg"></td>'
+                cmtlisthtml += '<img src="Https://weatherwearmember.tk/member/fileupload/member/' + data[i].memidx + '.png"></td>'
                 cmtlisthtml += '<td>' + data[i].ootdcmtnic + '</td><td></td>';
                 cmtlisthtml += '<td class="cmtmodifytd"><a1 onclick="ootdModifyView(' + data[i].ootdcmtidx + ',' + data[i].memidx + ',' + data[i].ootdidx + ')">수정 </a1>'
                 cmtlisthtml += '| <a1 onclick="ootdDeleteCmt(' + data[i].ootdcmtidx + ',' + data[i].memidx + ',' + data[i].ootdidx + ')">삭제</a1></td>';
