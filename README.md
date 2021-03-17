@@ -21,6 +21,13 @@
 ***
 <img src="https://user-images.githubusercontent.com/71997954/111112261-35943180-85a3-11eb-8ab3-4a1163c03148.PNG">
 
+### Weather Wear 발표 & 시연 영상
+***
+[![Weather Wear](http://img.youtube.com/vi/mdKd9PWuFdQ/0.jpg)](https://youtu.be/mdKd9PWuFdQ) <br>
+↑ 이미지를 클릭하시면 유튜브로 이동합니다.
+
+
+
 ### Weather Wear 기술 구현
 ***
 <img src="https://user-images.githubusercontent.com/71997954/111112390-6ffdce80-85a3-11eb-9ab2-cbe71d9941d4.PNG">
